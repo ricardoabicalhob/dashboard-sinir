@@ -1,101 +1,114 @@
-import Image from "next/image";
-
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+  return(
+    <div></div>
+  )
 }
+// 'use client'
+
+// import { MTRResponseI } from "@/interfaces/mtr.interface"
+// import { useQuery } from "react-query"
+// import { checkDateWithinAPeriod, formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, subDatesEmDias } from "@/utils/fnUtils"
+// import { useMemo, useState } from "react"
+// import { subDays } from "date-fns"
+// import { getMtrDetails } from "@/repositories/getMtrDetails"
+// import { getMtrList } from "@/repositories/getMtrList"
+
+// export default function Home() { 
+
+//   const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5MTc5OCw5Njg3MiIsInJvbGUiOjEsImV4cCI6MTc0NTU3MTg2NX0.RAANDuPblg-LE_G6vD_6T7q6WAoh1eLyQIX24kSLuyeLpmHyQrrwGeEyPQOcOfznVAXrrcoBn2XS-jJL6Gfqiw"
+//   const [ dateFrom, setDateFrom ] = useState<Date>(new Date("03/01/2025"))
+//   const [ dateTo, setDateTo ] = useState<Date>(new Date("03/31/2025"))
+//   const dateFromBefore = subDays(dateFrom, 90)
+//   const dateToBefore = subDays(dateFrom, 1)
+
+//   const { 
+//     data: referencePeriodList, 
+//     isFetching: isFetchingList,
+//     isLoading: isLoadingList,
+//     isError: isErrorList,
+//     error: errorList
+//   } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1], 
+//     async ()=> await getMtrList(91798, "Armazenador Temporário", formatDateForAPI(dateFrom), formatDateForAPI(dateTo), token, ["Recebido"]), {
+//     refetchOnWindowFocus: false
+//   })
+
+//   const {
+//     data: extendedPeriodList,
+//     isLoading: isLoadingListExtented,
+//     isError: isErrorListExtented,
+//     error: errorListExtented
+//   } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2], 
+//     async ()=> await getMtrList(91798, "Armazenador Temporário", formatDateForAPI(dateFromBefore), formatDateForAPI(dateToBefore), token, ["Recebido"]), {
+//       refetchOnWindowFocus: false,
+//       enabled: true
+//     }
+//   )
+
+//   const allMtrs = useMemo(() => {
+//     if (referencePeriodList && extendedPeriodList) {
+//       return [...referencePeriodList, ...extendedPeriodList];
+//     }
+//     if (referencePeriodList) {
+//       return referencePeriodList;
+//     }
+//     if (extendedPeriodList) {
+//       return extendedPeriodList;
+//     }
+//     return [];
+//   }, [referencePeriodList, extendedPeriodList]);
+
+//   const { 
+//     data: detailedReferencePeriodList,
+//     isLoading: isLoadingDetails,
+//     isError: isErrorDetails,
+//     error: errorDetails
+//    } = useQuery<MTRResponseI[], Error>(['mtrDetails'], async ()=> await getMtrDetails(allMtrs || [], token),
+//     {
+//       enabled: !!extendedPeriodList
+//     }
+//   )
+
+//   const isLoading = isLoadingList || isLoadingListExtented;
+//   const isError = isErrorList || isErrorListExtented;
+//   const error = errorList || errorListExtented;
+
+//   if (isLoading) return <p>Carregando lista de MTRs...</p>;
+//   if (isError && error) return <p>Erro ao carregar lista de MTRs: {error.message}</p>;
+
+//   if (isLoadingDetails) return <p>Carregando detalhes dos MTRs...</p>;
+//   if (isErrorDetails && errorDetails) return <p>Erro ao carregar detalhes dos MTRs: {errorDetails.message}</p>;
+
+//   return (
+//     <div className="flex p-6">
+//       <ul className="list-disc">
+//         { detailedReferencePeriodList?.map(mtr => {
+//           if(!checkDateWithinAPeriod(dateFrom, dateTo, new Date(formatDateDDMMYYYYForMMDDYYYY(mtr.situacaoManifesto.simDataRecebimento) || ""))) {
+//             return null
+//           }
+//           // if(!compareDates(dateFrom, dateTo, new Date(formatDateDDMMYYYYparaMMDDYYYY(mtr.dataRecebimentoAT) || ""))) {
+//           //   return null
+//           // }
+//           return(
+//             <li key={mtr.manNumero} className="flex flex-col w-fit mb-3"> 
+//               <div className="flex gap-2">
+//                 <strong>{mtr.manNumero}</strong>
+//                 <p>{mtr.parceiroGerador.parDescricao}</p>
+//               </div>
+//               <div className="flex justify-between gap-2">
+//                 <p>{mtr.listaManifestoResiduo[0].residuo.resDescricao}</p>
+//                 <p>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+//                 <p>{mtr.listaManifestoResiduo[0].unidade.uniSigla}</p>
+//               </div>
+//               <div className="flex justify-between">
+//                 <p>{`Emitido em ${new Date(mtr.manData).toLocaleDateString()}`}</p>
+//                 <p>{`A vencer em ${90 - subDatesEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
+//               </div>
+//               <p>{`Armaz Temporário - Recebido em ${mtr.dataRecebimentoAT}`}</p>
+//               <p>{`${mtr.situacaoManifesto.simDescricao} em ${mtr.situacaoManifesto.simDataRecebimento}`}</p>
+//             </li>
+//           )
+//         }) }  
+//       </ul>    
+//     </div>
+//   )
+// }
