@@ -7,9 +7,6 @@ type filterBySituation = "Salvo" | "Armaz Temporário - Recebido" | "Armaz Tempo
 type listFilterBySituations = filterBySituation[]
 
 export async function getMtrList(profile :profile, dateFrom :string, dateTo :string, authorization :string,operatingUnit? :number, listFilterBySituations? :listFilterBySituations) {
-    
-    //**************************************************** */
-    console.log("dataFrom: ", dateFrom, "dateTo: ", dateTo)
 
     const profileNumber = {
         "Gerador": 8,

@@ -11,7 +11,7 @@ import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterEverythingWithoutAReceiptDateWithinThePeriod, groupByWasteType } from "@/utils/fnFilters"
-import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI } from "@/utils/fnUtils"
+import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
@@ -123,6 +123,7 @@ export default function GeradorPage() {
             <GraficoSimples
                 title="Manifestos emitidos como gerador"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                 dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
             />
 
@@ -166,6 +167,7 @@ export default function GeradorPage() {
             <GraficoBarraDupla
                 title="Manifestos recebidos no destinador final"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                 dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
             />
 
@@ -210,6 +212,7 @@ export default function GeradorPage() {
             <GraficoSimples 
                 title="Manifestos pendentes de recebimento no destinador final"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
                 dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
             />
 

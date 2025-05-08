@@ -6,10 +6,11 @@ import { GroupByWasteTypeOutput } from "@/utils/fnFilters";
 interface GraficoProps {
     title :string
     subTitle? :string
+    acumulated? :number
     dataChart? :GroupByWasteTypeOutput[]
 }
 
-export default function GraficoSimples({ dataChart, title, subTitle } :GraficoProps) {
+export default function GraficoSimples({ dataChart, title, subTitle, acumulated } :GraficoProps) {
 
     const chartConfig = {
       desktop: {
@@ -29,7 +30,7 @@ export default function GraficoSimples({ dataChart, title, subTitle } :GraficoPr
               subTitle &&
                 <CardTitle className="font-light">{subTitle}</CardTitle>
             }
-            <CardTitle>{"Total acumulado"}</CardTitle>
+            <CardTitle>{`Total acumulado: ${acumulated?.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</CardTitle>
           </div>
         </CardHeader>
         <CardContent>

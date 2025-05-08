@@ -91,7 +91,8 @@ export default function SignIn() {
             <span className="text-white font-bold text-2xl">TIGREX</span>
           </div> */}
 
-          <h1 className={`font-bold text-black/80 text-2xl mt-16 mb-12 max-md:mb-8 ${figtree.className}`}>Acesse sua conta</h1>
+          <h1 className={`font-bold text-black/80 text-2xl mt-16 ${figtree.className}`}>Acesse sua conta</h1>
+          <p className="text-sm text-black/80 mb-12 max-md:mb-8">Utilize seus dados de login do SINIR</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 w-[100%]">
             

@@ -3,6 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -224,49 +225,53 @@ export default function VisaoGeralPage() {
             />
             <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/>
 
-            <div className="flex w-full justify-between">
-                <p className="w-[33%] font-semibold">Tipo de Resíduo</p>
-                <p className="w-[33%] text-right font-semibold">Estimado</p>
-                <p className="w-[33%] text-right font-semibold">Recebido</p>
-            </div>
-            <div className="w-full h-[1px] bg-gray-300"/>
-
-            {
-                detailedReferencePeriodListGerador &&
-                    groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)).map(typeWaste => (
-                        <div key={typeWaste.resDescricao} className="flex w-full justify-between">
-                            <p className="w-[33%]">{typeWaste.resDescricao}</p>
-                            <p className="w-[33%] text-right">{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="w-[33%] text-right">{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        </div>
-                    ))
-            }
-            {
-                detailedReferencePeriodListAT &&
-                    groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(typeWaste => (
-                        <div key={typeWaste.resDescricao} className="flex w-full justify-between">
-                            <p className="w-[33%]">{typeWaste.resDescricao}</p>
-                            <p className="w-[33%] text-right">{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="w-[33%] text-right">{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        </div>
-                    ))
-            }
-
-            <div className="w-full h-[1px] bg-gray-300"/>
-            
-            <div className="flex w-full justify-between">
-                <p className="w-[33%] font-semibold">Total</p>
-                <p className="w-[33%] text-right font-semibold">
-                    {(totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
-                    totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
-                        .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </p>
-                <p className="w-[33%] text-right font-semibold">
-                    {(totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
-                    totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
-                        .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </p>
-            </div>
+            <Table>
+                <TableCaption></TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-fit">Tipo de resíduo</TableHead>
+                        <TableHead>Estimado</TableHead>
+                        <TableHead>Recebido</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {
+                        detailedReferencePeriodListGerador &&
+                            groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)).map(typeWaste => (
+                                <TableRow key={typeWaste.resDescricao}>
+                                    <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
+                                    <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                    <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                </TableRow>
+                            ))
+                    }
+                    {
+                        detailedReferencePeriodListAT &&
+                            groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(typeWaste => (
+                                <TableRow key={typeWaste.resDescricao}>
+                                    <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
+                                    <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                    <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                </TableRow>
+                            ))
+                    }
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell className="">Total</TableCell>
+                        <TableCell>
+                            {(totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
+                            totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
+                                .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </TableCell>
+                        <TableCell>
+                            {(totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
+                            totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
+                                .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
 
         </div>
     )

@@ -11,7 +11,7 @@ import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterStockFromTemporaryStorage, groupByWasteType } from "@/utils/fnFilters"
-import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI } from "@/utils/fnUtils"
+import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { ChartColumnBig, Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
@@ -133,6 +133,7 @@ export default function ArmazenadorTemporarioPage() {
             <GraficoSimples
                 title="Manifestos gerados para armazenamento temporário"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                 dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
             />
             <DialogListMTR listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
@@ -143,6 +144,7 @@ export default function ArmazenadorTemporarioPage() {
             <GraficoSimples
                 title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                 dataChart={groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
             />
             <DialogListMTR listMtrs={filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
@@ -150,6 +152,7 @@ export default function ArmazenadorTemporarioPage() {
             <GraficoBarraDupla
                 title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
                 subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                 dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
             />
             <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
@@ -157,6 +160,7 @@ export default function ArmazenadorTemporarioPage() {
             <GraficoSimples
                 title="Manifestos em armazenamento temporário (estoque)"
                 subTitle={`Em: ${new Date(Date.now()).toLocaleDateString()}`}
+                acumulated={totalizeEstimated(groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || [])))}
                 dataChart={groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || []))}
             />
             <DialogListMTR listMtrs={filterStockFromTemporaryStorage(detailedReferencePeriodList || [])}/>
