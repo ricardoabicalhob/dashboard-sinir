@@ -3,7 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
