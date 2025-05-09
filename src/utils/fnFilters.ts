@@ -19,7 +19,7 @@ export interface GroupByWasteTypeOutput {
 export function groupByWasteType(listMtrs :MTRResponseI[]) :GroupByWasteTypeOutput[] {
     const quantidadesPorCodigoIbama = listMtrs.reduce((acumulador :GroupByWasteType, mtr) => {
             mtr.listaManifestoResiduo.forEach(residuo => {
-                const resDescricao = residuo.residuo.resDescricao
+                const resDescricao = residuo.residuo.resCodigoIbama + " - " + residuo.residuo.resDescricao
                 const quantidadeEstimada = residuo.marQuantidade
                 const quantidadeRecebida = residuo.marQuantidadeRecebida
 
@@ -38,6 +38,21 @@ export function groupByWasteType(listMtrs :MTRResponseI[]) :GroupByWasteTypeOutp
         quantidadeEstimada: quantidades.quantidadeEstimada,
         quantidadeRecebida: quantidades.quantidadeRecebida
     }))
+}
+
+
+export function groupByGenerator(listMtrs: MTRResponseI[]): MTRResponseI[][] {
+    const grupos: { [key: string]: MTRResponseI[] } = {};
+
+    for (const mtr of listMtrs) {
+        const nomeGerador = mtr.parceiroGerador.parDescricao;
+        if (!grupos[nomeGerador]) {
+            grupos[nomeGerador] = [];
+        }
+        grupos[nomeGerador].push(mtr);
+    }
+
+    return Object.values(grupos);
 }
 
 export function filterAllWithIssueDateWithinThePeriod(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {

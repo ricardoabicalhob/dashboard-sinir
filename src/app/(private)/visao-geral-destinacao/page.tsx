@@ -10,7 +10,7 @@ import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filterEverythingWithDateReceivedWithinThePeriod, groupByWasteType } from "@/utils/fnFilters"
+import { filterEverythingWithDateReceivedWithinThePeriod, groupByGenerator, groupByWasteType } from "@/utils/fnFilters"
 import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { Info } from "lucide-react"
@@ -47,9 +47,6 @@ export default function VisaoGeralPage() {
             setProfile(loginResponse)
         }
     }, [loginResponse])
-
-
-
 
     const { 
         data: referencePeriodListGerador, 
@@ -226,10 +223,10 @@ export default function VisaoGeralPage() {
             <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/>
 
             <Table>
-                <TableCaption></TableCaption>
                 <TableHeader>
+                    <TableHead colSpan={3} className="text-xl text-center font-semibold">Demonstrativo de saída de resíduos do gerador + armazenamento temporário</TableHead>
                     <TableRow>
-                        <TableHead className="w-fit">Tipo de resíduo</TableHead>
+                        <TableHead>Tipo de resíduo</TableHead>
                         <TableHead>Estimado</TableHead>
                         <TableHead>Recebido</TableHead>
                     </TableRow>
@@ -238,7 +235,7 @@ export default function VisaoGeralPage() {
                     {
                         detailedReferencePeriodListGerador &&
                             groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)).map(typeWaste => (
-                                <TableRow key={typeWaste.resDescricao}>
+                                <TableRow key={`GERADOR-${typeWaste.resDescricao}`}>
                                     <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
                                     <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                     <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
@@ -248,7 +245,7 @@ export default function VisaoGeralPage() {
                     {
                         detailedReferencePeriodListAT &&
                             groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(typeWaste => (
-                                <TableRow key={typeWaste.resDescricao}>
+                                <TableRow key={`AT-${typeWaste.resDescricao}`}>
                                     <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
                                     <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                     <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
@@ -271,6 +268,53 @@ export default function VisaoGeralPage() {
                         </TableCell>
                     </TableRow>
                 </TableFooter>
+            </Table>
+
+
+
+            <Table>
+                <TableHeader>
+                    <TableHead className="text-xl text-center font-semibold">Demonstrativo de saída de resíduos do armazenamento temporário</TableHead>
+                    <TableRow>
+                        <TableHead>Unidade</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {
+                        groupByGenerator(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(generator => (
+                            <TableRow key={generator[0].parceiroGerador.parCodigo} className="flex flex-col">
+                                <TableRow className="font-semibold">{`${generator[0].parceiroGerador.parCodigo} - ${generator[0].parceiroGerador.parDescricao}`}</TableRow>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead className="w-fit">Tipo de resíduo</TableHead>
+                                                <TableHead>Estimado</TableHead>
+                                                <TableHead>Recebido</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {
+                                                groupByWasteType(generator).map(wasteType => (
+                                                    <TableRow key={`DETAILS-${wasteType.resDescricao}`} className="ml-8">
+                                                        <TableCell>{wasteType.resDescricao}</TableCell>
+                                                        <TableCell>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                        <TableCell>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                    </TableRow>
+                                                ))
+                                            }
+                                        </TableBody>
+                                        <TableFooter className="bg-gray-100">
+                                            <TableRow>
+                                                <TableCell>Total</TableCell>
+                                                <TableCell>{totalizeEstimated(groupByWasteType(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                <TableCell>{totalizeReceived(groupByWasteType(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                            </TableRow>
+                                        </TableFooter>
+                                    </Table>
+                            </TableRow>
+                        ))
+                    }
+                </TableBody>
             </Table>
 
         </div>
