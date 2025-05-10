@@ -1,8 +1,9 @@
 'use client'
 
 import CustomMessage from "@/components/customMessage"
-import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
+import ListaDeMtrs from "@/components/ui/listaDeMtrs"
+import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
@@ -34,6 +35,10 @@ export default function VisaoGeralPage() {
     const {
         dateRange
     } = useContext(SystemContext)
+
+    // const handleDownloadMtr = async (numeroMtr :string, authorization :string) => {
+    //     await downloadMtr(numeroMtr, authorization)
+    // }
 
     useEffect(()=> {
         if(dateRange) {
@@ -206,21 +211,27 @@ export default function VisaoGeralPage() {
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <GraficoBarraDupla
-                title="Manifestos recebidos no destinador final (saída do gerador)"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)} />
+            <div className="flex gap-2">
+                <GraficoBarraDupla
+                    title="Manifestos recebidos no destinador final (saída do gerador)"
+                    subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                    acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
+                    dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
+                />
 
-            <GraficoBarraDupla
-                title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/>
+                {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)} /> */}
+
+                <GraficoBarraDupla
+                    title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                    subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                    acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
+                    dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                />
+                {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/> */}
+
+            </div>
+
+            <Separator className="h-1"/>
 
             <Table>
                 <TableHeader>
@@ -234,18 +245,11 @@ export default function VisaoGeralPage() {
                 <TableBody>
                     {
                         detailedReferencePeriodListGerador &&
-                            groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)).map(typeWaste => (
+                            groupByWasteType(
+                                [...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)]
+                            ).map(typeWaste => (
                                 <TableRow key={`GERADOR-${typeWaste.resDescricao}`}>
-                                    <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
-                                    <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                    <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                </TableRow>
-                            ))
-                    }
-                    {
-                        detailedReferencePeriodListAT &&
-                            groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(typeWaste => (
-                                <TableRow key={`AT-${typeWaste.resDescricao}`}>
                                     <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
                                     <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                     <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
@@ -257,20 +261,23 @@ export default function VisaoGeralPage() {
                     <TableRow>
                         <TableCell className="">Total</TableCell>
                         <TableCell>
-                            {(totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
-                            totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
-                                .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            {(totalizeEstimated(groupByWasteType([
+                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)])))
+                            .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </TableCell>
                         <TableCell>
-                            {(totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))) +
-                            totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))))
-                                .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            {(totalizeReceived(groupByWasteType([
+                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)]))
+                            )
+                            .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>
 
-
+            <Separator className="h-1"/>
 
             <Table>
                 <TableHeader>
@@ -316,6 +323,17 @@ export default function VisaoGeralPage() {
                     }
                 </TableBody>
             </Table>
+
+            <Separator className="h-1"/>
+
+            <ListaDeMtrs
+                title="Lista de manifestos"
+                listMtrs={[
+                    ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
+                    ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                ]}
+                authorization={token || ""} 
+            />
 
         </div>
     )

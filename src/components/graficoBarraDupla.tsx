@@ -27,7 +27,7 @@ export default function GraficoBarraDupla({ dataChart, title, subTitle, acumulat
     <Card className="w-full md:w-[100%] max-w-full justify-self-center">
         <CardHeader>
         <div className="flex flex-col gap-2 items-center justify-center">
-            <CardTitle className="text-lg sm:text-xl text-gray-800">
+            <CardTitle className="text-lg text-center sm:text-xl text-gray-800">
                 {title}
             </CardTitle>
             {
