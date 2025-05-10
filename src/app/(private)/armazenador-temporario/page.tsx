@@ -1,7 +1,6 @@
 'use client'
 
 import CustomMessage from "@/components/customMessage"
-import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
@@ -15,7 +14,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterStockFromTemporaryStorage, groupByWasteType } from "@/utils/fnFilters"
 import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Info } from "lucide-react"
+import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 

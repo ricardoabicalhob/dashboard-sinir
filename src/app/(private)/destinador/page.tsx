@@ -1,7 +1,6 @@
 'use client'
 
 import CustomMessage from "@/components/customMessage"
-import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
