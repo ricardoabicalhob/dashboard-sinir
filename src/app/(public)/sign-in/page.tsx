@@ -9,9 +9,11 @@ import { z } from "zod"
 import setCookie from "./action"
 import { redirect } from "next/navigation"
 import { Figtree } from 'next/font/google'
-// import CumstomNotification from "@/components/CustomNotification"
 import Image from "next/image"
 import logoSinir from "../../../public/logo_sinir_negativa1.png"
+import CumstomNotification from "@/components/ui/customNotification"
+import { useToast } from "@/hooks/use-toast"
+import { Ban } from "lucide-react"
 
 const figtree = Figtree({ weight: '600', subsets: ['latin'] });
 
@@ -31,9 +33,19 @@ type userSchema = z.infer<typeof userSchema>
 
 export default function SignIn() {
 
-  const [ authError, setAuthError ] = useState()
+  const { toast } = useToast()
   // const { setLoginResponse, loginResponse } = useContext(AuthContext)
   
+  const handleErrorMessage = (description :string)=> {
+    toast({
+      duration: 2000,
+      description: <div className="flex items-center gap-2">
+                     <Ban className="w-4 h-4"/>
+                     <span>{description}</span>
+                   </div>
+    })
+  }
+
   const {
     register,
     handleSubmit,
@@ -55,18 +67,17 @@ export default function SignIn() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      setAuthError(errorData.mensagem || "Ocorreu um erro.")
-      setTimeout(() => {
-        setAuthError(undefined)
-      }, 4500);
-      throw new Error(authError)
+
+      handleErrorMessage(errorData.mensagem || "Erro ao tentar autenticar")
+
+      return
     }
 
     const authenticatedUser = await response.json()
 
     setCookie(authenticatedUser)
 
-    redirect('/')
+    redirect('/gerador')
   }
 
   return (
@@ -83,13 +94,6 @@ export default function SignIn() {
       <div className="flex-[560px_1_0] min-[1101px]:max-w-[560px] max-[1100px]:flex-1 flex-col h-full overflow-y-auto">
 
         <div className="relative h-[calc(100dvh)] bg-[#FFF] p-20 overflow-auto max-[1100px]:h-auto max-[1100px]:min-h-[calc(100dvh-16px)] custom-scrollbar"> {/*retirado do final  max-[1100px]:p-7*/}
-          
-          {/* { authError && <CumstomNotification text={authError} model="" /> } */}
-
-          {/* <div className="flex items-center bg-inherit gap-3 rounded-md">
-            <Waves className="text-white w-7 h-7"/>
-            <span className="text-white font-bold text-2xl">TIGREX</span>
-          </div> */}
 
           <h1 className={`font-bold text-black/80 text-2xl mt-16 ${figtree.className}`}>Acesse sua conta</h1>
           <p className="text-sm text-black/80 mb-12 max-md:mb-8">Utilize seus dados de login do SINIR</p>

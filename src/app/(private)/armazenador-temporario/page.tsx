@@ -171,7 +171,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsGenerated &&
                     <GraficoSimples
-                        title="Manifestos gerados para armazenamento temporário"
+                        title="Resíduos gerados para armazenamento temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -195,7 +195,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoSimples
-                        title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
+                        title="Resíduos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -220,7 +220,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsSending &&
                     <GraficoBarraDupla
-                        title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                        title="Resíduos recebidos no destinador final (saída do armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -244,7 +244,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsStock &&
                     <GraficoSimples
-                        title="Manifestos em armazenamento temporário (estoque)"
+                        title="Resíduos em armazenamento temporário (estoque)"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || [])))}
                         dataChart={groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || []))}

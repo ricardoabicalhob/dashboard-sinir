@@ -152,7 +152,7 @@ export default function GeradorPage() {
             {
                 !hideChartManifestsIssued &&
                     <GraficoSimples
-                        title="Manifestos emitidos como gerador"
+                        title="Resíduos gerados"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -162,7 +162,7 @@ export default function GeradorPage() {
             {
                 hideChartManifestsIssued &&
                     <ListaDeMtrs 
-                        title="Manifestos emitidos como gerador"
+                        title="Manifestos emitidos"
                         listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
@@ -176,7 +176,7 @@ export default function GeradorPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Manifestos recebidos no destinador final"
+                        title="Resíduos recebidos no destinador final"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -200,7 +200,7 @@ export default function GeradorPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Manifestos pendentes de recebimento no destinador final"
+                        title="Resíduos pendentes de recebimento no destinador final"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
                         dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}

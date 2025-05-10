@@ -2,6 +2,7 @@ import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTool
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { GroupByWasteTypeOutput } from "@/utils/fnFilters";
+import { useEffect, useRef } from "react";
 
 interface GraficoProps {
     title :string
@@ -11,6 +12,8 @@ interface GraficoProps {
 }
 
 export default function GraficoBarraDupla({ dataChart, title, subTitle, acumulated } :GraficoProps) {
+
+    const chartRef = useRef<HTMLDivElement>(null)
 
     const chartConfig = {
     estimated: {
@@ -23,8 +26,17 @@ export default function GraficoBarraDupla({ dataChart, title, subTitle, acumulat
     }
     } satisfies ChartConfig
 
+    useEffect(()=> {
+        setTimeout(() => {
+            if(chartRef.current) {
+                chartRef.current.classList.remove("opacity-0")
+                chartRef.current.classList.add("opacity-100")
+            }
+        }, 100)
+    }, [])
+
     return(
-    <Card className="w-full md:w-[100%] max-w-full justify-self-center">
+    <Card ref={chartRef} className="w-full md:w-[100%] max-w-full justify-self-center opacity-0 transition-opacity duration-1000">
         <CardHeader>
         <div className="flex flex-col gap-2 items-center justify-center">
             <CardTitle className="text-lg text-center sm:text-xl text-gray-800">

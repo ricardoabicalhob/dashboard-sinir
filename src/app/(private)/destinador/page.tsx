@@ -152,7 +152,7 @@ export default function DestinadorPage() {
             {
                 !hideChartManifestsGenerated &&
                     <GraficoSimples
-                        title="Manifestos gerados para recebimento como destinador"
+                        title="Resíduos gerados para recebimento como destinador"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -176,7 +176,7 @@ export default function DestinadorPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Manifestos recebidos"
+                        title="Resíduos recebidos"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -200,8 +200,8 @@ export default function DestinadorPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Manifestos pendentes de recebimento (últimos 210 dias)"
-                        subTitle={`Período: ${subDays(new Date(Date.now()), 210).toLocaleDateString()} à ${new Date(Date.now()).toLocaleDateString()}`}
+                        title="Resíduos pendentes de recebimento"
+                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
                         dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
                     />

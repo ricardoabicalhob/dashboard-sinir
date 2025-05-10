@@ -26,7 +26,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                 cardListRef.current.classList.remove("opacity-0")
                 cardListRef.current.classList.add("opacity-100")
             }
-        }, 100);
+        }, 100)
     }, [])
 
     return(
@@ -50,7 +50,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                     <TableBody>
                         {
                             listMtrs.map(mtr => (
-                                <TableRow key={mtr.manNumero}>
+                                <TableRow className="hover:bg-[#00695C20]" key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
                                     <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>
