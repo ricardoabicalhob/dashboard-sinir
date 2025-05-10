@@ -109,9 +109,9 @@ export default function PrivateLayout({
           <a href="/destinador" className="font-light px-2">Destinador</a>) }
 
         { perfil.gerador && perfil.armazenadorTemporario &&
-          (pathname === "/visao-geral-destinacao" ?
-          <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Visão geral da destinação</span> :
-          <a href="/visao-geral-destinacao" className="font-light pl-2">Visão geral da destinação</a>  
+          (pathname === "/movimentacao-para-o-destinador-final" ?
+          <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Movimentação para o destinador final</span> :
+          <a href="/movimentacao-para-o-destinador-final" className="font-light pl-2">Movimentação para o destinador final</a>  
           ) }      
       </div>
     )

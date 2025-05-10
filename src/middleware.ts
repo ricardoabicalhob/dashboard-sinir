@@ -9,7 +9,7 @@ const protectedRoutesConfig = [
   { path: '/gerador', permissionKey: 'isGerador' },
   { path: '/destinador', permissionKey: 'isDestinador' },
   { path: '/armazenador-temporario', permissionKey: 'isArmazenadorTemporario' },
-  { path: '/visao-geral-destinacao', permissionKey: 'isVisaoGeralDestinacao' },
+  { path: '/movimentacao-para-o-destinador-final', permissionKey: 'isMovimentacaoDestinadorFinal' },
 ] as const;
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in';
@@ -41,7 +41,7 @@ export function middleware(request: NextRequest) {
 
     if (authToken && publicRoute && publicRoute.whenauthenticated === 'redirect') {
         const objetoResposta = authToken.objetoResposta
-        const newObjetoResposta = {...objetoResposta, isVisaoGeralDestinacao: true}
+        const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
         const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path;
 
         if (firstAllowedRoute) {
@@ -58,14 +58,14 @@ export function middleware(request: NextRequest) {
         if (matchedProtectedRoute) {
             const permissionKey = matchedProtectedRoute.permissionKey;
             const objetoResposta = authToken.objetoResposta
-            const newObjetoResposta = {...objetoResposta, isVisaoGeralDestinacao: true}
+            const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
             const hasPermission = newObjetoResposta[permissionKey];
 
             if (hasPermission === true) {
                 return NextResponse.next();
             } else {
                 const objetoResposta = authToken.objetoResposta
-                const newObjetoResposta = {...objetoResposta, isVisaoGeralDestinacao: true}
+                const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
                 const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path;
                 if (firstAllowedRoute) {
                     const redirectUrl = request.nextUrl.clone();
@@ -80,7 +80,7 @@ export function middleware(request: NextRequest) {
     if (authToken && !publicRoute && !protectedRoutes) {
         if (authToken) {
             const objetoResposta = authToken.objetoResposta
-            const newObjetoResposta = {...objetoResposta, isVisaoGeralDestinacao: true}
+            const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
             const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path
             if (firstAllowedRoute) {
                 const redirectUrl = request.nextUrl.clone()
