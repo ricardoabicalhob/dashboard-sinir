@@ -36,7 +36,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization } :ListaDeM
                     <TableBody>
                         {
                             listMtrs.map(mtr => (
-                                <TableRow>
+                                <TableRow key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
                                     <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>
