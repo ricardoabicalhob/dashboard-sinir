@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -11,7 +10,6 @@ import { redirect } from "next/navigation"
 import { Figtree } from 'next/font/google'
 import Image from "next/image"
 import logoSinir from "../../../public/logo_sinir_negativa1.png"
-import CumstomNotification from "@/components/ui/customNotification"
 import { useToast } from "@/hooks/use-toast"
 import { Ban } from "lucide-react"
 
