@@ -4,6 +4,8 @@ import CustomMessage from "@/components/customMessage"
 import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import ListaDeMtrs from "@/components/ui/listaDeMtrs"
+import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -30,9 +32,37 @@ export default function DestinadorPage() {
     const dateToBeforeBefore = subDays(dateFromBefore, 1)
     const [ profile, setProfile ] = useState<LoginResponseI>()
 
+    const [ hideChartManifestsGenerated, setHideChartManifestsGenerated ] = useState(false)
+    const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
+    const [ hideChartManifestsPending, setHideChartManifestsPending ] = useState(false)
+
     const {
         dateRange
     } = useContext(SystemContext)
+
+    function handleShowChartManifestsGenerated() {
+        setHideChartManifestsGenerated(false)
+    }
+
+    function handleShowListManifestsGenerated() {
+        setHideChartManifestsGenerated(true)
+    }
+
+    function handleShowChartManifestsReceived() {
+        setHideChartManifestsReceived(false)
+    }
+
+    function handleShowListManifestsReceived() {
+        setHideChartManifestsReceived(true)
+    }
+
+    function handleShowChartManifestsPending() {
+        setHideChartManifestsPending(false)
+    }
+
+    function handleShowListManifestsPending() {
+        setHideChartManifestsPending(true)
+    }
 
     useEffect(()=> {
         if(dateRange) {
@@ -120,29 +150,77 @@ export default function DestinadorPage() {
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <GraficoSimples
-                title="Manifestos gerados para recebimento como destinador"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
-    
-            <GraficoBarraDupla
-                title="Manifestos recebidos"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
+            {
+                !hideChartManifestsGenerated &&
+                    <GraficoSimples
+                        title="Manifestos gerados para recebimento como destinador"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
 
-            <GraficoSimples 
-                title="Manifestos pendentes de recebimento (últimos 210 dias)"
-                subTitle={`Período: ${subDays(new Date(Date.now()), 210).toLocaleDateString()} à ${new Date(Date.now()).toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
-                dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
+            {
+                hideChartManifestsGenerated &&
+                    <ListaDeMtrs
+                        title="Manifestos gerados para recebimento como destinador"
+                        listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
+                handleShowListManifests={()=> handleShowListManifestsGenerated()}
             />
-            <DialogListMTR listMtrs={filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])} />
+    
+            {
+                !hideChartManifestsReceived &&
+                    <GraficoBarraDupla
+                        title="Manifestos recebidos"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
+
+            {
+                hideChartManifestsReceived &&
+                    <ListaDeMtrs
+                        title="Manifestos recebidos"
+                        listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
+                handleShowListManifests={()=> handleShowListManifestsReceived()}
+            />
+
+            {
+                !hideChartManifestsPending &&
+                    <GraficoSimples 
+                        title="Manifestos pendentes de recebimento (últimos 210 dias)"
+                        subTitle={`Período: ${subDays(new Date(Date.now()), 210).toLocaleDateString()} à ${new Date(Date.now()).toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
+                        dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
+                    />
+            }
+
+            {
+                hideChartManifestsPending &&
+                    <ListaDeMtrs
+                        title="Manifestos pendentes de recebimento (últimos 210 dias)"
+                        listMtrs={filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsPending()}
+                handleShowListManifests={()=> handleShowListManifestsPending()}
+            />
 
         </div>
     )

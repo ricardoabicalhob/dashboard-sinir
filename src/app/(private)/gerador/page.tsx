@@ -4,6 +4,8 @@ import CustomMessage from "@/components/customMessage"
 import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import ListaDeMtrs from "@/components/ui/listaDeMtrs"
+import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -13,6 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterEverythingWithoutAReceiptDateWithinThePeriod, groupByWasteType } from "@/utils/fnFilters"
 import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
+import { ChartColumnBig, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -27,6 +30,34 @@ export default function GeradorPage() {
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
     const dateToBeforeBefore = subDays(dateFromBefore, 1)
     const [ profile, setProfile ] = useState<LoginResponseI>()
+
+    const [ hideChartManifestsIssued, setHideChartManifestsIssued ] = useState(false)
+    const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
+    const [ hideChartManifestsPending, setHideChartManifestsPending] = useState(false)
+
+    function handleShowChartManifestsIssued() {
+        setHideChartManifestsIssued(false)
+    }
+
+    function handleShowListManifestsIssued() {
+        setHideChartManifestsIssued(true)
+    }
+
+    function handleShowChartManifestsReceived() {
+        setHideChartManifestsReceived(false)
+    }
+
+    function handleShowListManifestsReceived() {
+        setHideChartManifestsReceived(true)
+    }
+
+    function handleShowChartManifestsPending() {
+        setHideChartManifestsPending(false)
+    }
+
+    function handleShowListManifestsPending() {
+        setHideChartManifestsPending(true)
+    }
 
     const {
         dateRange
@@ -120,138 +151,77 @@ export default function GeradorPage() {
     return (
         <div className="flex flex-col gap-6 p-6">
 
-            <GraficoSimples
-                title="Manifestos emitidos como gerador"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+            {
+                !hideChartManifestsIssued &&
+                    <GraficoSimples
+                        title="Manifestos emitidos como gerador"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
+
+            {
+                hideChartManifestsIssued &&
+                    <ListaDeMtrs 
+                        title="Manifestos emitidos como gerador"
+                        listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsIssued()}
+                handleShowListManifests={()=> handleShowListManifestsIssued()}
             />
 
-            <DialogListMTR listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
-            
-            {/* <ul className="list-disc">
-                { filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)?.map(mtr => {
-                
-                return(
-                    <li key={mtr.manNumero} className="flex flex-col w-fit mb-3"> 
-                    <div className="flex gap-2">
-                        <strong>{mtr.manNumero}</strong>
-                        <p>{mtr.parceiroGerador.parDescricao}</p>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <p>{mtr.listaManifestoResiduo[0].residuo.resDescricao}</p>
-                        <p>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p>{mtr.listaManifestoResiduo[0].unidade.uniSigla}</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>{`Emitido em ${new Date(mtr.manData).toLocaleDateString()}`}</p>
-                        <p>{`A vencer em ${90 - subDatesEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
-                    </div>
-                    <p>{`${mtr.dataRecebimentoAT && "Armaz Temporário - Recebido em" + mtr.dataRecebimentoAT}`}</p>
-                    <p>{`${mtr.situacaoManifesto.simDataRecebimento ? mtr.situacaoManifesto.simDescricao : "Recebido"} em: ${mtr.situacaoManifesto.simDataRecebimento? mtr.situacaoManifesto.simDataRecebimento : "Pendente"}`}</p>
-                    </li>
-                )
-                }) }  
-            </ul>
             {
-                detailedReferencePeriodList &&
-                    groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)).map(typeWaste => (
-                        <div key={typeWaste.resDescricao} className="flex justify-between">
-                            <p>{typeWaste.resDescricao}</p>
-                            <p>Estimado: {typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        </div>
-                    ))
-            } */}
+                !hideChartManifestsReceived &&
+                    <GraficoBarraDupla
+                        title="Manifestos recebidos no destinador final"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
 
+            {
+                hideChartManifestsReceived &&
+                    <ListaDeMtrs 
+                        title="Manifestos recebidos no destinador final"
+                        listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
 
-            <GraficoBarraDupla
-                title="Manifestos recebidos no destinador final"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
+                handleShowListManifests={()=> handleShowListManifestsReceived()}
             />
 
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)} />
-
-            {/* <ul className="list-disc">
-                { filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)?.map(mtr => {
-                
-                return(
-                    <li key={mtr.manNumero} className="flex flex-col w-fit mb-3"> 
-                    <div className="flex gap-2">
-                        <strong>{mtr.manNumero}</strong>
-                        <p>{mtr.parceiroGerador.parDescricao}</p>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <p>{mtr.listaManifestoResiduo[0].residuo.resDescricao}</p>
-                        <p>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p>{mtr.listaManifestoResiduo[0].unidade.uniSigla}</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>{`Emitido em ${new Date(mtr.manData).toLocaleDateString()}`}</p>
-                        <p>{`A vencer em ${90 - subDatesEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
-                    </div>
-                    <p>{`${mtr.dataRecebimentoAT && "Armaz Temporário - Recebido em" + mtr.dataRecebimentoAT}`}</p>
-                    <p>{`${mtr.situacaoManifesto.simDataRecebimento ? mtr.situacaoManifesto.simDescricao : "Recebido"} em: ${mtr.situacaoManifesto.simDataRecebimento? mtr.situacaoManifesto.simDataRecebimento : "Pendente"}`}</p>
-                    </li>
-                )
-                }) }  
-            </ul>   
-            
             {
-                detailedReferencePeriodList &&
-                groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)).map(typeWaste => (
-                    <div key={typeWaste.resDescricao} className="flex justify-between">
-                        <p>{typeWaste.resDescricao}</p>
-                        <p>Estimado: {typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p>Recebido: {typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                    </div>
-                ))
-            } */}
-            
-            <GraficoSimples 
-                title="Manifestos pendentes de recebimento no destinador final"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
-                dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
+                !hideChartManifestsPending &&
+                    <GraficoSimples 
+                        title="Manifestos pendentes de recebimento no destinador final"
+                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
+                        dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
+                    />
+            }
+
+            {
+                hideChartManifestsPending &&
+                    <ListaDeMtrs
+                        title="Manifestos pendentes de recebimento no destinador final"
+                        listMtrs={filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsPending()}
+                handleShowListManifests={()=> handleShowListManifestsPending()}
             />
-
-            <DialogListMTR listMtrs={filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])} />
-
-            {/* <ul className="list-disc">
-                { filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)?.map(mtr => {
-                
-                return(
-                    <li key={mtr.manNumero} className="flex flex-col w-fit mb-3"> 
-                    <div className="flex gap-2">
-                        <strong>{mtr.manNumero}</strong>
-                        <p>{mtr.parceiroGerador.parDescricao}</p>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                        <p>{mtr.listaManifestoResiduo[0].residuo.resDescricao}</p>
-                        <p>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p>{mtr.listaManifestoResiduo[0].unidade.uniSigla}</p>
-                    </div>
-                    <div className="flex justify-between">
-                        <p>{`Emitido em ${new Date(mtr.manData).toLocaleDateString()}`}</p>
-                        <p>{`A vencer em ${90 - subDatesEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
-                    </div>
-                    <p>{`${mtr.dataRecebimentoAT && "Armaz Temporário - Recebido em" + mtr.dataRecebimentoAT}`}</p>
-                    <p>{`${mtr.situacaoManifesto.simDataRecebimento ? mtr.situacaoManifesto.simDescricao : "Recebido"} em: ${mtr.situacaoManifesto.simDataRecebimento? mtr.situacaoManifesto.simDataRecebimento : "Pendente"}`}</p>
-                    </li>
-                )
-                }) }  
-            </ul>
-            
-            {
-                detailedReferencePeriodList &&
-                groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)).map(typeWaste => (
-                    <div key={typeWaste.resDescricao} className="flex justify-between">
-                        <p>{typeWaste.resDescricao}</p>
-                        <p>Estimado: {typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                    </div>
-                ))
-            } */}
 
         </div>
     )

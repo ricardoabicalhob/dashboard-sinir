@@ -4,6 +4,8 @@ import CustomMessage from "@/components/customMessage"
 import DialogListMTR from "@/components/dialogListMTR"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import ListaDeMtrs from "@/components/ui/listaDeMtrs"
+import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -31,9 +33,46 @@ export default function ArmazenadorTemporarioPage() {
     const dateToBeforeBefore = subDays(dateFromBefore, 1)
     const [ profile, setProfile ] = useState<LoginResponseI>()
 
+    const [ hideChartManifestsGenerated, setHideChartManifestsGenerated ] = useState(false)
+    const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
+    const [ hideChartManifestsSending, setHideChartManifestsSending ] = useState(false)
+    const [ hideChartManifestsStock, setHideChartManifestsStock ] = useState(false)
+
     const {
         dateRange
     } = useContext(SystemContext)
+
+    function handleShowChartManifestsGenerated() {
+        setHideChartManifestsGenerated(false)
+    }
+
+    function handleShowListManifestsGenerated() {
+        setHideChartManifestsGenerated(true)
+    }
+
+    function handleShowChartManifestsReceived() {
+        setHideChartManifestsReceived(false)
+    }
+
+    function handleShowListManifestsReceived() {
+        setHideChartManifestsReceived(true)
+    }
+
+    function handleShowChartManifestsSending() {
+        setHideChartManifestsSending(false)
+    }
+
+    function handleShowListManifestsSending() {
+        setHideChartManifestsSending(true)
+    }
+    
+    function handleShowChartManifestsStock() {
+        setHideChartManifestsStock(false)
+    }
+
+    function handleShowListManifestsStock() {
+        setHideChartManifestsStock(true)
+    }
 
     useEffect(()=> {
         if(dateRange) {
@@ -130,40 +169,102 @@ export default function ArmazenadorTemporarioPage() {
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <GraficoSimples
-                title="Manifestos gerados para armazenamento temporário"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
-            <div className="flex w-fit h-fit p-2 bg-[#00BCD4] shadow-md shadow-gray-500 rounded-full cursor-pointer">
-                <ChartColumnBig className="w-4 h-4 text-white"/>
-            </div>
+            {
+                !hideChartManifestsGenerated &&
+                    <GraficoSimples
+                        title="Manifestos gerados para armazenamento temporário"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
 
-            <GraficoSimples
-                title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
-            />
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
+            {
+                hideChartManifestsGenerated &&
+                    <ListaDeMtrs
+                        title="Manifestos gerados para armazenamento temporário"
+                        listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
 
-            <GraficoBarraDupla
-                title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
-                subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
+                handleShowListManifests={()=> handleShowListManifestsGenerated()}
             />
-            <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}/>
 
-            <GraficoSimples
-                title="Manifestos em armazenamento temporário (estoque)"
-                subTitle={`Em: ${new Date(Date.now()).toLocaleDateString()}`}
-                acumulated={totalizeEstimated(groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || [])))}
-                dataChart={groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || []))}
+            {
+                !hideChartManifestsReceived &&
+                    <GraficoSimples
+                        title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
+
+            {
+                hideChartManifestsReceived &&
+                    <ListaDeMtrs
+                        title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
+                        listMtrs={filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                        armazenamentoTemporario
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
+                handleShowListManifests={()=> handleShowListManifestsReceived()}
             />
-            <DialogListMTR listMtrs={filterStockFromTemporaryStorage(detailedReferencePeriodList || [])}/>
+
+            {
+                !hideChartManifestsSending &&
+                    <GraficoBarraDupla
+                        title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
+
+            {
+                hideChartManifestsSending &&
+                    <ListaDeMtrs
+                        title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                        listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsSending()}
+                handleShowListManifests={()=> handleShowListManifestsSending()}
+            />
+
+            {
+                !hideChartManifestsStock &&
+                    <GraficoSimples
+                        title="Manifestos em armazenamento temporário (estoque)"
+                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizeEstimated(groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || [])))}
+                        dataChart={groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || []))}
+                    />
+            }
+
+            {
+                hideChartManifestsStock &&
+                    <ListaDeMtrs
+                        title="Manifestos em armazenamento temporário (estoque)"
+                        listMtrs={filterStockFromTemporaryStorage(detailedReferencePeriodList || [])}
+                        authorization={profile?.objetoResposta.token || ""}
+                    />
+            }
+
+            <SwitchBetweenChartAndList
+                handleShowChartManifests={()=> handleShowChartManifestsStock()}
+                handleShowListManifests={()=> handleShowListManifestsStock()}
+            />
 
         </div>
     )
