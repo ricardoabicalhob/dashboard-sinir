@@ -18,7 +18,7 @@ export async function downloadCdf(numeroCDF :number, authorization :string) {
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `${numeroCDF}.pdf`
+        a.download = `certificadoDestinacaoFinal${numeroCDF}.pdf`
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)
