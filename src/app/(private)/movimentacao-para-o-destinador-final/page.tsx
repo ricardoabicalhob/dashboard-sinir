@@ -2,6 +2,7 @@
 
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
+import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -279,50 +280,11 @@ export default function VisaoGeralPage() {
 
             <Separator className="h-1"/>
 
-            <Table>
-                <TableHeader>
-                    <TableHead className="text-xl text-center font-semibold">Demonstrativo de saída de resíduos do armazenamento temporário</TableHead>
-                    <TableRow>
-                        <TableHead>Unidade</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {
-                        agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(generator => (
-                            <TableRow key={generator[0].parceiroGerador.parCodigo} className="flex flex-col">
-                                <TableRow className="font-semibold">{`${generator[0].parceiroGerador.parCodigo} - ${generator[0].parceiroGerador.parDescricao}`}</TableRow>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="w-fit">Tipo de resíduo</TableHead>
-                                                <TableHead>Estimado</TableHead>
-                                                <TableHead>Recebido</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {
-                                                agruparPorTipoDeResiduo(generator).map(wasteType => (
-                                                    <TableRow key={`DETAILS-${wasteType.resDescricao}`} className="ml-8">
-                                                        <TableCell>{wasteType.resDescricao}</TableCell>
-                                                        <TableCell>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                        <TableCell>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                    </TableRow>
-                                                ))
-                                            }
-                                        </TableBody>
-                                        <TableFooter className="bg-gray-100">
-                                            <TableRow>
-                                                <TableCell>Total</TableCell>
-                                                <TableCell>{totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                <TableCell>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                            </TableRow>
-                                        </TableFooter>
-                                    </Table>
-                            </TableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
+            <TabelaDemonstrativaSimples
+                tipo="Gerador"
+                title="Demonstrativo de saída de resíduos do armazenamento temporário"
+                listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+            />
 
             <Separator className="h-1"/>
 

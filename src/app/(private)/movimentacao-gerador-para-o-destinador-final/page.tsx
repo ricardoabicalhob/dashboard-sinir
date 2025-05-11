@@ -3,6 +3,8 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import SwitchBetweenChartAndListAndTable from "@/components/switchBetweenChartAndListAndTable"
+import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import { Separator } from "@/components/ui/separator"
 import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
@@ -31,23 +33,35 @@ export default function MovimentacaoParaDFPage() {
     const dateToBeforeBefore = subDays(dateFromBefore, 1)
     const [ profile, setProfile ] = useState<LoginResponseI>()
 
-    const [ hideChartManifestsIssued, setHideChartManifestsIssued ] = useState(false)
-    const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
-
-    function handleShowChartManifestsIssued() {
-        setHideChartManifestsIssued(false)
-    }
-
-    function handleShowListManifestsIssued() {
-        setHideChartManifestsIssued(true)
-    }
-
-    function handleShowChartManifestsReceived() {
-        setHideChartManifestsReceived(false)
+    const [ hideChartManifestsPending, setHideChartManifestsPending ] = useState(false)
+    const [ showChartManifestsReceived, setShowChartManifestsReceived ] = useState(false)
+    const [ showListManifestsReceived, setShowListManifestsReceived ] = useState(true)
+    const [ showTableManifestsReceived, setShowTableManifestsReceived ] = useState(true)
+    
+    function handleShowTableManifestsReceived() {
+        setShowTableManifestsReceived(false)
+        setShowListManifestsReceived(true)
+        setShowChartManifestsReceived(true)
     }
 
     function handleShowListManifestsReceived() {
-        setHideChartManifestsReceived(true)
+        setShowListManifestsReceived(false)
+        setShowChartManifestsReceived(true)
+        setShowTableManifestsReceived(true)
+    }
+
+    function handleShowChartManifestsReceived() {
+        setShowChartManifestsReceived(false)
+        setShowListManifestsReceived(true)
+        setShowTableManifestsReceived(true)
+    }
+
+    function handleShowChartManifestsPending() {
+        setHideChartManifestsPending(false)
+    }
+
+    function handleShowListManifestsPending() {
+        setHideChartManifestsPending(true)
     }
 
     const {
@@ -143,7 +157,7 @@ export default function MovimentacaoParaDFPage() {
         <div className="flex flex-col gap-6 p-6">
 
             {
-                !hideChartManifestsIssued &&
+                !showChartManifestsReceived &&
                     <GraficoBarraDupla
                         title="Resíduos recebidos no destinador final"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
@@ -153,7 +167,7 @@ export default function MovimentacaoParaDFPage() {
             }
 
             {
-                hideChartManifestsIssued &&
+                !showListManifestsReceived &&
                     <ListaDeMtrs 
                         title="Manifestos recebidos no destinador final"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
@@ -161,17 +175,27 @@ export default function MovimentacaoParaDFPage() {
                     />
             }
 
+            {
+                !showTableManifestsReceived &&
+                    <TabelaDemonstrativaSimples 
+                        tipo="Destinador"
+                        title="Resíduos recebidos no destinador final"
+                        listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    />
+            }
 
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsIssued()}
-                handleShowListManifests={()=> handleShowListManifestsIssued()}
-                disableChartButton={!hideChartManifestsIssued}
-                disableListButton={hideChartManifestsIssued}
+            <SwitchBetweenChartAndListAndTable
+                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
+                handleShowListManifests={()=> handleShowListManifestsReceived()}
+                handleShowTableManifests={()=> handleShowTableManifestsReceived()}
+                disableChartButton={!showChartManifestsReceived}
+                disableListButton={!showListManifestsReceived}
+                disableTableButton={!showTableManifestsReceived}
             />
 
             {
-                !hideChartManifestsReceived &&
+                !hideChartManifestsPending &&
                     <GraficoSimples
                         title="Resíduos pendentes de recebimento no destinador final"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
@@ -181,7 +205,7 @@ export default function MovimentacaoParaDFPage() {
             }
 
             {
-                hideChartManifestsReceived &&
+                hideChartManifestsPending &&
                     <ListaDeMtrs 
                         title="Manifestos pendentes de recebimento no destinador final"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
@@ -190,58 +214,11 @@ export default function MovimentacaoParaDFPage() {
             }
 
             <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
-                handleShowListManifests={()=> handleShowListManifestsReceived()}
-                disableChartButton={!hideChartManifestsReceived}
-                disableListButton={hideChartManifestsReceived}
+                handleShowChartManifests={()=> handleShowChartManifestsPending()}
+                handleShowListManifests={()=> handleShowListManifestsPending()}
+                disableChartButton={!hideChartManifestsPending}
+                disableListButton={hideChartManifestsPending}
             />
-
-            <Separator className="h-1"/>
-
-            <Table>
-                <TableHeader>
-                    <TableHead className="text-xl text-center font-semibold">Demonstrativo de recebimento de resíduos nos destinadores finais</TableHead>
-                    <TableRow>
-                        <TableHead>Destinador</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {
-                        agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)).map(destinador => (
-                            <TableRow key={destinador[0].parceiroGerador.parCodigo} className="flex flex-col">
-                                <TableRow className="font-semibold">{`${destinador[0].parceiroDestinador.parCodigo} - ${destinador[0].parceiroDestinador.parDescricao}`}</TableRow>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead className="w-fit">Tipo de resíduo</TableHead>
-                                                <TableHead>Estimado</TableHead>
-                                                <TableHead>Recebido</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {
-                                                agruparPorTipoDeResiduo(destinador).map(wasteType => (
-                                                    <TableRow key={`DETAILS-${wasteType.resDescricao}`} className="ml-8">
-                                                        <TableCell>{wasteType.resDescricao}</TableCell>
-                                                        <TableCell>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                        <TableCell>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                    </TableRow>
-                                                ))
-                                            }
-                                        </TableBody>
-                                        <TableFooter className="bg-gray-100">
-                                            <TableRow>
-                                                <TableCell>Total</TableCell>
-                                                <TableCell>{totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                <TableCell>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                            </TableRow>
-                                        </TableFooter>
-                                    </Table>
-                            </TableRow>
-                        ))
-                    }
-                </TableBody>
-            </Table>
 
         </div>
     )
