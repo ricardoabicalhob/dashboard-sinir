@@ -33,7 +33,6 @@ export default function MovimentacaoParaDFPage() {
 
     const [ hideChartManifestsIssued, setHideChartManifestsIssued ] = useState(false)
     const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
-    const [ hideChartManifestsPending, setHideChartManifestsPending] = useState(false)
 
     function handleShowChartManifestsIssued() {
         setHideChartManifestsIssued(false)
@@ -49,14 +48,6 @@ export default function MovimentacaoParaDFPage() {
 
     function handleShowListManifestsReceived() {
         setHideChartManifestsReceived(true)
-    }
-
-    function handleShowChartManifestsPending() {
-        setHideChartManifestsPending(false)
-    }
-
-    function handleShowListManifestsPending() {
-        setHideChartManifestsPending(true)
     }
 
     const {
