@@ -165,6 +165,7 @@ export default function GeradorPage() {
                         title="Manifestos emitidos"
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}
                     />
             }
 
@@ -191,6 +192,7 @@ export default function GeradorPage() {
                         title="Manifestos recebidos no destinador final"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Destinador", "Data Recebimento","Situação"]}
                     />
             }
 
@@ -217,6 +219,7 @@ export default function GeradorPage() {
                         title="Manifestos pendentes de recebimento no destinador final"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}
                     />
             }
 

@@ -165,7 +165,7 @@ export default function MovimentacaoParaATPage() {
                         title="Manifestos emitidos para o armazenamento temporário"
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        isGeradorParaAT
+                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
                     />
             }
 
@@ -194,7 +194,7 @@ export default function MovimentacaoParaATPage() {
                         title="Manifestos recebidos no armazenador temporário"
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        isGeradorParaAT
+                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
                     />
             }
 
@@ -221,6 +221,7 @@ export default function MovimentacaoParaATPage() {
                         title="Manifestos pendentes de recebimento no armazenamento temporário"
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
                     />
             }
 

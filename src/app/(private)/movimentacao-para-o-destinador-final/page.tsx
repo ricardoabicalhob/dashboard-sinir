@@ -295,6 +295,7 @@ export default function VisaoGeralPage() {
                     ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                 ]}
                 authorization={token || ""} 
+                options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
             />
 
         </div>

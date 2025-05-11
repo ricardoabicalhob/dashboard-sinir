@@ -5,15 +5,18 @@ import { downloadMtr } from "@/repositories/downloadMtr";
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
 
+type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento"
+
 interface ListaDeMtrsProps {
     listMtrs :MTRResponseI[]
     title :string
     authorization :string
     armazenamentoTemporario? :boolean
     isGeradorParaAT? :boolean
+    options :FilterColumns[]
 }
 
-export default function ListaDeMtrs({ listMtrs, title, authorization, armazenamentoTemporario, isGeradorParaAT: isGerador } :ListaDeMtrsProps) {
+export default function ListaDeMtrs({ listMtrs, title, authorization, armazenamentoTemporario, isGeradorParaAT: isGerador, options } :ListaDeMtrsProps) {
 
     const cardListRef = useRef<HTMLDivElement>(null)
 
@@ -41,12 +44,13 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                         <TableRow>
                             <TableHead>MTR Nº</TableHead>
                             <TableHead>Data Emissão</TableHead>
-                            {isGerador && <TableHead>Armazenador Temporário</TableHead>}
-                            {!isGerador && <TableHead>Gerador</TableHead>}
-                            <TableHead>Destinador</TableHead>
-                            <TableHead>Situação</TableHead>
-                            {armazenamentoTemporario || isGerador && <TableHead>Data Recebimento AT</TableHead>}
-                            {!armazenamentoTemporario && <TableHead>Data Recebimento</TableHead>}
+                            {options.includes("Armazenador Temporário") && <TableHead>Armazenador Temporário</TableHead>}
+                            {options.includes("Gerador") && <TableHead>Gerador</TableHead>}
+                            {options.includes("Transportador") && <TableHead>Transportador</TableHead>}
+                            {options.includes("Destinador") && <TableHead>Destinador</TableHead>}
+                            {options.includes("Situação") && <TableHead>Situação</TableHead>}
+                            {options.includes("Data Recebimento AT") && <TableHead>Data Recebimento AT</TableHead>}
+                            {options.includes("Data Recebimento") && <TableHead>Data Recebimento</TableHead>}
                             <TableHead>Ações</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -56,12 +60,13 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                                 <TableRow className="hover:bg-[#00695C20]" key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
-                                    {isGerador && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao}</TableCell>}
-                                    {!isGerador && <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>}
-                                    <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>
-                                    <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>
-                                    {armazenamentoTemporario || isGerador && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
-                                    {!armazenamentoTemporario &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
+                                    {options.includes("Armazenador Temporário") && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao}</TableCell>}
+                                    {options.includes("Gerador") && <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>}
+                                    {options.includes("Transportador") && <TableCell>{mtr.parceiroTransportador.parDescricao}</TableCell>}
+                                    {options.includes("Destinador") && <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>}
+                                    {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
+                                    {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
+                                    {options.includes("Data Recebimento") &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
                                     <TableCell className="flex justify-center">
                                         <div
                                             className="w-fit px-2 cursor-pointer"

@@ -165,6 +165,7 @@ export default function DestinadorPage() {
                         title="Manifestos gerados para recebimento como destinador"
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Situação", "Data Recebimento"]}
                     />
             }
 
@@ -191,6 +192,7 @@ export default function DestinadorPage() {
                         title="Manifestos recebidos"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Situação", "Data Recebimento"]}
                     />
             }
 
@@ -217,6 +219,7 @@ export default function DestinadorPage() {
                         title="Manifestos pendentes de recebimento (últimos 210 dias)"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Situação", "Data Recebimento"]}
                     />
             }
 

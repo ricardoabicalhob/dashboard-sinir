@@ -184,6 +184,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos gerados para armazenamento temporário"
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Armazenador Temporário", "Situação", "Data Recebimento AT"]}
                     />
             }
 
@@ -210,7 +211,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        armazenamentoTemporario
+                        options={["Gerador", "Situação", "Data Recebimento AT"]}
                     />
             }
 
@@ -237,6 +238,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
                     />
             }
 
@@ -263,7 +265,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos em armazenamento temporário (estoque)"
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        armazenamentoTemporario
+                        options={["Armazenador Temporário", "Situação", "Data Recebimento AT"]}
                     />
             }
 

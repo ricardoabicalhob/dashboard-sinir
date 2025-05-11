@@ -170,6 +170,7 @@ export default function MovimentacaoParaDFPage() {
                         title="Manifestos recebidos no destinador final"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Destinador", "Data Recebimento", "Situação"]}
                     />
             }
 
@@ -208,6 +209,7 @@ export default function MovimentacaoParaDFPage() {
                         title="Manifestos pendentes de recebimento no destinador final"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
+                        options={["Destinador", "Data Recebimento", "Situação"]}
                     />
             }
 
