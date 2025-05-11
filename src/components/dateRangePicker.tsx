@@ -3,7 +3,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Form, FormField, FormItem } from "@/components/ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import { subDatesEmDias } from "@/utils/fnUtils"
+import { subtrairDatasEmDias } from "@/utils/fnUtils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { subDays, format } from "date-fns"
 import { ptBR } from "date-fns/locale"
@@ -54,7 +54,7 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
 
     function onSubmit(data :periodoSchema) {
         if(data.dateRange && data.dateRange.to && data.dateRange?.from) {
-            if(subDatesEmDias(data.dateRange?.from, data.dateRange?.to) > 90) {
+            if(subtrairDatasEmDias(data.dateRange?.from, data.dateRange?.to) > 90) {
                 throw new Error("O intervalo entre as datas não pode ser maior do que 90 dias")
             } 
             setDateRange(data.dateRange)

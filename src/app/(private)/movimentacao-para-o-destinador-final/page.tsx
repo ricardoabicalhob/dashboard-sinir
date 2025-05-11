@@ -11,8 +11,8 @@ import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filterEverythingWithDateReceivedWithinThePeriod, groupByGenerator, groupByWasteType } from "@/utils/fnFilters"
-import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
+import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
@@ -24,8 +24,8 @@ export default function VisaoGeralPage() {
         token,
         loginResponse
     } = useContext(AuthContext)
-    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
-    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
+    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
+    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
     const dateFromBefore = subDays(dateFrom, 90)
     const dateToBefore = subDays(dateFrom, 1)
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
@@ -42,8 +42,8 @@ export default function VisaoGeralPage() {
 
     useEffect(()=> {
         if(dateRange) {
-            setDateFrom(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
-            setDateTo(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
+            setDateFrom(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
+            setDateTo(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
         }
     }, [dateRange])
 
@@ -59,7 +59,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListGerador,
         error: errorListGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 1, dateFrom], 
-        async ()=> await getMtrList("Gerador", formatDateForAPI(dateFrom), formatDateForAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile, 
     })
@@ -70,7 +70,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedGerador,
         error: errorListExtentedGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 2, dateFromBefore], 
-        async ()=> await getMtrList("Gerador", formatDateForAPI(dateFromBefore), formatDateForAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }
@@ -82,7 +82,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedMoreGerador,
         error: errorListExtentedMoreGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 3, dateFromBeforeBefore], 
-        async ()=> await getMtrList("Gerador", formatDateForAPI(dateFromBeforeBefore), formatDateForAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }
@@ -121,7 +121,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListAT,
         error: errorListAT
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsAT', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFrom), formatDateForAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -132,7 +132,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedAT,
         error: errorListExtentedAT
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsAT', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFromBefore), formatDateForAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -143,7 +143,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedMoreAT,
         error: errorListExtentedMoreAT
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsAT', 3, dateFromBeforeBefore, dateToBeforeBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFromBeforeBefore), formatDateForAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -215,8 +215,8 @@ export default function VisaoGeralPage() {
                 <GraficoBarraDupla
                     title="Manifestos recebidos no destinador final (saída do gerador)"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                    acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
-                    dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
+                    acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
+                    dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                 />
 
                 {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)} /> */}
@@ -224,8 +224,8 @@ export default function VisaoGeralPage() {
                 <GraficoBarraDupla
                     title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                    acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
-                    dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                    acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
+                    dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />
                 {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/> */}
 
@@ -245,9 +245,9 @@ export default function VisaoGeralPage() {
                 <TableBody>
                     {
                         detailedReferencePeriodListGerador &&
-                            groupByWasteType(
-                                [...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)]
+                            agruparPorTipoDeResiduo(
+                                [...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)]
                             ).map(typeWaste => (
                                 <TableRow key={`GERADOR-${typeWaste.resDescricao}`}>
                                     <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
@@ -261,15 +261,15 @@ export default function VisaoGeralPage() {
                     <TableRow>
                         <TableCell className="">Total</TableCell>
                         <TableCell>
-                            {(totalizeEstimated(groupByWasteType([
-                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)])))
+                            {(totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo([
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)])))
                             .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </TableCell>
                         <TableCell>
-                            {(totalizeReceived(groupByWasteType([
-                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)]))
+                            {(totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)]))
                             )
                             .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </TableCell>
@@ -288,7 +288,7 @@ export default function VisaoGeralPage() {
                 </TableHeader>
                 <TableBody>
                     {
-                        groupByGenerator(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(generator => (
+                        agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)).map(generator => (
                             <TableRow key={generator[0].parceiroGerador.parCodigo} className="flex flex-col">
                                 <TableRow className="font-semibold">{`${generator[0].parceiroGerador.parCodigo} - ${generator[0].parceiroGerador.parDescricao}`}</TableRow>
                                     <Table>
@@ -301,7 +301,7 @@ export default function VisaoGeralPage() {
                                         </TableHeader>
                                         <TableBody>
                                             {
-                                                groupByWasteType(generator).map(wasteType => (
+                                                agruparPorTipoDeResiduo(generator).map(wasteType => (
                                                     <TableRow key={`DETAILS-${wasteType.resDescricao}`} className="ml-8">
                                                         <TableCell>{wasteType.resDescricao}</TableCell>
                                                         <TableCell>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
@@ -313,8 +313,8 @@ export default function VisaoGeralPage() {
                                         <TableFooter className="bg-gray-100">
                                             <TableRow>
                                                 <TableCell>Total</TableCell>
-                                                <TableCell>{totalizeEstimated(groupByWasteType(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                <TableCell>{totalizeReceived(groupByWasteType(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                <TableCell>{totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                <TableCell>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(generator)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                             </TableRow>
                                         </TableFooter>
                                     </Table>
@@ -329,8 +329,8 @@ export default function VisaoGeralPage() {
             <ListaDeMtrs
                 title="Lista de manifestos"
                 listMtrs={[
-                    ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
-                    ...filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
+                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                 ]}
                 authorization={token || ""} 
             />

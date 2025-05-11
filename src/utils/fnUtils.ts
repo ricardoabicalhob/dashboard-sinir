@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { GroupByWasteTypeOutput } from "./fnFilters";
 
-export function subDatesEmDias(initialDate :Date, finalDate :Date) {
+export function subtrairDatasEmDias(initialDate :Date, finalDate :Date) {
     const tempoInicial = initialDate.getTime();
     const tempoFinal = finalDate.getTime();
     const diferencaEmMilissegundos = tempoFinal - tempoInicial;
@@ -9,7 +9,7 @@ export function subDatesEmDias(initialDate :Date, finalDate :Date) {
     return Math.floor(diferencaEmMilissegundos / milissegundosEmUmDia);
 }
 
-export function formatDateDDMMYYYYForMMDDYYYY(dataString: string): string | null {
+export function formatarDataDDMMYYYYParaMMDDYYYY(dataString: string): string | null {
     const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/
     const match = dataString.match(regex)
   
@@ -25,7 +25,7 @@ export function formatDateDDMMYYYYForMMDDYYYY(dataString: string): string | null
     return `${mes}/${dia}/${ano}`
   }
 
-export function checkDateWithinAPeriod(referenceDateFrom :Date, referenceDateTo :Date, dateToCompare :Date) {
+export function verificarDataEstaDentroDoPeriodo(referenceDateFrom :Date, referenceDateTo :Date, dateToCompare :Date) {
     
     if(dateToCompare >= referenceDateFrom && dateToCompare <= referenceDateTo) {
         return true
@@ -33,18 +33,18 @@ export function checkDateWithinAPeriod(referenceDateFrom :Date, referenceDateTo 
     return false
 }
 
-export function formatDateForAPI (date :Date) {
+export function formatarDataParaAPI (date :Date) {
     return format(date, "dd-MM-yyyy")
 }
 
-export function totalizeReceived(dataToTotalize :GroupByWasteTypeOutput[]) {
+export function totalizarQuantidadeRecebida(dataToTotalize :GroupByWasteTypeOutput[]) {
     const totalReceived = dataToTotalize.reduce((acumulador, item) => {
         return acumulador += item.quantidadeRecebida
     }, 0)
     return totalReceived
 }
 
-export function totalizeEstimated(dataToTotalize :GroupByWasteTypeOutput[]) {
+export function totalizarQuantidadeApontadaNoManifesto(dataToTotalize :GroupByWasteTypeOutput[]) {
     const totalEstimated = dataToTotalize.reduce((acumulador, item) => {
         return acumulador += item.quantidadeEstimada
     }, 0)

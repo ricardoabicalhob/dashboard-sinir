@@ -10,7 +10,14 @@ const protectedRoutesConfig = [
   { path: '/destinador', permissionKey: 'isDestinador' },
   { path: '/armazenador-temporario', permissionKey: 'isArmazenadorTemporario' },
   { path: '/movimentacao-para-o-destinador-final', permissionKey: 'isMovimentacaoDestinadorFinal' },
+  { path: '/movimentacao-gerador-para-o-armazenador-temporario', permissionKey: 'itsJustGenerator' },
+  { path: '/movimentacao-gerador-para-o-destinador-final', permissionKey: 'itsJustGenerator' },
 ] as const;
+
+const additionalKeysObjetoResposta = {
+    isMovimentacaoDestinadorFinal: false,
+    itsJustGenerator: false
+}
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in';
 
@@ -41,7 +48,7 @@ export function middleware(request: NextRequest) {
 
     if (authToken && publicRoute && publicRoute.whenauthenticated === 'redirect') {
         const objetoResposta = authToken.objetoResposta
-        const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
+        const newObjetoResposta = Object.assign(objetoResposta, additionalKeysObjetoResposta)
         const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path;
 
         if (firstAllowedRoute) {
@@ -54,18 +61,27 @@ export function middleware(request: NextRequest) {
 
     if (authToken && protectedRoutes) {
         const matchedProtectedRoute = protectedRoutesConfig.find(route => route.path === path);
-
         if (matchedProtectedRoute) {
             const permissionKey = matchedProtectedRoute.permissionKey;
             const objetoResposta = authToken.objetoResposta
-            const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
-            const hasPermission = newObjetoResposta[permissionKey];
+            const newObjetoResposta = Object.assign(objetoResposta, additionalKeysObjetoResposta)
+
+            if(objetoResposta.isGerador && objetoResposta.isArmazenadorTemporario) {
+                newObjetoResposta.isMovimentacaoDestinadorFinal = true
+            }
+
+            if(!objetoResposta.isDestinador && !objetoResposta.isArmazenadorTemporario) {
+                newObjetoResposta.isMovimentacaoDestinadorFinal = false
+                newObjetoResposta.itsJustGenerator = true
+            }
+
+            const hasPermission = newObjetoResposta[permissionKey]
 
             if (hasPermission === true) {
                 return NextResponse.next();
             } else {
                 const objetoResposta = authToken.objetoResposta
-                const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
+                const newObjetoResposta = Object.assign(objetoResposta, additionalKeysObjetoResposta)
                 const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path;
                 if (firstAllowedRoute) {
                     const redirectUrl = request.nextUrl.clone();
@@ -80,7 +96,7 @@ export function middleware(request: NextRequest) {
     if (authToken && !publicRoute && !protectedRoutes) {
         if (authToken) {
             const objetoResposta = authToken.objetoResposta
-            const newObjetoResposta = {...objetoResposta, isMovimentacaoDestinadorFinal: true}
+            const newObjetoResposta = Object.assign(objetoResposta, additionalKeysObjetoResposta)
             const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path
             if (firstAllowedRoute) {
                 const redirectUrl = request.nextUrl.clone()

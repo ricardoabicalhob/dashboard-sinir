@@ -1,5 +1,5 @@
 import { MTRResponseI } from "@/interfaces/mtr.interface";
-import { checkDateWithinAPeriod, formatDateDDMMYYYYForMMDDYYYY } from "./fnUtils";
+import { verificarDataEstaDentroDoPeriodo, formatarDataDDMMYYYYParaMMDDYYYY } from "./fnUtils";
 
 interface WasteQuantities {
     quantidadeEstimada: number
@@ -16,7 +16,7 @@ export interface GroupByWasteTypeOutput {
     quantidadeRecebida :number
 }
 
-export function groupByWasteType(listMtrs :MTRResponseI[]) :GroupByWasteTypeOutput[] {
+export function agruparPorTipoDeResiduo(listMtrs :MTRResponseI[]) :GroupByWasteTypeOutput[] {
     const quantidadesPorCodigoIbama = listMtrs.reduce((acumulador :GroupByWasteType, mtr) => {
             mtr.listaManifestoResiduo.forEach(residuo => {
                 const resDescricao = residuo.residuo.resCodigoIbama + " - " + residuo.residuo.resDescricao
@@ -40,8 +40,23 @@ export function groupByWasteType(listMtrs :MTRResponseI[]) :GroupByWasteTypeOutp
     }))
 }
 
+export function agruparPorDestinador(listMtrs: MTRResponseI[]): MTRResponseI[][] {
+    const groupedByDestinador: { [cnpj: string]: MTRResponseI[] } = {};
+  
+    listMtrs.forEach((mtr) => {
+      const cnpjDestinador = mtr.parceiroDestinador.parCnpj;
+  
+      if (!groupedByDestinador[cnpjDestinador]) {
+        groupedByDestinador[cnpjDestinador] = [mtr]; // Inicializa um array com o primeiro MTR para este destinador
+      } else {
+        groupedByDestinador[cnpjDestinador].push(mtr); // Adiciona o MTR ao array existente para este destinador
+      }
+    });
+  
+    return Object.values(groupedByDestinador);
+  }
 
-export function groupByGenerator(listMtrs: MTRResponseI[]): MTRResponseI[][] {
+export function agruparPorGerador(listMtrs: MTRResponseI[]): MTRResponseI[][] {
     const grupos: { [key: string]: MTRResponseI[] } = {};
 
     for (const mtr of listMtrs) {
@@ -55,12 +70,12 @@ export function groupByGenerator(listMtrs: MTRResponseI[]): MTRResponseI[][] {
     return Object.values(grupos);
 }
 
-export function filterAllWithIssueDateWithinThePeriod(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
+export function filtrarTudoComDataDeEmissaoDentroDoPeriodo(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
     const listMtrsFiltered :MTRResponseI[] = []
 
     listMtrs
         .map(mtr => {
-            if(!checkDateWithinAPeriod(dateFrom, dateTo, new Date(formatDateDDMMYYYYForMMDDYYYY(new Date(mtr.manData).toLocaleDateString()) || ""))) {
+            if(!verificarDataEstaDentroDoPeriodo(dateFrom, dateTo, new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(mtr.manData).toLocaleDateString()) || ""))) {
                 return null
             }
             listMtrsFiltered.push(mtr)
@@ -68,12 +83,12 @@ export function filterAllWithIssueDateWithinThePeriod(listMtrs :MTRResponseI[], 
     return listMtrsFiltered
 }
 
-export function filterEverythingWithDateReceivedWithinThePeriod(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
+export function filtrarTudoComDataDeRecebimentoDentroDoPeriodo(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
     const listMtrsFiltered :MTRResponseI[] = []
 
     listMtrs
         .map(mtr => {
-            if(mtr.situacaoManifesto.simDataRecebimento && !checkDateWithinAPeriod(dateFrom, dateTo, new Date(formatDateDDMMYYYYForMMDDYYYY(mtr.situacaoManifesto.simDataRecebimento) || ""))) {
+            if(mtr.situacaoManifesto.simDataRecebimento && !verificarDataEstaDentroDoPeriodo(dateFrom, dateTo, new Date(formatarDataDDMMYYYYParaMMDDYYYY(mtr.situacaoManifesto.simDataRecebimento) || ""))) {
                 return null
             }
 
@@ -85,7 +100,7 @@ export function filterEverythingWithDateReceivedWithinThePeriod(listMtrs :MTRRes
     return listMtrsFiltered
 }
 
-export function filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
+export function filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
     const listMtrsFiltered :MTRResponseI[] = []
 
     listMtrs
@@ -94,7 +109,7 @@ export function filterEverythingWithDateReceivedInTemporaryStorageWithinThePerio
                 return null
             }
 
-            if(mtr.dataRecebimentoAT && !checkDateWithinAPeriod(dateFrom, dateTo, new Date(formatDateDDMMYYYYForMMDDYYYY(mtr.dataRecebimentoAT) || ""))) {
+            if(mtr.dataRecebimentoAT && !verificarDataEstaDentroDoPeriodo(dateFrom, dateTo, new Date(formatarDataDDMMYYYYParaMMDDYYYY(mtr.dataRecebimentoAT) || ""))) {
                 return null    
             }
             listMtrsFiltered.push(mtr)
@@ -102,7 +117,21 @@ export function filterEverythingWithDateReceivedInTemporaryStorageWithinThePerio
     return listMtrsFiltered
 }
 
-export function filterStockFromTemporaryStorage(listMtrs :MTRResponseI[]) {
+export function filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(listaDeMtrsQuePossuemArmazenamentoTemporario :MTRResponseI[]) {
+    const listMtrsFiltered :MTRResponseI[] = []
+
+    listaDeMtrsQuePossuemArmazenamentoTemporario
+        .map(mtr => {
+            if(mtr.dataRecebimentoAT) {
+                return null
+            }
+
+            listMtrsFiltered.push(mtr)
+        })
+    return listMtrsFiltered
+}
+
+export function filtrarEstoqueDeArmazenamentoTemporario(listMtrs :MTRResponseI[]) {
     return listMtrs
         .filter(mtr => {
             return mtr.situacaoManifesto.simDescricao === "Armaz Temporário"
@@ -110,7 +139,7 @@ export function filterStockFromTemporaryStorage(listMtrs :MTRResponseI[]) {
 }
 
 // export function filterEverythingWithoutAReceiptDateWithinThePeriod(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
-export function filterEverythingWithoutAReceiptDateWithinThePeriod(listMtrs :MTRResponseI[]) {
+export function filtrarTudoSemDataDeRecebimento(listMtrs :MTRResponseI[]) {
     const listMtrsFiltered :MTRResponseI[] = []
 
     listMtrs
@@ -124,5 +153,17 @@ export function filterEverythingWithoutAReceiptDateWithinThePeriod(listMtrs :MTR
             }
             listMtrsFiltered.push(mtr)
         })
+    return listMtrsFiltered
+}
+
+export function filtrarTodosQuePossuemArmazenamentoTemporario(listMtrs :MTRResponseI[]) {
+    const listMtrsFiltered :MTRResponseI[] = []
+
+    listMtrs.map(mtr => {
+        if(!!!mtr.parceiroArmazenadorTemporario.parCnpj) {
+            return null
+        }
+        listMtrsFiltered.push(mtr)
+    })
     return listMtrsFiltered
 }

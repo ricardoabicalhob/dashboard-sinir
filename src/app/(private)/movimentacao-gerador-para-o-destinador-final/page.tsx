@@ -4,20 +4,22 @@ import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
+import { Separator } from "@/components/ui/separator"
 import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
-export default function GeradorPage() {
+export default function MovimentacaoParaDFPage() {
     const { 
         loginResponse
     } = useContext(AuthContext)
@@ -151,22 +153,24 @@ export default function GeradorPage() {
 
             {
                 !hideChartManifestsIssued &&
-                    <GraficoSimples
-                        title="Resíduos gerados"
+                    <GraficoBarraDupla
+                        title="Resíduos recebidos no destinador final"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
             {
                 hideChartManifestsIssued &&
                     <ListaDeMtrs 
-                        title="Manifestos emitidos"
-                        listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        title="Manifestos recebidos no destinador final"
+                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
+
+
 
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsIssued()}
@@ -177,19 +181,19 @@ export default function GeradorPage() {
 
             {
                 !hideChartManifestsReceived &&
-                    <GraficoBarraDupla
-                        title="Resíduos recebidos no destinador final"
-                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                    <GraficoSimples
+                        title="Resíduos pendentes de recebimento no destinador final"
+                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
                     />
             }
 
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos recebidos no destinador final"
-                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        title="Manifestos pendentes de recebimento no destinador final"
+                        listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -201,31 +205,52 @@ export default function GeradorPage() {
                 disableListButton={hideChartManifestsReceived}
             />
 
-            {
-                !hideChartManifestsPending &&
-                    <GraficoSimples 
-                        title="Resíduos pendentes de recebimento no destinador final"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
-                        dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
-                    />
-            }
+            <Separator className="h-1"/>
 
-            {
-                hideChartManifestsPending &&
-                    <ListaDeMtrs
-                        title="Manifestos pendentes de recebimento no destinador final"
-                        listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
-                        authorization={profile?.objetoResposta.token || ""}
-                    />
-            }
-
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsPending()}
-                handleShowListManifests={()=> handleShowListManifestsPending()}
-                disableChartButton={!hideChartManifestsPending}
-                disableListButton={hideChartManifestsPending}
-            />
+            <Table>
+                <TableHeader>
+                    <TableHead className="text-xl text-center font-semibold">Demonstrativo de recebimento de resíduos nos destinadores finais</TableHead>
+                    <TableRow>
+                        <TableHead>Destinador</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {
+                        agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)).map(destinador => (
+                            <TableRow key={destinador[0].parceiroGerador.parCodigo} className="flex flex-col">
+                                <TableRow className="font-semibold">{`${destinador[0].parceiroDestinador.parCodigo} - ${destinador[0].parceiroDestinador.parDescricao}`}</TableRow>
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead className="w-fit">Tipo de resíduo</TableHead>
+                                                <TableHead>Estimado</TableHead>
+                                                <TableHead>Recebido</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {
+                                                agruparPorTipoDeResiduo(destinador).map(wasteType => (
+                                                    <TableRow key={`DETAILS-${wasteType.resDescricao}`} className="ml-8">
+                                                        <TableCell>{wasteType.resDescricao}</TableCell>
+                                                        <TableCell>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                        <TableCell>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                    </TableRow>
+                                                ))
+                                            }
+                                        </TableBody>
+                                        <TableFooter className="bg-gray-100">
+                                            <TableRow>
+                                                <TableCell>Total</TableCell>
+                                                <TableCell>{totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                <TableCell>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                            </TableRow>
+                                        </TableFooter>
+                                    </Table>
+                            </TableRow>
+                        ))
+                    }
+                </TableBody>
+            </Table>
 
         </div>
     )

@@ -11,8 +11,8 @@ import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterEverythingWithoutAReceiptDateWithinThePeriod, groupByWasteType } from "@/utils/fnFilters"
-import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
+import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
@@ -23,8 +23,8 @@ export default function DestinadorPage() {
         token,
         loginResponse
     } = useContext(AuthContext)
-    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
-    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
+    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
+    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
     const dateFromBefore = subDays(dateFrom, 90)
     const dateToBefore = subDays(dateFrom, 1)
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
@@ -65,8 +65,8 @@ export default function DestinadorPage() {
 
     useEffect(()=> {
         if(dateRange) {
-            setDateFrom(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
-            setDateTo(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
+            setDateFrom(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
+            setDateTo(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
         }
     }, [dateRange])
 
@@ -82,7 +82,7 @@ export default function DestinadorPage() {
         isError: isErrorList,
         error: errorList
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Destinador", formatDateForAPI(dateFrom), formatDateForAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -93,7 +93,7 @@ export default function DestinadorPage() {
         isError: isErrorListExtented,
         error: errorListExtented
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Destinador", formatDateForAPI(dateFromBefore), formatDateForAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -104,7 +104,7 @@ export default function DestinadorPage() {
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateFromBeforeBefore], 
-        async ()=> await getMtrList("Destinador", formatDateForAPI(dateFromBeforeBefore), formatDateForAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -154,8 +154,8 @@ export default function DestinadorPage() {
                     <GraficoSimples
                         title="Resíduos gerados para recebimento como destinador"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
@@ -163,7 +163,7 @@ export default function DestinadorPage() {
                 hideChartManifestsGenerated &&
                     <ListaDeMtrs
                         title="Manifestos gerados para recebimento como destinador"
-                        listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -171,6 +171,8 @@ export default function DestinadorPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
                 handleShowListManifests={()=> handleShowListManifestsGenerated()}
+                disableChartButton={!hideChartManifestsGenerated}
+                disableListButton={hideChartManifestsGenerated}
             />
     
             {
@@ -178,8 +180,8 @@ export default function DestinadorPage() {
                     <GraficoBarraDupla
                         title="Resíduos recebidos"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
@@ -187,7 +189,7 @@ export default function DestinadorPage() {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs
                         title="Manifestos recebidos"
-                        listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -195,6 +197,8 @@ export default function DestinadorPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsReceived()}
                 handleShowListManifests={()=> handleShowListManifestsReceived()}
+                disableChartButton={!hideChartManifestsReceived}
+                disableListButton={hideChartManifestsReceived}
             />
 
             {
@@ -202,8 +206,8 @@ export default function DestinadorPage() {
                     <GraficoSimples 
                         title="Resíduos pendentes de recebimento"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])))}
-                        dataChart={groupByWasteType(filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || []))}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
                     />
             }
 
@@ -211,7 +215,7 @@ export default function DestinadorPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
                         title="Manifestos pendentes de recebimento (últimos 210 dias)"
-                        listMtrs={filterEverythingWithoutAReceiptDateWithinThePeriod(detailedReferencePeriodList || [])}
+                        listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -219,6 +223,8 @@ export default function DestinadorPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsPending()}
                 handleShowListManifests={()=> handleShowListManifestsPending()}
+                disableChartButton={!hideChartManifestsPending}
+                disableListButton={hideChartManifestsPending}
             />
 
         </div>

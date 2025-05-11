@@ -11,8 +11,8 @@ import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filterAllWithIssueDateWithinThePeriod, filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod, filterEverythingWithDateReceivedWithinThePeriod, filterStockFromTemporaryStorage, groupByWasteType } from "@/utils/fnFilters"
-import { formatDateDDMMYYYYForMMDDYYYY, formatDateForAPI, totalizeEstimated, totalizeReceived } from "@/utils/fnUtils"
+import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
@@ -24,8 +24,8 @@ export default function ArmazenadorTemporarioPage() {
         token,
         loginResponse
     } = useContext(AuthContext)
-    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
-    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatDateDDMMYYYYForMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
+    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
+    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
     const dateFromBefore = subDays(dateFrom, 90)
     const dateToBefore = subDays(dateFrom, 1)
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
@@ -75,8 +75,8 @@ export default function ArmazenadorTemporarioPage() {
 
     useEffect(()=> {
         if(dateRange) {
-            setDateFrom(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
-            setDateTo(new Date(formatDateDDMMYYYYForMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
+            setDateFrom(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.from?.toLocaleDateString() || "") || ""))
+            setDateTo(new Date(formatarDataDDMMYYYYParaMMDDYYYY(dateRange.to?.toLocaleDateString() || "") || ""))
         }
     }, [dateRange])
 
@@ -92,7 +92,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorList,
         error: errorList
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFrom), formatDateForAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -103,7 +103,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorListExtented,
         error: errorListExtented
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFromBefore), formatDateForAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -114,7 +114,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateToBeforeBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatDateForAPI(dateFromBeforeBefore), formatDateForAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -173,8 +173,8 @@ export default function ArmazenadorTemporarioPage() {
                     <GraficoSimples
                         title="Resíduos gerados para armazenamento temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeEstimated(groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={groupByWasteType(filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
@@ -182,7 +182,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsGenerated &&
                     <ListaDeMtrs
                         title="Manifestos gerados para armazenamento temporário"
-                        listMtrs={filterAllWithIssueDateWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -190,6 +190,8 @@ export default function ArmazenadorTemporarioPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
                 handleShowListManifests={()=> handleShowListManifestsGenerated()}
+                disableChartButton={!hideChartManifestsGenerated}
+                disableListButton={hideChartManifestsGenerated}
             />
 
             {
@@ -197,8 +199,8 @@ export default function ArmazenadorTemporarioPage() {
                     <GraficoSimples
                         title="Resíduos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeEstimated(groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={groupByWasteType(filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
@@ -206,7 +208,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs
                         title="Manifestos recebidos no armazenamento temporário (entrada no armazenamento temporário)"
-                        listMtrs={filterEverythingWithDateReceivedInTemporaryStorageWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         armazenamentoTemporario
                     />
@@ -215,6 +217,8 @@ export default function ArmazenadorTemporarioPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsReceived()}
                 handleShowListManifests={()=> handleShowListManifestsReceived()}
+                disableChartButton={!hideChartManifestsReceived}
+                disableListButton={hideChartManifestsReceived}
             />
 
             {
@@ -222,8 +226,8 @@ export default function ArmazenadorTemporarioPage() {
                     <GraficoBarraDupla
                         title="Resíduos recebidos no destinador final (saída do armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeReceived(groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)))}
-                        dataChart={groupByWasteType(filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo))}
+                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }
 
@@ -231,7 +235,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsSending &&
                     <ListaDeMtrs
                         title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
-                        listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodList || [], dateFrom, dateTo)}
+                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                     />
             }
@@ -239,6 +243,8 @@ export default function ArmazenadorTemporarioPage() {
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsSending()}
                 handleShowListManifests={()=> handleShowListManifestsSending()}
+                disableChartButton={!hideChartManifestsSending}
+                disableListButton={hideChartManifestsSending}
             />
 
             {
@@ -246,8 +252,8 @@ export default function ArmazenadorTemporarioPage() {
                     <GraficoSimples
                         title="Resíduos em armazenamento temporário (estoque)"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
-                        acumulated={totalizeEstimated(groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || [])))}
-                        dataChart={groupByWasteType(filterStockFromTemporaryStorage(detailedReferencePeriodList || []))}
+                        acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))}
                     />
             }
 
@@ -255,14 +261,17 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsStock &&
                     <ListaDeMtrs
                         title="Manifestos em armazenamento temporário (estoque)"
-                        listMtrs={filterStockFromTemporaryStorage(detailedReferencePeriodList || [])}
+                        listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
+                        armazenamentoTemporario
                     />
             }
 
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsStock()}
                 handleShowListManifests={()=> handleShowListManifestsStock()}
+                disableChartButton={!hideChartManifestsStock}
+                disableListButton={hideChartManifestsStock}
             />
 
         </div>

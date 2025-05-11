@@ -1,5 +1,5 @@
 import { MTRResponseI } from "@/interfaces/mtr.interface"
-import { subDatesEmDias } from "@/utils/fnUtils"
+import { subtrairDatasEmDias } from "@/utils/fnUtils"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { List } from "lucide-react"
 
@@ -32,7 +32,7 @@ export default function DialogListMTR({ listMtrs } :DialogListMTRProps) {
                         </div>
                         <div className="flex justify-between">
                             <p>{`Emitido em ${new Date(mtr.manData).toLocaleDateString()}`}</p>
-                            <p>{`A vencer em ${90 - subDatesEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
+                            <p>{`A vencer em ${90 - subtrairDatasEmDias(new Date(mtr.manData), new Date(Date.now()))} dias`}</p>
                         </div>
                         <p>{`${mtr.dataRecebimentoAT && "Armaz Temporário - Recebido em " + mtr.dataRecebimentoAT}`}</p>
                         <p>{`${mtr.situacaoManifesto.simDataRecebimento ? mtr.situacaoManifesto.simDescricao : "Recebido"} em: ${mtr.situacaoManifesto.simDataRecebimento? mtr.situacaoManifesto.simDataRecebimento : "Pendente"}`}</p>

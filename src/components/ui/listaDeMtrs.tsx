@@ -10,9 +10,10 @@ interface ListaDeMtrsProps {
     title :string
     authorization :string
     armazenamentoTemporario? :boolean
+    isGeradorParaAT? :boolean
 }
 
-export default function ListaDeMtrs({ listMtrs, title, authorization, armazenamentoTemporario } :ListaDeMtrsProps) {
+export default function ListaDeMtrs({ listMtrs, title, authorization, armazenamentoTemporario, isGeradorParaAT: isGerador } :ListaDeMtrsProps) {
 
     const cardListRef = useRef<HTMLDivElement>(null)
 
@@ -40,9 +41,11 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                         <TableRow>
                             <TableHead>MTR Nº</TableHead>
                             <TableHead>Data Emissão</TableHead>
-                            <TableHead>Gerador</TableHead>
+                            {isGerador && <TableHead>Armazenador Temporário</TableHead>}
+                            {!isGerador && <TableHead>Gerador</TableHead>}
                             <TableHead>Destinador</TableHead>
-                            {armazenamentoTemporario && <TableHead>Data Recebimento AT</TableHead>}
+                            <TableHead>Situação</TableHead>
+                            {armazenamentoTemporario || isGerador && <TableHead>Data Recebimento AT</TableHead>}
                             {!armazenamentoTemporario && <TableHead>Data Recebimento</TableHead>}
                             <TableHead>Ações</TableHead>
                         </TableRow>
@@ -53,9 +56,11 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, armazename
                                 <TableRow className="hover:bg-[#00695C20]" key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
-                                    <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>
+                                    {isGerador && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao}</TableCell>}
+                                    {!isGerador && <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>}
                                     <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>
-                                    {armazenamentoTemporario && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
+                                    <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>
+                                    {armazenamentoTemporario || isGerador && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
                                     {!armazenamentoTemporario &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
                                     <TableCell className="flex justify-center">
                                         <div
