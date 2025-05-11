@@ -1,9 +1,10 @@
-import { Printer } from "lucide-react";
+import { FileText, Printer } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "./card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { downloadMtr } from "@/repositories/downloadMtr";
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
+import { downloadCdf } from "@/repositories/downloadCDF";
 
 type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento"
 
@@ -20,6 +21,10 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, options } 
 
     const handleDownloadMtr = async (numeroMtr :string, authorization :string) => {
         await downloadMtr(numeroMtr, authorization)
+    }
+
+    const handleDownloadCdf = async (numeroCdf :number, authorization :string) => {
+        await downloadCdf(numeroCdf, authorization)
     }
 
     useEffect(()=> {
@@ -65,13 +70,22 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, options } 
                                     {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
                                     {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
                                     {options.includes("Data Recebimento") &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
-                                    <TableCell className="flex justify-center">
+                                    <TableCell className="flex justify-start">
                                         <div
-                                            className="w-fit px-2 cursor-pointer"
+                                            className="w-fit mx-1 cursor-pointer"
                                             onClick={async ()=> handleDownloadMtr(mtr.manNumero, authorization)}     
                                         >
                                             <Printer fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
                                         </div>
+                                        {
+                                            mtr.cdfNumero && 
+                                            <div
+                                                className="w-fit px-2 cursor-pointer"
+                                                onClick={()=> handleDownloadCdf(mtr.cdfNumero, authorization)}
+                                            >
+                                                <FileText fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                            </div>
+                                        }
                                     </TableCell>
                                 </TableRow>
                             ))
