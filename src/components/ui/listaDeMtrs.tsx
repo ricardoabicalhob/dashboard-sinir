@@ -11,12 +11,10 @@ interface ListaDeMtrsProps {
     listMtrs :MTRResponseI[]
     title :string
     authorization :string
-    armazenamentoTemporario? :boolean
-    isGeradorParaAT? :boolean
     options :FilterColumns[]
 }
 
-export default function ListaDeMtrs({ listMtrs, title, authorization, armazenamentoTemporario, isGeradorParaAT: isGerador, options } :ListaDeMtrsProps) {
+export default function ListaDeMtrs({ listMtrs, title, authorization, options } :ListaDeMtrsProps) {
 
     const cardListRef = useRef<HTMLDivElement>(null)
 
