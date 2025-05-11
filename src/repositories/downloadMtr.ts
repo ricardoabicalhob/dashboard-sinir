@@ -18,7 +18,7 @@ export async function downloadMtr(numeroMTR :string, authorization :string) {
         const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `${numeroMTR}.pdf`
+        a.download = `manifesto-${numeroMTR}.pdf`
         document.body.appendChild(a)
         a.click()
         document.body.removeChild(a)
