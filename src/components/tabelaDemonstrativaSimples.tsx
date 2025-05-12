@@ -36,7 +36,10 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                             </TableHead>
                         </TableRow>
                         <TableRow>
-                            <TableHead>Destinador</TableHead>
+                            <TableHead>
+                                {tipo === "Destinador" && "Destinador"}
+                                {tipo === "Gerador" && "Gerador"}
+                            </TableHead>
                         </TableRow>
                     </TableHeader>
                     {

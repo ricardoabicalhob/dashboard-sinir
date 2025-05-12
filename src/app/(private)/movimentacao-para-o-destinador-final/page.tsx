@@ -3,6 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
+import { Card } from "@/components/ui/card"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -200,35 +201,56 @@ export default function VisaoGeralPage() {
     if(isLoadingDetailsAT) return <CustomMessage message="Carregando detalhes dos MTRs do Armazenamento Temporário..."/>
     if (isErrorDetailsAT && errorDetailsAT) return <p className="flex w-full justify-center text-center bg-red-400">Erro ao carregar detalhes dos MTRs do Armazenamento Temporário: {errorDetailsAT.message}</p>;
 
-    if(!allMtrsAT.length) {
-        return(
-            <div className="flex gap-2 w-full h-[calc(100vh-117px)] items-center justify-center text-black/80">
-                <Info />
-                <p>Não há nada para exibir para este armazenador temporário</p>
-            </div>
-        )
-    }
+    // if(!allMtrsAT.length) {
+    //     return(
+    //         <div className="flex gap-2 w-full h-[calc(100vh-117px)] items-center justify-center text-black/80">
+    //             <Info />
+    //             <p>Não há nada para exibir para este armazenador temporário</p>
+    //         </div>
+    //     )
+    // }
 
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <div className="flex gap-2">
-                <GraficoBarraDupla
-                    title="Manifestos recebidos no destinador final (saída do gerador)"
-                    subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                    acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
-                    dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
-                />
+            <div className="grid grid-cols-2 gap-2">
+                {allMtrsGerador && 
+                    <GraficoBarraDupla
+                        title="Manifestos recebidos no destinador final (saída do gerador)"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
+                    />}
 
-                {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListGerador || [], dateFrom, dateTo)} /> */}
+                {!allMtrsGerador.length && 
+                    <Card>
+                        <div className="flex flex-col w-full h-full items-center p-6">
+                            <p className="text-xl font-semibold text-center">Manifestos recebidos no destinador final (saída do armazenamento temporário)</p>
+                            <p className="flex flex-grow items-center justify-center gap-2">
+                                <Info className="w-5 h-5"/>
+                                Não houve saída de resíduos do armazenamento temporário
+                            </p>
+                        </div>
+                    </Card>}
 
-                <GraficoBarraDupla
-                    title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
-                    subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                    acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
-                    dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
-                />
-                {/* <DialogListMTR listMtrs={filterEverythingWithDateReceivedWithinThePeriod(detailedReferencePeriodListAT || [], dateFrom, dateTo)}/> */}
+                {!!allMtrsAT.length && 
+                    <GraficoBarraDupla
+                        title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                        subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                    />}
+
+                {!allMtrsAT.length && 
+                    <Card>
+                        <div className="flex flex-col w-full h-full items-center p-6">
+                            <p className="text-xl font-semibold text-center">Manifestos recebidos no destinador final (saída do armazenamento temporário)</p>
+                            <p className="flex flex-grow items-center justify-center gap-2">
+                                <Info className="w-5 h-5"/>
+                                Não houve saída de resíduos do armazenamento temporário
+                            </p>
+                        </div>
+                    </Card>}
 
             </div>
 
@@ -280,13 +302,19 @@ export default function VisaoGeralPage() {
 
             <Separator className="h-1"/>
 
-            <TabelaDemonstrativaSimples
-                tipo="Gerador"
-                title="Demonstrativo de saída de resíduos do armazenamento temporário"
-                listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
-            />
+            {
+                !!allMtrsAT.length &&
+                    <>
+                        <TabelaDemonstrativaSimples
+                            tipo="Gerador"
+                            title="Demonstrativo de saída de resíduos do armazenamento temporário"
+                            listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                        />
 
-            <Separator className="h-1"/>
+                        <Separator className="h-1"/>
+                    </>
+            }
+
 
             <ListaDeMtrs
                 title="Lista de manifestos"
