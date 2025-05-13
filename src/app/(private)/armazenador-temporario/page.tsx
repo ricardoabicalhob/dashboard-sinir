@@ -204,7 +204,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos gerados para armazenamento temporário"
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Situação", "Data Recebimento AT"]}
+                        options={["Gerador", "Situação", "Data Recebimento AT"]}
                     />
             }
 
@@ -285,7 +285,7 @@ export default function ArmazenadorTemporarioPage() {
                         title="Manifestos em armazenamento temporário (estoque)"
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Situação", "Data Recebimento AT"]}
+                        options={["Gerador", "Situação", "Data Recebimento AT"]}
                     />
             }
 
