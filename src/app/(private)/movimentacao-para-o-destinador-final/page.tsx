@@ -214,7 +214,7 @@ export default function VisaoGeralPage() {
         <div className="flex flex-col gap-6 p-6">
 
             <div className="grid grid-cols-2 gap-2">
-                {allMtrsGerador && 
+                {filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo) && 
                     <GraficoBarraDupla
                         title="Manifestos recebidos no destinador final (saída do gerador)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
@@ -222,7 +222,7 @@ export default function VisaoGeralPage() {
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                     />}
 
-                {!allMtrsGerador.length && 
+                {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length && 
                     <Card>
                         <div className="flex flex-col w-full h-full items-center p-6">
                             <p className="text-xl font-semibold text-center">Manifestos recebidos no destinador final (saída do armazenamento temporário)</p>
@@ -233,7 +233,7 @@ export default function VisaoGeralPage() {
                         </div>
                     </Card>}
 
-                {!!allMtrsAT.length && 
+                {!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && 
                     <GraficoBarraDupla
                         title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
@@ -241,7 +241,7 @@ export default function VisaoGeralPage() {
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                     />}
 
-                {!allMtrsAT.length && 
+                {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && 
                     <Card>
                         <div className="flex flex-col w-full h-full items-center p-6">
                             <p className="text-xl font-semibold text-center">Manifestos recebidos no destinador final (saída do armazenamento temporário)</p>
@@ -303,7 +303,7 @@ export default function VisaoGeralPage() {
             <Separator className="h-1"/>
 
             {
-                !!allMtrsAT.length &&
+                !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length &&
                     <>
                         <TabelaDemonstrativaSimples
                             tipo="Gerador"

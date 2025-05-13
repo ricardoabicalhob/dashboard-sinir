@@ -10,8 +10,10 @@ import { redirect } from "next/navigation"
 import { Figtree } from 'next/font/google'
 import Image from "next/image"
 import logoSinir from "../../../public/logo_sinir_negativa1.png"
+import logoCaminhao from "../../../public/logo-Caminhao.png"
 import { useToast } from "@/hooks/use-toast"
 import { Ban } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
 
 const figtree = Figtree({ weight: '600', subsets: ['latin'] });
 
@@ -81,8 +83,14 @@ export default function SignIn() {
   return (
     <main id="containerprincipal" className="flex items-stretch">  
       <div className="bg-[#00695C] flex-1 max-[1100px]:hidden">
+        
         <div className="flex flex-col gap-3 w-full h-full items-center justify-center">
-          <Image alt="" src={logoSinir} width={250} height={80} />
+          <div className="flex gap-2 w-full items-center justify-center">
+            <Image alt="" src={logoCaminhao} width={200} height={100}/>
+            <Separator orientation="vertical" color="#FFF" />
+            <Image alt="" src={logoSinir} width={150} height={80} />
+          </div>
+          
           <span className="text-gray-200 text-3xl font-bold">Gestão de Resíduos Integrada ao SINIR</span>
         </div>
       </div>

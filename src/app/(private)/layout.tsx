@@ -12,7 +12,7 @@ import { AuthContext } from "@/contexts/auth.context";
 import { LogOut } from "lucide-react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
-import logoSinir from "../../public/logo_sinir_negativa1.png"
+import logoGestao from "../../public/logo-GRS.png"
 
 export default function PrivateLayout({
   children,
@@ -35,7 +35,7 @@ export default function PrivateLayout({
         infoUnidadeRef.current.classList.remove("opacity-0");
         infoUnidadeRef.current.classList.add("opacity-100");
       }
-    }, 1000)
+    }, 1500)
     initialize()
   }, [])
 
@@ -50,7 +50,7 @@ export default function PrivateLayout({
           <ul aria-orientation="horizontal" className="mx-auto hidden max-w-[120rem] items-center justify-between p-1 text-sm xl:flex xl:px-5">
             <li className="flex items-center gap-5 divide-x divide-[#FFFFFF70]">
               <ul className="flex items-center text-gray-200 transition-colors">
-                <Image alt="" src={logoSinir} width={140} height={80} />
+                <Image alt="" src={logoGestao} width={140} height={80} />
               </ul>
               <ul className="flex items-stretch gap-2 px-5">
                 { loginResponse &&

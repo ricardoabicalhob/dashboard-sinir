@@ -7,9 +7,9 @@ export default async function setCookie(token: string) {
 
   const cookieOptions = {
     path: '/',
-    maxAge: 60 * 60 * 24 * 1,
+    // maxAge: 60 * 60 * 24 * 1,
     httpOnly: true,
-    secure: true
+    secure: true,
   }
   
   try {
