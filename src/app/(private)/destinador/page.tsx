@@ -3,7 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
-import Scoreboard from "@/components/scoreboard"
+import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle } from "@/components/scoreboard"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
@@ -150,20 +150,26 @@ export default function DestinadorPage() {
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <Scoreboard
-                firstText="Resíduos gerados para o destinador"
-                firstSubtext="Quantidade apontada no MTR"
-                secondText="Resíduos recebidos"
-                secondSubtext="Quantidade recebida"
-                thirdText="Resíduos pendentes de recebimento"
-                thirdSubtext="Quantidade apontada no MTR"
-                firstPeriodText={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                secondPeriodText={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
-                thirdPeriodText={`Até: ${dateTo.toLocaleDateString()}`}
-                firstTotal={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0}
-                secondTotal={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0}
-                thirdTotal={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0}
-            />
+            <Scoreboard>
+                <ScoreboardItem>
+                    <ScoreboardSubtitle>Resíduos gerados para o destinador</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardSubtitle>Resíduos recebidos</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardSubtitle>Resíduos pendentes de recebimento</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
+                </ScoreboardItem>
+            </Scoreboard>
 
             {
                 !hideChartManifestsGenerated &&

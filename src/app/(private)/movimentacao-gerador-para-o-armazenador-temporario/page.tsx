@@ -3,6 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
@@ -149,6 +150,27 @@ export default function MovimentacaoParaATPage() {
     return (
         <div className="flex flex-col gap-6 p-6">
 
+            <Scoreboard>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos gerados para o AT</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos recebidos no AT</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
+                </ScoreboardItem>
+            </Scoreboard>
+
             {
                 !hideChartManifestsIssued &&
                     <GraficoSimples
@@ -168,8 +190,6 @@ export default function MovimentacaoParaATPage() {
                         options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
                     />
             }
-
-
 
             <SwitchBetweenChartAndList
                 handleShowChartManifests={()=> handleShowChartManifestsIssued()}

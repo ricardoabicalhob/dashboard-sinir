@@ -3,6 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
+import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
 import SwitchBetweenChartAndListAndTable from "@/components/switchBetweenChartAndListAndTable"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
@@ -153,6 +154,21 @@ export default function MovimentacaoParaDFPage() {
 
     return (
         <div className="flex flex-col gap-6 p-6">
+
+            <Scoreboard>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos recebidos no destinador final</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos pendentes de recebimento</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                </ScoreboardItem>
+            </Scoreboard>
 
             {
                 !showChartManifestsReceived &&
