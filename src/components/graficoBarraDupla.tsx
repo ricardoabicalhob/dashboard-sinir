@@ -46,10 +46,7 @@ export default function GraficoBarraDupla({ dataChart, title, subTitle, acumulat
                 subTitle &&
                     <CardTitle className="font-light">{subTitle}</CardTitle>
             }
-            {
-                acumulated &&
-                    <CardTitle>{`Total acumulado: ${acumulated.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</CardTitle>
-            }
+            <CardTitle>{`Total acumulado: ${acumulated?.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</CardTitle>
         </div>
         </CardHeader>
         <CardContent>
