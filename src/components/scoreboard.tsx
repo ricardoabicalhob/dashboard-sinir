@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils"
 import * as React from "react"
 
-interface ScoreboardTextProps extends React.HTMLAttributes<HTMLParagraphElement> {
-    titulo? :string
-}
-
 const Scoreboard = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
