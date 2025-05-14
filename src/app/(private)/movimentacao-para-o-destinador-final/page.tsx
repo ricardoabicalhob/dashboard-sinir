@@ -2,19 +2,19 @@
 
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
+import SwitchBetweenChartAndListAndTable from "@/components/switchBetweenChartAndListAndTable"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import { Card } from "@/components/ui/card"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import { Separator } from "@/components/ui/separator"
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
-import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
+import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
+import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
@@ -33,14 +33,52 @@ export default function VisaoGeralPage() {
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
     const dateToBeforeBefore = subDays(dateFromBefore, 1)
     const [ profile, setProfile ] = useState<LoginResponseI>()
+    const [ showChartManifestsReceivedSentFromTheGenerator, setShowChartManifestsReceivedSentFromTheGenerator ] = useState(false)
+    const [ showListManifestsReceivedSentFromTheGenerator, setShowListManifestsReceivedSentFromTheGenerator ] = useState(true)
+    const [ showTableManifestsReceivedSentFromTheGenerator, setShowTableManifestsReceivedSentFromTheGenerator ] = useState(true)
+    const [ showChartManifestsReceivedSentFromAT, setShowChartManifestsReceivedSentFromAT ] = useState(false)
+    const [ showListManifestsReceivedSentFromAT, setShowListManifestsReceivedSentFromAT ] = useState(true)
+    const [ showTableManifestsReceivedSentFromAT, setShowTableManifestsReceivedSentFromAT ] = useState(true)
+    
+    function handleShowTableManifestsReceivedSentFromTheGenerator() {
+        setShowTableManifestsReceivedSentFromTheGenerator(false)
+        setShowListManifestsReceivedSentFromTheGenerator(true)
+        setShowChartManifestsReceivedSentFromTheGenerator(true)
+    }
+
+    function handleShowListManifestsReceivedSentFromTheGenerator() {
+        setShowListManifestsReceivedSentFromTheGenerator(false)
+        setShowChartManifestsReceivedSentFromTheGenerator(true)
+        setShowTableManifestsReceivedSentFromTheGenerator(true)
+    }
+
+    function handleShowChartManifestsReceivedSentFromTheGenerator() {
+        setShowChartManifestsReceivedSentFromTheGenerator(false)
+        setShowListManifestsReceivedSentFromTheGenerator(true)
+        setShowTableManifestsReceivedSentFromTheGenerator(true)
+    }
+
+    function handleShowTableManifestsReceivedSentFromAT() {
+        setShowTableManifestsReceivedSentFromAT(false)
+        setShowListManifestsReceivedSentFromAT(true)
+        setShowChartManifestsReceivedSentFromAT(true)
+    }
+
+    function handleShowListManifestsReceivedSentFromAT() {
+        setShowListManifestsReceivedSentFromAT(false)
+        setShowChartManifestsReceivedSentFromAT(true)
+        setShowTableManifestsReceivedSentFromAT(true)
+    }
+
+    function handleShowChartManifestsReceivedSentFromAT() {
+        setShowChartManifestsReceivedSentFromAT(false)
+        setShowListManifestsReceivedSentFromAT(true)
+        setShowTableManifestsReceivedSentFromAT(true)
+    }
 
     const {
         dateRange
     } = useContext(SystemContext)
-
-    // const handleDownloadMtr = async (numeroMtr :string, authorization :string) => {
-    //     await downloadMtr(numeroMtr, authorization)
-    // }
 
     useEffect(()=> {
         if(dateRange) {
@@ -201,26 +239,41 @@ export default function VisaoGeralPage() {
     if(isLoadingDetailsAT) return <CustomMessage message="Carregando detalhes dos MTRs do Armazenamento Temporário..."/>
     if (isErrorDetailsAT && errorDetailsAT) return <p className="flex w-full justify-center text-center bg-red-400">Erro ao carregar detalhes dos MTRs do Armazenamento Temporário: {errorDetailsAT.message}</p>;
 
-    // if(!allMtrsAT.length) {
-    //     return(
-    //         <div className="flex gap-2 w-full h-[calc(100vh-117px)] items-center justify-center text-black/80">
-    //             <Info />
-    //             <p>Não há nada para exibir para este armazenador temporário</p>
-    //         </div>
-    //     )
-    // }
-
     return(
         <div className="flex flex-col gap-6 p-6">
 
-            <div className="grid grid-cols-2 gap-2">
-                {filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo) && 
+            {/* <div className="grid grid-cols-2 gap-2"> */}
+                {!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length && !showChartManifestsReceivedSentFromTheGenerator &&
                     <GraficoBarraDupla
-                        title="Manifestos recebidos no destinador final (saída do gerador)"
+                        title="Resíduos recebidos no destinador (saída do gerador)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                     />}
+
+                {!showListManifestsReceivedSentFromTheGenerator &&
+                    <ListaDeMtrs
+                        title="Manifestos recebidos no destinador (saída do gerador)"
+                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                    />}
+
+                {!showTableManifestsReceivedSentFromTheGenerator &&
+                    <TabelaDemonstrativaSimples
+                        tipo="Destinador"
+                        title="Detalhes da destinação (saída do gerador)"
+                        listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
+                    />}
+
+                <SwitchBetweenChartAndListAndTable
+                    handleShowChartManifests={()=> handleShowChartManifestsReceivedSentFromTheGenerator()}
+                    handleShowListManifests={()=> handleShowListManifestsReceivedSentFromTheGenerator()}
+                    handleShowTableManifests={()=> handleShowTableManifestsReceivedSentFromTheGenerator()}
+                    disableChartButton={!showChartManifestsReceivedSentFromTheGenerator}
+                    disableListButton={!showListManifestsReceivedSentFromTheGenerator}
+                    disableTableButton={!showTableManifestsReceivedSentFromTheGenerator}
+                />
 
                 {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length && 
                     <Card>
@@ -233,13 +286,37 @@ export default function VisaoGeralPage() {
                         </div>
                     </Card>}
 
-                {!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && 
+                {!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && !showChartManifestsReceivedSentFromAT &&
                     <GraficoBarraDupla
-                        title="Manifestos recebidos no destinador final (saída do armazenamento temporário)"
+                        title="Resíduos recebidos no destinador (saída do armazenamento temporário)"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                     />}
+
+                {!showListManifestsReceivedSentFromAT &&
+                    <ListaDeMtrs
+                        title="Manifestos recebidos no destinador (saída do armazenamento temporário)"
+                        listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)}
+                        authorization={profile?.objetoResposta.token || ""}
+                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                    />}
+
+                {!showTableManifestsReceivedSentFromAT &&
+                    <TabelaDemonstrativaSimples
+                        tipo="Destinador"
+                        title="Detalhes da destinação (saída do armazenamento temporário)"
+                        listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                    />}
+
+                <SwitchBetweenChartAndListAndTable
+                    handleShowChartManifests={()=> handleShowChartManifestsReceivedSentFromAT()}
+                    handleShowListManifests={()=> handleShowListManifestsReceivedSentFromAT()}
+                    handleShowTableManifests={()=> handleShowTableManifestsReceivedSentFromAT()}
+                    disableChartButton={!showChartManifestsReceivedSentFromAT}
+                    disableListButton={!showListManifestsReceivedSentFromAT}
+                    disableTableButton={!showTableManifestsReceivedSentFromAT}
+                />
 
                 {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && 
                     <Card>
@@ -252,63 +329,36 @@ export default function VisaoGeralPage() {
                         </div>
                     </Card>}
 
-            </div>
-
-            <Separator className="h-1"/>
-
-            <Table>
-                <TableHeader>
-                    <TableHead colSpan={3} className="text-xl text-center font-semibold">Demonstrativo de saída de resíduos do gerador + armazenamento temporário</TableHead>
-                    <TableRow>
-                        <TableHead>Tipo de resíduo</TableHead>
-                        <TableHead>Estimado</TableHead>
-                        <TableHead>Recebido</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {
-                        detailedReferencePeriodListGerador &&
-                            agruparPorTipoDeResiduo(
-                                [...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)]
-                            ).map(typeWaste => (
-                                <TableRow key={`GERADOR-${typeWaste.resDescricao}`}>
-                                    <TableCell className="font-medium">{typeWaste.resDescricao}</TableCell>
-                                    <TableCell>{typeWaste.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                    <TableCell>{typeWaste.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                </TableRow>
-                            ))
-                    }
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TableCell className="">Total</TableCell>
-                        <TableCell>
-                            {(totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo([
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)])))
-                            .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell>
-                            {(totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)]))
-                            )
-                            .toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </TableCell>
-                    </TableRow>
-                </TableFooter>
-            </Table>
+            {/* </div> */}
 
             <Separator className="h-1"/>
 
             {
-                !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length &&
+                (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length ||
+                !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length) &&
+                    <TabelaDemonstrativaSimples
+                        tipo="Destinador"
+                        title="Demonstrativo de saída de resíduos do gerador + armazenamento temporário"
+                        listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(
+                            [
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                            ]
+                        )}
+                    />
+            }
+
+            <Separator className="h-1"/>
+
+            {
+                (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length &&
+                 !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length) &&
                     <>
                         <TabelaDemonstrativaSimples
                             tipo="Gerador"
-                            title="Demonstrativo de saída de resíduos do armazenamento temporário"
-                            listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                            title="Detalhes da saída de resíduos do gerador + armazenamento temporário"
+                            listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
                         />
 
                         <Separator className="h-1"/>
@@ -316,15 +366,19 @@ export default function VisaoGeralPage() {
             }
 
 
-            <ListaDeMtrs
-                title="Lista de manifestos"
-                listMtrs={[
-                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
-                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
-                ]}
-                authorization={token || ""} 
-                options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
-            />
+            {
+                (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length ||
+                !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length) &&
+                    <ListaDeMtrs
+                        title="Lista de manifestos"
+                        listMtrs={[
+                            ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
+                            ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                        ]}
+                        authorization={token || ""} 
+                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                    />
+            }
 
         </div>
     )

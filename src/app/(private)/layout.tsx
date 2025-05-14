@@ -25,9 +25,9 @@ export default function PrivateLayout({
   const infoUnidadeRef = useRef<HTMLDivElement>(null)
 
   async function handleDisconnect() {
+    await deleteCookie()
     setToken(undefined)
     setLoginResponse(undefined)
-    await deleteCookie()
     redirect('/sign-in')
   }
 

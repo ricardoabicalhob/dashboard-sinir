@@ -238,7 +238,7 @@ export default function DestinadorPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
-                        title="Manifestos pendentes de recebimento (últimos 210 dias)"
+                        title="Manifestos pendentes de recebimento"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento"]}

@@ -80,7 +80,7 @@ export default function GeradorPage() {
         isSuccess: isSuccessList,
         isError: isErrorList,
         error: errorList
-    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
+    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo, profile?.objetoResposta.parCodigo], 
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile, 
@@ -92,7 +92,7 @@ export default function GeradorPage() {
         isSuccess: isSuccessListExtented,
         isError: isErrorListExtented,
         error: errorListExtented
-    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
+    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore, profile?.objetoResposta.parCodigo], 
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
@@ -105,7 +105,7 @@ export default function GeradorPage() {
         isSuccess: isSuccessListExtentedMore,
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
-    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateToBeforeBefore], 
+    } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateToBeforeBefore, profile?.objetoResposta.parCodigo], 
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
