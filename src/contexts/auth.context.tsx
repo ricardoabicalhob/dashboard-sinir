@@ -36,10 +36,6 @@ export function AuthProvider({ children } :AuthProviderProps) {
         })
     }
 
-    // useEffect(()=> {
-    //     initialize()
-    // }, [])
-
     return(
         <AuthContext.Provider value={{
             token, setToken, initialize,

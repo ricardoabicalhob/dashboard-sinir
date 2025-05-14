@@ -13,6 +13,7 @@ import { LogOut } from "lucide-react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
 import logoGestao from "../../public/logo-GRS.png"
+import { cookies } from "next/headers";
 
 export default function PrivateLayout({
   children,
@@ -20,11 +21,12 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }>) {
 
-  const { loginResponse, initialize, setToken } = useContext(AuthContext)
+  const { loginResponse, setLoginResponse, initialize, setToken } = useContext(AuthContext)
   const infoUnidadeRef = useRef<HTMLDivElement>(null)
 
   async function handleDisconnect() {
     setToken(undefined)
+    setLoginResponse(undefined)
     await deleteCookie()
     redirect('/sign-in')
   }

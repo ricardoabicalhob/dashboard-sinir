@@ -20,7 +20,7 @@ import { useQuery } from "react-query"
 
 export default function GeradorPage() {
     const { 
-        loginResponse
+        loginResponse, token
     } = useContext(AuthContext)
     const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
     const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
@@ -84,6 +84,7 @@ export default function GeradorPage() {
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile, 
+        refetchOnMount: true
     })
     
     const {
@@ -95,6 +96,7 @@ export default function GeradorPage() {
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
+        refetchOnMount: true
         }
     )
 
@@ -107,6 +109,7 @@ export default function GeradorPage() {
         async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
+        refetchOnMount: true
         }
     )
     
