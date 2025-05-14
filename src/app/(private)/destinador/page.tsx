@@ -3,7 +3,7 @@
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
-import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle } from "@/components/scoreboard"
+import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
@@ -152,19 +152,19 @@ export default function DestinadorPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardSubtitle>Resíduos gerados para o destinador</ScoreboardSubtitle>
+                    <ScoreboardTitle>Resíduos gerados para o destinador</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardSubtitle>Resíduos recebidos</ScoreboardSubtitle>
+                    <ScoreboardTitle>Resíduos recebidos</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardSubtitle>Resíduos pendentes de recebimento</ScoreboardSubtitle>
+                    <ScoreboardTitle>Resíduos pendentes de recebimento</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
