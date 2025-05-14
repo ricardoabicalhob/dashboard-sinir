@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Form, FormField, FormItem } from "@/components/ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import { subtrairDatasEmDias } from "@/utils/fnUtils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -34,6 +35,17 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
         to: dateRange? dateRange.to : new Date(Date.now())
     })
 
+    const { toast } = useToast()
+
+    const handleErrorMessage = (description :string)=> {
+        toast({
+          duration: 4000,
+          description: <div className="flex items-start gap-2">
+                         <span>{description}</span>
+                       </div>
+        })
+      }
+
     useEffect(()=> {
         if(dateRange) {
             setDefaultStartDate(dateRange)
@@ -55,6 +67,7 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
     function onSubmit(data :periodoSchema) {
         if(data.dateRange && data.dateRange.to && data.dateRange?.from) {
             if(subtrairDatasEmDias(data.dateRange?.from, data.dateRange?.to) > 90) {
+                handleErrorMessage("O intervalo entre as datas não pode ser maior do que 90 dias")
                 throw new Error("O intervalo entre as datas não pode ser maior do que 90 dias")
             } 
             setDateRange(data.dateRange)
