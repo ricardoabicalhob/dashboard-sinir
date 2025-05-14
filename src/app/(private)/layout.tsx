@@ -23,9 +23,9 @@ export default function PrivateLayout({
   const { loginResponse, initialize, setToken } = useContext(AuthContext)
   const infoUnidadeRef = useRef<HTMLDivElement>(null)
 
-  function handleDisconnect() {
+  async function handleDisconnect() {
     setToken(undefined)
-    deleteCookie()
+    await deleteCookie()
     redirect('/sign-in')
   }
 
