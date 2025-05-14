@@ -13,7 +13,6 @@ import { LogOut } from "lucide-react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
 import logoGestao from "../../public/logo-GRS.png"
-import { cookies } from "next/headers";
 
 export default function PrivateLayout({
   children,
