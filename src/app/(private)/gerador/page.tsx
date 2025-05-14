@@ -20,7 +20,7 @@ import { useQuery } from "react-query"
 
 export default function GeradorPage() {
     const { 
-        loginResponse, token
+        loginResponse
     } = useContext(AuthContext)
     const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
     const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
