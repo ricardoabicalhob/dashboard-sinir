@@ -77,7 +77,9 @@ export default function SignIn() {
 
     setCookie(authenticatedUser)
 
-    redirect('/gerador')
+    setTimeout(() => {
+      redirect('/gerador')
+    }, 500);
   }
 
   return (

@@ -1,7 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 import { LoginResponseI } from "./interfaces/login.interface";
 
-const publicRoutes = [
+const publicRoutesConfig = [
   { path: '/sign-in', whenauthenticated: 'redirect' },
 ] as const;
 
@@ -23,7 +23,7 @@ const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in';
 
 export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
-    const publicRoute = publicRoutes.find(route => route.path === path);
+    const publicRoute = publicRoutesConfig.find(route => route.path === path);
     const protectedRoutes = protectedRoutesConfig.find(route => route.path === path)
     const cookie = request.cookies.get('authCookie');
     const authTokenString = cookie?.value || "";
