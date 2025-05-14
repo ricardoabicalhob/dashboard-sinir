@@ -75,11 +75,9 @@ export default function SignIn() {
 
     const authenticatedUser = await response.json()
 
-    setCookie(authenticatedUser)
+    await setCookie(authenticatedUser)
 
-    setTimeout(() => {
-      redirect('/gerador')
-    }, 500);
+    redirect('/gerador')
   }
 
   return (
