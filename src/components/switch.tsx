@@ -29,7 +29,7 @@ const SwitchButton = React.forwardRef<
         ref={ref}
         disabled={disableButton}
         onClick={()=> setDisableButton()}
-        className={ cn("flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl", className) }
+        className={ cn("flex w-fit h-fit py-2 px-3 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl", className) }
         { ...props }
     >
         { children }
