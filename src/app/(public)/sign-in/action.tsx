@@ -14,7 +14,7 @@ export default async function setCookie(token: string) {
   
   try {
     const cookieStore = await cookies();
-    cookieStore.set('authCookie', JSON.stringify(token), cookieOptions)
+    cookieStore.set('authCookie', token, cookieOptions)
   } catch (error) {
     console.error('Error setting cookie:', error);
     return NextResponse.json({ message: 'Error setting cookie' }, { status: 500 });

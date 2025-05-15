@@ -14,6 +14,7 @@ import logoCaminhao from "../../../public/logo-Caminhao.png"
 import { useToast } from "@/hooks/use-toast"
 import { Ban } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { LoginResponseI } from "@/interfaces/login.interface"
 
 const figtree = Figtree({ weight: '600', subsets: ['latin'] });
 
@@ -46,6 +47,15 @@ export default function SignIn() {
     })
   }
 
+  const handleSuccessfulMessage = (description :string)=> {
+    toast({
+      duration: 2000,
+      description: <div className="flex items-center gap-2">
+                      <span>{description}</span>
+                   </div>
+    })
+  }
+
   const {
     register,
     handleSubmit,
@@ -73,9 +83,11 @@ export default function SignIn() {
       return
     }
 
-    const authenticatedUser = await response.json()
+    const authenticatedUser = await response.json() as LoginResponseI
 
-    await setCookie(authenticatedUser)
+    handleSuccessfulMessage(`Olá, ${authenticatedUser.objetoResposta.paaNome}`)
+
+    await setCookie(JSON.stringify(authenticatedUser))
 
     redirect('/gerador')
   }

@@ -4,8 +4,8 @@ import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
 import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
+import { Switch, SwitchButton } from "@/components/switch"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
-import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -15,7 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { Info } from "lucide-react"
+import { ChartColumnBig, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -216,12 +216,20 @@ export default function ArmazenadorTemporarioPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
-                handleShowListManifests={()=> handleShowListManifestsGenerated()}
-                disableChartButton={!hideChartManifestsGenerated}
-                disableListButton={hideChartManifestsGenerated}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsGenerated}
+                    setDisableButton={()=> handleShowChartManifestsGenerated()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsGenerated}
+                    setDisableButton={()=> handleShowListManifestsGenerated()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
             {
                 !hideChartManifestsReceived &&
@@ -243,12 +251,20 @@ export default function ArmazenadorTemporarioPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
-                handleShowListManifests={()=> handleShowListManifestsReceived()}
-                disableChartButton={!hideChartManifestsReceived}
-                disableListButton={hideChartManifestsReceived}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsReceived}
+                    setDisableButton={()=> handleShowChartManifestsReceived()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsReceived}
+                    setDisableButton={()=> handleShowListManifestsReceived()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
             {
                 !hideChartManifestsSending &&
@@ -270,12 +286,20 @@ export default function ArmazenadorTemporarioPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsSending()}
-                handleShowListManifests={()=> handleShowListManifestsSending()}
-                disableChartButton={!hideChartManifestsSending}
-                disableListButton={hideChartManifestsSending}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsSending}
+                    setDisableButton={()=> handleShowChartManifestsSending()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsSending}
+                    setDisableButton={()=> handleShowListManifestsSending()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
             {
                 !hideChartManifestsStock &&
@@ -297,12 +321,20 @@ export default function ArmazenadorTemporarioPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsStock()}
-                handleShowListManifests={()=> handleShowListManifestsStock()}
-                disableChartButton={!hideChartManifestsStock}
-                disableListButton={hideChartManifestsStock}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsStock}
+                    setDisableButton={()=> handleShowChartManifestsStock()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsStock}
+                    setDisableButton={()=> handleShowListManifestsStock()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
         </div>
     )

@@ -2,7 +2,7 @@
 
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
-import SwitchBetweenChartAndListAndTable from "@/components/switchBetweenChartAndListAndTable"
+import { Switch, SwitchButton } from "@/components/switch"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import { Card } from "@/components/ui/card"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
@@ -16,7 +16,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { Info } from "lucide-react"
+import { ChartColumnBig, Info, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -39,6 +39,7 @@ export default function VisaoGeralPage() {
     const [ showChartManifestsReceivedSentFromAT, setShowChartManifestsReceivedSentFromAT ] = useState(false)
     const [ showListManifestsReceivedSentFromAT, setShowListManifestsReceivedSentFromAT ] = useState(true)
     const [ showTableManifestsReceivedSentFromAT, setShowTableManifestsReceivedSentFromAT ] = useState(true)
+    const [ showTableATOriginDetails, setShowTableATOriginDetails ] = useState(true)
     
     function handleShowTableManifestsReceivedSentFromTheGenerator() {
         setShowTableManifestsReceivedSentFromTheGenerator(false)
@@ -62,16 +63,27 @@ export default function VisaoGeralPage() {
         setShowTableManifestsReceivedSentFromAT(false)
         setShowListManifestsReceivedSentFromAT(true)
         setShowChartManifestsReceivedSentFromAT(true)
+        setShowTableATOriginDetails(true)
     }
 
     function handleShowListManifestsReceivedSentFromAT() {
         setShowListManifestsReceivedSentFromAT(false)
         setShowChartManifestsReceivedSentFromAT(true)
         setShowTableManifestsReceivedSentFromAT(true)
+        setShowTableATOriginDetails(true)
+
     }
 
     function handleShowChartManifestsReceivedSentFromAT() {
         setShowChartManifestsReceivedSentFromAT(false)
+        setShowListManifestsReceivedSentFromAT(true)
+        setShowTableManifestsReceivedSentFromAT(true)
+        setShowTableATOriginDetails(true)
+    }
+
+    function handleShowTableATOriginDetails() {
+        setShowTableATOriginDetails(false)
+        setShowChartManifestsReceivedSentFromAT(true)
         setShowListManifestsReceivedSentFromAT(true)
         setShowTableManifestsReceivedSentFromAT(true)
     }
@@ -266,14 +278,26 @@ export default function VisaoGeralPage() {
                         listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                     />}
 
-                <SwitchBetweenChartAndListAndTable
-                    handleShowChartManifests={()=> handleShowChartManifestsReceivedSentFromTheGenerator()}
-                    handleShowListManifests={()=> handleShowListManifestsReceivedSentFromTheGenerator()}
-                    handleShowTableManifests={()=> handleShowTableManifestsReceivedSentFromTheGenerator()}
-                    disableChartButton={!showChartManifestsReceivedSentFromTheGenerator}
-                    disableListButton={!showListManifestsReceivedSentFromTheGenerator}
-                    disableTableButton={!showTableManifestsReceivedSentFromTheGenerator}
-                />
+                <Switch>
+                    <SwitchButton
+                        disableButton={!showChartManifestsReceivedSentFromTheGenerator}
+                        setDisableButton={()=> handleShowChartManifestsReceivedSentFromTheGenerator()}
+                    >
+                        <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    </SwitchButton>
+                    <SwitchButton
+                        disableButton={!showListManifestsReceivedSentFromTheGenerator}
+                        setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGenerator()}
+                    >
+                        <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    </SwitchButton>
+                    <SwitchButton
+                        disableButton={!showTableManifestsReceivedSentFromTheGenerator}
+                        setDisableButton={()=> handleShowTableManifestsReceivedSentFromTheGenerator()}
+                    >
+                        <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    </SwitchButton>
+                </Switch>
 
                 {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length && 
                     <Card>
@@ -302,6 +326,13 @@ export default function VisaoGeralPage() {
                         options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
                     />}
 
+                {!showTableATOriginDetails &&
+                    <TabelaDemonstrativaSimples
+                        tipo="Gerador"
+                        title="Detalhes de origem dos resíduos (saída do armazenamento temporário)"
+                        listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
+                    />}
+
                 {!showTableManifestsReceivedSentFromAT &&
                     <TabelaDemonstrativaSimples
                         tipo="Destinador"
@@ -309,14 +340,32 @@ export default function VisaoGeralPage() {
                         listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                     />}
 
-                <SwitchBetweenChartAndListAndTable
-                    handleShowChartManifests={()=> handleShowChartManifestsReceivedSentFromAT()}
-                    handleShowListManifests={()=> handleShowListManifestsReceivedSentFromAT()}
-                    handleShowTableManifests={()=> handleShowTableManifestsReceivedSentFromAT()}
-                    disableChartButton={!showChartManifestsReceivedSentFromAT}
-                    disableListButton={!showListManifestsReceivedSentFromAT}
-                    disableTableButton={!showTableManifestsReceivedSentFromAT}
-                />
+                <Switch>
+                    <SwitchButton
+                        disableButton={!showChartManifestsReceivedSentFromAT}
+                        setDisableButton={()=> handleShowChartManifestsReceivedSentFromAT()}
+                    >
+                        <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    </SwitchButton>
+                    <SwitchButton
+                        disableButton={!showListManifestsReceivedSentFromAT}
+                        setDisableButton={()=> handleShowListManifestsReceivedSentFromAT()}
+                    >
+                        <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    </SwitchButton>
+                    <SwitchButton
+                        disableButton={!showTableATOriginDetails}
+                        setDisableButton={()=> handleShowTableATOriginDetails()}
+                    >
+                        <Sheet className="w-4 h-4 text-white"/> Detalhes da origem
+                    </SwitchButton>
+                    <SwitchButton
+                        disableButton={!showTableManifestsReceivedSentFromAT}
+                        setDisableButton={()=> handleShowTableManifestsReceivedSentFromAT()}
+                    >
+                        <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    </SwitchButton>
+                </Switch>
 
                 {!!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length && 
                     <Card>

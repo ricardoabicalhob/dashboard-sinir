@@ -54,7 +54,14 @@ export function agruparPorDestinador(listMtrs: MTRResponseI[]): MTRResponseI[][]
     });
   
     return Object.values(groupedByDestinador);
-  }
+}
+
+export function agruparPorGeradorEDestinador(listMtrs :MTRResponseI[]): MTRResponseI[][][] {
+    const groupedByGeradorEDestinador = agruparPorDestinador(listMtrs).map(destinador => {
+        return agruparPorGerador(destinador)
+    })
+    return groupedByGeradorEDestinador
+}
 
 export function agruparPorGerador(listMtrs: MTRResponseI[]): MTRResponseI[][] {
     const grupos: { [key: string]: MTRResponseI[] } = {};

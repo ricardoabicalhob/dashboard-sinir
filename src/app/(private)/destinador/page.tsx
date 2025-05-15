@@ -4,8 +4,8 @@ import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import GraficoSimples from "@/components/graficoSimples"
 import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
+import { Switch, SwitchButton } from "@/components/switch"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
-import SwitchBetweenChartAndList from "@/components/ui/switchBetweenChartAndList"
 import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
@@ -15,6 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
+import { ChartColumnBig, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -191,12 +192,20 @@ export default function DestinadorPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsGenerated()}
-                handleShowListManifests={()=> handleShowListManifestsGenerated()}
-                disableChartButton={!hideChartManifestsGenerated}
-                disableListButton={hideChartManifestsGenerated}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsGenerated}
+                    setDisableButton={()=> handleShowChartManifestsGenerated()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsGenerated}
+                    setDisableButton={()=> handleShowListManifestsGenerated()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
     
             {
                 !hideChartManifestsReceived &&
@@ -218,12 +227,20 @@ export default function DestinadorPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsReceived()}
-                handleShowListManifests={()=> handleShowListManifestsReceived()}
-                disableChartButton={!hideChartManifestsReceived}
-                disableListButton={hideChartManifestsReceived}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsReceived}
+                    setDisableButton={()=> handleShowChartManifestsReceived()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsReceived}
+                    setDisableButton={()=> handleShowListManifestsReceived()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
             {
                 !hideChartManifestsPending &&
@@ -245,12 +262,20 @@ export default function DestinadorPage() {
                     />
             }
 
-            <SwitchBetweenChartAndList
-                handleShowChartManifests={()=> handleShowChartManifestsPending()}
-                handleShowListManifests={()=> handleShowListManifestsPending()}
-                disableChartButton={!hideChartManifestsPending}
-                disableListButton={hideChartManifestsPending}
-            />
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsPending}
+                    setDisableButton={()=> handleShowChartManifestsPending()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsPending}
+                    setDisableButton={()=> handleShowListManifestsPending()}
+                >
+                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                </SwitchButton>
+            </Switch>
 
         </div>
     )

@@ -12,10 +12,10 @@ interface SwitchBetweenChartAndListProps {
 
 export default function SwitchBetweenChartAndListAndTable({ handleShowChartManifests, handleShowListManifests, handleShowTableManifests, disableChartButton, disableListButton, disableTableButton } :SwitchBetweenChartAndListProps) {
     
-    return(
+    return( 
         <div className="flex gap-2 -mt-4">
             <Button 
-                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl cursor-pointer"
+                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl"
                 onClick={()=> {
                     handleShowChartManifests()
                 }}  
@@ -26,7 +26,7 @@ export default function SwitchBetweenChartAndListAndTable({ handleShowChartManif
 
             
             <Button 
-                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl cursor-pointer"
+                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl"
                 onClick={()=> {
                     handleShowListManifests()
                 }}
@@ -36,7 +36,7 @@ export default function SwitchBetweenChartAndListAndTable({ handleShowChartManif
             </Button>
 
             <Button 
-                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl cursor-pointer"
+                className="flex w-fit h-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD480] shadow-md shadow-gray-500 rounded-xl"
                 onClick={()=> {
                     handleShowTableManifests()
                 }}
