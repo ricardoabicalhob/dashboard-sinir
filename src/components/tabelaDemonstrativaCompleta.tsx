@@ -34,7 +34,7 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                 <p className="text-gray-500 text-xl text-center font-semibold">{title}</p>
                 {
                     listaAgrupadaPorDestinadorOuGerador.map(destinador => (
-                        <div className="w-full">
+                        <div key={`DESTINADOR-${destinador[0][0].parceiroDestinador.parCodigo}`} className="w-full">
                             
                             <Table>
                                 <TableHeader>
@@ -52,7 +52,7 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                                 </TableHeader>
                                 <TableBody>
                                     {destinador.map(manifestosGerador => (
-                                        <Fragment key={`DESTINADOR-DETAILS-${manifestosGerador[0].parceiroGerador.parCodigo}`}>
+                                        <Fragment key={`GERADOR-DETAILS-${manifestosGerador[0].parceiroGerador.parCodigo}`}>
                                             <TableRow>
                                                 <TableCell className="font-semibold pl-6">{`${manifestosGerador[0].parceiroGerador.parCodigo} - ${manifestosGerador[0].parceiroGerador.parDescricao}`}</TableCell>
                                             </TableRow>

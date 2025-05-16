@@ -1,6 +1,6 @@
 import { FileText, Printer } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "./card";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { downloadMtr } from "@/repositories/downloadMtr";
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
