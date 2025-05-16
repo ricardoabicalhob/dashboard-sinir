@@ -461,7 +461,7 @@ export default function VisaoGeralPage() {
                     <>
                         <TabelaDemonstrativaSimples 
                             tipo="Destinador"
-                            title="Resumo da destinação de resíduos do gerador + armazenador temporário"
+                            title="Detalhes da destinação de resíduos do gerador + armazenador temporário"
                             listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
