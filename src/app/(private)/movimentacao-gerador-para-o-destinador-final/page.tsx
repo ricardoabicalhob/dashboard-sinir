@@ -165,7 +165,7 @@ export default function MovimentacaoParaDFPage() {
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
-                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
                 </ScoreboardItem>
             </Scoreboard>
@@ -183,7 +183,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !showListManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos recebidos no destinador final"
+                        title="Manifestos enviados"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento", "Situação"]}
@@ -223,7 +223,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples
-                        title="Resíduos pendentes de recebimento no destinador final"
+                        title="Resíduos pendentes"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
@@ -233,7 +233,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
-                        title="Manifestos pendentes de recebimento no destinador final"
+                        title="Manifestos pendentes"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento", "Situação"]}

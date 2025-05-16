@@ -167,7 +167,7 @@ export default function GeradorPage() {
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos gerados</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
-                    <ScoreboardMainText>{ totalizarQuantidadeApontadaNoManifesto((agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardMainText className="text-gray-400">{ totalizarQuantidadeApontadaNoManifesto((agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
@@ -179,7 +179,7 @@ export default function GeradorPage() {
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
-                    <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>
                 </ScoreboardItem>
             </Scoreboard>
@@ -222,7 +222,7 @@ export default function GeradorPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Resíduos recebidos no destinador final"
+                        title="Resíduos destinados"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -232,7 +232,7 @@ export default function GeradorPage() {
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos recebidos no destinador final"
+                        title="Manifestos enviados"
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento","Situação"]}
@@ -257,7 +257,7 @@ export default function GeradorPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Resíduos pendentes de recebimento no destinador final"
+                        title="Resíduos pendentes"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
@@ -267,7 +267,7 @@ export default function GeradorPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
-                        title="Manifestos pendentes de recebimento no destinador final"
+                        title="Manifestos pendentes"
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}

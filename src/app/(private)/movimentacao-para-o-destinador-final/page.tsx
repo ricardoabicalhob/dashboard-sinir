@@ -320,7 +320,7 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromTheGenerator &&
                 <ListaDeMtrs
-                    title="Manifestos recebidos no destinador (saída do gerador)"
+                    title="Manifestos enviados"
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
                     options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
@@ -329,7 +329,7 @@ export default function VisaoGeralPage() {
             {!showTableManifestsReceivedSentFromTheGenerator &&
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
-                    title="Detalhes da destinação (saída do gerador)"
+                    title="Detalhes da destinação - Saída do gerador"
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                 />}
 
@@ -364,7 +364,7 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromAT &&
                 <ListaDeMtrs
-                    title="Manifestos recebidos no destinador (saída do armazenamento temporário)"
+                    title="Manifestos enviados"
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
                     options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
@@ -373,14 +373,14 @@ export default function VisaoGeralPage() {
             {!showTableATOriginDetails &&
                 <TabelaDemonstrativaSimples
                     tipo="Gerador"
-                    title="Detalhes de origem dos resíduos (saída do armazenamento temporário)"
+                    title="Detalhes de origem dos resíduos de saída do armazenamento temporário"
                     listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />}
 
             {!showTableManifestsReceivedSentFromAT &&
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
-                    title="Detalhes da destinação (saída do armazenamento temporário)"
+                    title="Detalhes da destinação - Saída do armazenamento temporário"
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />}
 
@@ -430,7 +430,7 @@ export default function VisaoGeralPage() {
                 (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length ||
                 !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length) &&
                     <ListaDeMtrs
-                        title="Manifestos recebidos (saída de resíduos do gerador + armazenamento temporário)"
+                        title="Manifestos enviados"
                         listMtrs={[
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
@@ -446,7 +446,7 @@ export default function VisaoGeralPage() {
                     <>
                         <TabelaDemonstrativaSimples
                             tipo="Gerador"
-                            title="Detalhes da saída de resíduos do gerador + armazenamento temporário"
+                            title="Detalhes de origem dos resíduos enviados"
                             listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
                         />
@@ -461,7 +461,7 @@ export default function VisaoGeralPage() {
                     <>
                         <TabelaDemonstrativaSimples 
                             tipo="Destinador"
-                            title="Detalhes da destinação de resíduos do gerador + armazenador temporário"
+                            title="Detalhes de destinação dos resíduos enviados"
                             listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
