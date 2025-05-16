@@ -15,7 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, List } from "lucide-react"
+import { ChartColumnBig, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -150,6 +150,15 @@ export default function GeradorPage() {
     
     if (isLoadingDetails) return <CustomMessage message="Carregando detalhes dos MTRs..."/>
     if (isErrorDetails && errorDetails) return <p className="flex w-full justify-center text-center bg-red-400">Erro ao carregar detalhes dos MTRs: {errorDetails.message}</p>;
+
+    if(!allMtrs.length) {
+        return(
+            <div className="flex gap-2 w-full h-[calc(100vh-117px)] items-center justify-center text-black/80">
+                <Info />
+                <p>Não há nada para exibir para este gerador</p>
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col gap-6 p-6">
