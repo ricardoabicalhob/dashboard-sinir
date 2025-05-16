@@ -1,6 +1,6 @@
 import { FileText, Printer } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "./card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./table";
 import { downloadMtr } from "@/repositories/downloadMtr";
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
@@ -41,7 +41,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, options } 
             <CardHeader>
                 <CardTitle className="text-xl text-black/50 text-center font-semibold">{title}</CardTitle>
             </CardHeader>
-            <div className="flex h-[373px] p-2 rounded-md shadow-sm">
+            <div className="flex flex-col justify-between h-[373px] p-2 rounded-md shadow-sm">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -92,6 +92,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, options } 
                         }
                     </TableBody>
                 </Table>
+                <span className="text-sm font-light">{`${listMtrs.length} manifestos`}</span>
             </div>
         </Card>
     )

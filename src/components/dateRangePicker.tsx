@@ -112,6 +112,7 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
                         <Calendar
                             initialFocus
                             mode="range"
+                            toDate={new Date(Date.now())}
                             defaultMonth={field.value?.from}
                             selected={field.value}
                             onSelect={field.onChange}

@@ -10,7 +10,7 @@ const Scoreboard = React.forwardRef<
         className={ cn("rounded-xl border bg-card text-card-foreground shadow p-6", className) }
         { ...props }
     >
-        <div className="grid grid-flow-col gap-2 divide-x">
+        <div className="grid grid-flow-col gap-2 divide-x auto-cols-fr">
             {children}    
         </div>            
     </div>
@@ -23,7 +23,7 @@ const ScoreboardItem = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
     <div
         ref={ref}
-        className={ cn("flex flex-col items-center gap-2", className) }
+        className={ cn("flex flex-col items-center justify-between gap-2", className) }
         { ...props }
     >
         {children}
@@ -37,7 +37,7 @@ const ScoreboardTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <p
     ref={ref}
-    className={ cn("font-normal", className) }
+    className={ cn("font-normal text-center px-4", className) }
     {...props}
   >
     {children}
