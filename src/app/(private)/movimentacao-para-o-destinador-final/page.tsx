@@ -143,7 +143,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListGerador,
         error: errorListGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 1, dateFrom], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile, 
     })
@@ -154,7 +154,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedGerador,
         error: errorListExtentedGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 2, dateFromBefore], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }
@@ -166,7 +166,7 @@ export default function VisaoGeralPage() {
         isError: isErrorListExtentedMoreGerador,
         error: errorListExtentedMoreGerador
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrsGerador', 3, dateFromBeforeBefore], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }

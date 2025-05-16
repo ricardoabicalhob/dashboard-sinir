@@ -84,7 +84,7 @@ export default function DestinadorPage() {
         isError: isErrorList,
         error: errorList
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -95,7 +95,7 @@ export default function DestinadorPage() {
         isError: isErrorListExtented,
         error: errorListExtented
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -106,7 +106,7 @@ export default function DestinadorPage() {
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateFromBeforeBefore], 
-        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Destinador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
