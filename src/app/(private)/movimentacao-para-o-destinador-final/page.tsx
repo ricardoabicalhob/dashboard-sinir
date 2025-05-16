@@ -312,7 +312,7 @@ export default function VisaoGeralPage() {
 
             {!showChartManifestsReceivedSentFromTheGenerator &&
                 <GraficoBarraDupla
-                    title="Resíduos recebidos no destinador (saída do gerador)"
+                    title="Movimentação de gerador para destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
                     dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
@@ -356,7 +356,7 @@ export default function VisaoGeralPage() {
 
             {!showChartManifestsReceivedSentFromAT &&
                 <GraficoBarraDupla
-                    title="Resíduos recebidos no destinador (saída do armazenamento temporário)"
+                    title="Movimentação de armazenamento temporário para destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
                     dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
@@ -413,7 +413,7 @@ export default function VisaoGeralPage() {
 
             {!showChartManifestsReceivedSentFromTheGeneratorAndAT &&
                 <GraficoBarraDupla 
-                    title="Total de destinação de resíduos (saída de resíduos do gerador + armazenamento temporário)"
+                    title="Movimentação total para destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
