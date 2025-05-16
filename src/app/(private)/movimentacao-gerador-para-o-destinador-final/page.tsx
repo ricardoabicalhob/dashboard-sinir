@@ -157,13 +157,13 @@ export default function MovimentacaoParaDFPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no destinador final</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos movimentados para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos pendentes de recebimento</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade apontada no MTR</ScoreboardSubtitle>

@@ -288,19 +288,19 @@ export default function VisaoGeralPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no destinador (saída do gerador)</ScoreboardTitle>
+                    <ScoreboardTitle>Movimentação de gerador para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no destinador (saída do armazenamento temporário)</ScoreboardTitle>
+                    <ScoreboardTitle>Movimentação de armazenamento temporário para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no destinador (saída do gerador + armazenamento temporário)</ScoreboardTitle>
+                    <ScoreboardTitle>Movimentação total para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
