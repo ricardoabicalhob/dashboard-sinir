@@ -344,7 +344,7 @@ export default function VisaoGeralPage() {
                     disableButton={!showListManifestsReceivedSentFromTheGenerator}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGenerator()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableManifestsReceivedSentFromTheGenerator}
@@ -395,7 +395,7 @@ export default function VisaoGeralPage() {
                     disableButton={!showListManifestsReceivedSentFromAT}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromAT()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableATOriginDetails}
@@ -488,7 +488,7 @@ export default function VisaoGeralPage() {
                     disableButton={!showListManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT}

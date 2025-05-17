@@ -215,7 +215,7 @@ export default function GeradorPage() {
                     disableButton={hideChartManifestsIssued}
                     setDisableButton={()=> handleShowListManifestsIssued()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -250,7 +250,7 @@ export default function GeradorPage() {
                     disableButton={hideChartManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -285,7 +285,7 @@ export default function GeradorPage() {
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 

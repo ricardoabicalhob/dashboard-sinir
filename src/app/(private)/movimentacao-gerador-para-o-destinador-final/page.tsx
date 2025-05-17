@@ -210,7 +210,7 @@ export default function MovimentacaoParaDFPage() {
                     disableButton={!showListManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableManifestsReceived}
@@ -251,7 +251,7 @@ export default function MovimentacaoParaDFPage() {
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 

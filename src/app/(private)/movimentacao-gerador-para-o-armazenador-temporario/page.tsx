@@ -203,7 +203,7 @@ export default function MovimentacaoParaATPage() {
                     disableButton={hideChartManifestsIssued}
                     setDisableButton={()=> handleShowListManifestsIssued()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -238,7 +238,7 @@ export default function MovimentacaoParaATPage() {
                     disableButton={hideChartManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -273,7 +273,7 @@ export default function MovimentacaoParaATPage() {
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 

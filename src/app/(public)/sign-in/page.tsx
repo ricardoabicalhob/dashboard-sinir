@@ -10,7 +10,7 @@ import { redirect } from "next/navigation"
 import { Figtree } from 'next/font/google'
 import Image from "next/image"
 import logoSinir from "../../../public/logo_sinir_negativa1.png"
-import logoCaminhao from "../../../public/logo-Caminhao.png"
+import logoCaminhao from "../../../public/new-logo.png"
 import { useToast } from "@/hooks/use-toast"
 import { Ban } from "lucide-react"
 import { Separator } from "@/components/ui/separator"

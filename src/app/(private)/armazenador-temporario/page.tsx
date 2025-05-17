@@ -227,7 +227,7 @@ export default function ArmazenadorTemporarioPage() {
                     disableButton={hideChartManifestsGenerated}
                     setDisableButton={()=> handleShowListManifestsGenerated()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -262,7 +262,7 @@ export default function ArmazenadorTemporarioPage() {
                     disableButton={hideChartManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -297,7 +297,7 @@ export default function ArmazenadorTemporarioPage() {
                     disableButton={hideChartManifestsSending}
                     setDisableButton={()=> handleShowListManifestsSending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 
@@ -332,7 +332,7 @@ export default function ArmazenadorTemporarioPage() {
                     disableButton={hideChartManifestsStock}
                     setDisableButton={()=> handleShowListManifestsStock()}
                 >
-                    <List className="w-4 h-4 text-white"/> Lista de manifestos
+                    <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
 

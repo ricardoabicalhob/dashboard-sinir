@@ -12,7 +12,7 @@ import { AuthContext } from "@/contexts/auth.context";
 import { LogOut } from "lucide-react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
-import logoGestao from "../../public/logo-GRS.png"
+import logoGestao from "../../public/new-logo-2-com-texto.png"
 import { Toaster } from "@/components/ui/toaster";
 
 export default function PrivateLayout({
