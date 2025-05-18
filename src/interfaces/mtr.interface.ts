@@ -104,6 +104,7 @@ export interface MTRLocalResponseI {
             manPlacaVeiculo: string;
             manObservacao: string | null; // Pode ser null
             manJustificativaCancelamento: string;
+            manHashCode :string
             estado: {
                 estCodigo: number;
                 estAbreviacao: string;

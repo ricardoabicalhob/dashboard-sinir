@@ -3,7 +3,7 @@ import "../app/globals.css";
 import { AuthProvider } from "@/contexts/auth.context";
 
 export const metadata: Metadata = {
-  title: "Gestão de Resíduos - SINIR",
+  title: "Gestão de Resíduos - Integrada ao SINIR",
   description: "Ferramenta de análise para gestão de resíduos integrada ao SINIR",
 };
 

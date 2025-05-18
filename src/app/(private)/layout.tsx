@@ -92,7 +92,7 @@ export default function PrivateLayout({
     } = useContext(SystemContext)
 
     return(
-      <div className="flex items-center px-2 divide-x divide-gray-300 h-12 w-full bg-white">
+      <div className="flex items-center px-2 border-b border-b-gray-200 divide-x divide-gray-300 h-12 w-full bg-white">
         <DateRangePicker dateRange={dateRange} setDateRange={setDateRange}/>
 
         { perfil.gerador &&

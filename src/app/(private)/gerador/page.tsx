@@ -23,6 +23,11 @@ export default function GeradorPage() {
     const { 
         loginResponse
     } = useContext(AuthContext)
+    
+    const {
+        dateRange
+    } = useContext(SystemContext)
+    
     const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
     const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
     const dateFromBefore = subDays(dateFrom, 90)
@@ -58,10 +63,6 @@ export default function GeradorPage() {
     function handleShowListManifestsPending() {
         setHideChartManifestsPending(true)
     }
-
-    const {
-        dateRange
-    } = useContext(SystemContext)
 
     useEffect(()=> {
         if(dateRange) {
