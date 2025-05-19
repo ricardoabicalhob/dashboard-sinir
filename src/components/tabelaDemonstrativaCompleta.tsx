@@ -2,7 +2,7 @@ import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { Card } from "./ui/card";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./ui/table";
 import { agruparPorTipoDeResiduo } from "@/utils/fnFilters";
-import { totalizarQuantidadeApontadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils";
+import { totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils";
 import { Fragment, useEffect, useRef } from "react";
 
 interface TabelaDemonstrativaSimplesProps {
@@ -79,7 +79,7 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                                                             <TableFooter className="bg-gray-100">
                                                                 <TableRow>
                                                                     <TableCell style={{ width: residuoColumnWidth }}>Total</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeApontadaNoManifesto(agruparPorTipoDeResiduo(manifestosGerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(manifestosGerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                     <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(manifestosGerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                 </TableRow>
                                                             </TableFooter>

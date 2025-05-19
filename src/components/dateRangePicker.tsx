@@ -39,9 +39,10 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
 
     const handleErrorMessage = (description :string)=> {
         toast({
+          variant: "destructive",  
           duration: 4000,
           description: <div className="flex items-start gap-2">
-                         <span>{description}</span>
+                         <span className="font-semibold">{description}</span>
                        </div>
         })
       }

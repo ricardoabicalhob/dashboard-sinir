@@ -10,12 +10,13 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
+import generatePdfDownload from "@/repositories/generatePdfDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, List, Sheet } from "lucide-react"
+import { ChartColumnBig, List, Save, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -490,6 +491,19 @@ export default function VisaoGeralPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    !showListManifestsReceivedSentFromTheGeneratorAndAT &&
+                        <SwitchButton
+                            onClick={()=> generatePdfDownload("Manifestos Enviados para o Destinador Final", [
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                            ])}
+                            disableButton={showListManifestsReceivedSentFromTheGeneratorAndAT}
+                            setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
+                        >
+                            <Save /> Lista em PDF
+                        </SwitchButton>
+                }
                 <SwitchButton
                     disableButton={!showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowTableDetailsManifestsReceivedSentFromTheGeneratorAndAT()}

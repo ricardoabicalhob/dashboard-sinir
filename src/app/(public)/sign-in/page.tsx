@@ -35,14 +35,14 @@ type userSchema = z.infer<typeof userSchema>
 export default function SignIn() {
 
   const { toast } = useToast()
-  // const { setLoginResponse, loginResponse } = useContext(AuthContext)
   
   const handleErrorMessage = (description :string)=> {
     toast({
+      variant: "destructive",
       duration: 2000,
       description: <div className="flex items-center gap-2">
                      <Ban className="w-4 h-4"/>
-                     <span>{description}</span>
+                     <span className="font-semibold">{description}</span>
                    </div>
     })
   }
@@ -51,7 +51,7 @@ export default function SignIn() {
     toast({
       duration: 2000,
       description: <div className="flex items-center gap-2">
-                      <span>{description}</span>
+                      <span className="font-semibold">{description}</span>
                    </div>
     })
   }

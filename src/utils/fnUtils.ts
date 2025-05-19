@@ -44,7 +44,7 @@ export function totalizarQuantidadeRecebida(dataToTotalize :GroupByWasteTypeOutp
     return totalReceived
 }
 
-export function totalizarQuantidadeApontadaNoManifesto(dataToTotalize :GroupByWasteTypeOutput[]) {
+export function totalizarQuantidadeIndicadaNoManifesto(dataToTotalize :GroupByWasteTypeOutput[]) {
     const totalEstimated = dataToTotalize.reduce((acumulador, item) => {
         return acumulador += item.quantidadeEstimada
     }, 0)
