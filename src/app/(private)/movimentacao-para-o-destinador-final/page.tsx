@@ -494,10 +494,10 @@ export default function VisaoGeralPage() {
                 {
                     !showListManifestsReceivedSentFromTheGeneratorAndAT &&
                         <SwitchButton
-                            onClick={()=> generatePdfDownload("Manifestos Enviados para o Destinador Final", [
+                            onClick={()=> generatePdfDownload("Manifestos Enviados para o Destinador Final", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
-                            ])}
+                            ]))}
                             disableButton={showListManifestsReceivedSentFromTheGeneratorAndAT}
                             setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
                         >

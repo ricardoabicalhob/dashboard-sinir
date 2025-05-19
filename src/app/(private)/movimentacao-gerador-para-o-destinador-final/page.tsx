@@ -11,12 +11,13 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
+import generatePdfDownload from "@/repositories/generatePdfDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, List, Sheet } from "lucide-react"
+import { ChartColumnBig, List, Save, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -213,6 +214,16 @@ export default function MovimentacaoParaDFPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    !showListManifestsReceived &&
+                        <SwitchButton
+                            onClick={()=> generatePdfDownload("Manifestos Enviados para o Destinador Final", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                            disableButton={showListManifestsReceived}
+                            setDisableButton={()=> handleShowListManifestsReceived()}
+                        >
+                            <Save /> Lista em PDF
+                        </SwitchButton>
+                }
                 <SwitchButton
                     disableButton={!showTableManifestsReceived}
                     setDisableButton={()=> handleShowTableManifestsReceived()}
@@ -254,6 +265,7 @@ export default function MovimentacaoParaDFPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                
             </Switch>
 
         </div>
