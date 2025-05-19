@@ -4,20 +4,20 @@ import { MTRResponseI } from "@/interfaces/mtr.interface";
 
 export default function generatePdfDownload(titulo :string, periodo :string, listMtrs :MTRResponseI[][]) {
     
-    const doc = new jsPDF()
-    let startY = 10
+    const doc = new jsPDF('landscape', 'pt', 'a4')
+    let startY = 25
     const pageWidth = doc.internal.pageSize.getWidth()
-    doc.setFontSize(14)
+    doc.setFontSize(16)
     const mainTitleWidth = doc.getTextWidth(titulo)
     const mainTitleX = (pageWidth - mainTitleWidth) / 2
     doc.text(titulo, mainTitleX, startY)
-    startY += 10
+    startY += 15
 
     listMtrs.forEach((destinador, index) => {
         if(destinador.length > 0) {
             if(index > 0) {
                 doc.addPage()
-                startY = 10
+                startY = 25
             }
 
             const primeiroMtr = destinador[0]
@@ -27,19 +27,21 @@ export default function generatePdfDownload(titulo :string, periodo :string, lis
             const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}`)
             const destinadorTitleX = (pageWidth - destinadorTitleWidth) / 2
             doc.text(`Destinador: ${destinadorNome}`, destinadorTitleX, startY + 5)
-            startY += 15
-            
+            startY += 20
+
+            doc.setFontSize(12)
             const periodoTitleWidth = doc.getTextWidth(`Período: ${periodo}`)
             const periodoTitleX = (pageWidth - periodoTitleWidth) / 2
             doc.text(`Período: ${periodo}`, periodoTitleX, startY + 5)
             startY += 15
 
-            const colunas = ["Número MTR", "Data Emissão", "Gerador", "Data Recebimento", "Quantidade"]
+            const colunas = ["Número MTR", "Data Emissão", "Gerador", "Data Recebimento", "Quantidade Indicada no MTR", "Quantidade Recebida"]
             const linhas = destinador.map(mtr => [
                 mtr.manNumero,
                 new Date(mtr.manData).toLocaleDateString("pt-BR"),
                 mtr.parceiroGerador.parDescricao,
                 mtr.situacaoManifesto.simDataRecebimento,
+                mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
                 mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
             ])
 
