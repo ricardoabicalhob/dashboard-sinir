@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf"
 import autoTable from "jspdf-autotable"
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 
-export default function generatePdfDownload(titulo :string, periodo :string, listMtrs :MTRResponseI[][]) {
+export default function generatePdfListaMtrsPorDestinadorDownload(titulo :string, periodo :string, listMtrs :MTRResponseI[][]) {
     
     const doc = new jsPDF('landscape', 'pt', 'a4')
     let startY = 25
@@ -11,7 +11,7 @@ export default function generatePdfDownload(titulo :string, periodo :string, lis
     const mainTitleWidth = doc.getTextWidth(titulo)
     const mainTitleX = (pageWidth - mainTitleWidth) / 2
     doc.text(titulo, mainTitleX, startY)
-    startY += 15
+    startY += 25
 
     listMtrs.forEach((destinador, index) => {
         if(destinador.length > 0) {
@@ -24,9 +24,9 @@ export default function generatePdfDownload(titulo :string, periodo :string, lis
             const destinadorNome = `${primeiroMtr.parceiroDestinador.parCodigo} - ${primeiroMtr.parceiroDestinador.parDescricao}`
 
             doc.setFontSize(12)
-            const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}`)
+            const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`)
             const destinadorTitleX = (pageWidth - destinadorTitleWidth) / 2
-            doc.text(`Destinador: ${destinadorNome}`, destinadorTitleX, startY + 5)
+            doc.text(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`, destinadorTitleX, startY + 5)
             startY += 20
 
             doc.setFontSize(12)
@@ -59,23 +59,4 @@ export default function generatePdfDownload(titulo :string, periodo :string, lis
     })
 
     doc.save("lista-mtrs-por-destinador.pdf");
-
-    // const colunas = ["Número MTR", "Data Emissão", "Gerador", "Destinador", "Quantidade"]
-    // const linhas = listMtrs.map(mtr => [
-    //     mtr.manNumero,
-    //     new Date(mtr.manData).toLocaleDateString("pt-BR"),
-    //     mtr.parceiroGerador.parDescricao,
-    //     mtr.parceiroDestinador.parDescricao,
-    //     mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    // ])
-
-    // autoTable(doc, {
-    //     headStyles: {
-    //         fillColor: "#00695C"
-    //     },
-    //     head: [colunas],
-    //     body: linhas,
-    //     startY: 20
-    // })
-    // doc.save("lista-mtrs.pdf")
 }

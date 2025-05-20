@@ -10,13 +10,13 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
-import generatePdfDownload from "@/repositories/generatePdfDownload"
+import generatePdfListaMtrsPorDestinadorDownload from "@/repositories/generatePdfListaMtrsPorDestinadorDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, List, Save, Sheet } from "lucide-react"
+import { ChartColumnBig, Download, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -494,14 +494,15 @@ export default function VisaoGeralPage() {
                 {
                     !showListManifestsReceivedSentFromTheGeneratorAndAT &&
                         <SwitchButton
-                            onClick={()=> generatePdfDownload("Manifestos Enviados para o Destinador Final", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload("Manifestos Enviados para o Destinador Final", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                             ]))}
                             disableButton={showListManifestsReceivedSentFromTheGeneratorAndAT}
                             setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
                         >
-                            <Save /> Lista em PDF
+                            <Download /> Baixar PDF
                         </SwitchButton>
                 }
                 <SwitchButton
