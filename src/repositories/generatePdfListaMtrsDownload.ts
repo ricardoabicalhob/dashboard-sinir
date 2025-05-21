@@ -60,9 +60,9 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
     startY += 15
 
     const colunas :string[] = []
-    filterColumns.includes("Número MTR") && colunas.push("Número MTR")
-    filterColumns.includes("Data Emissão") && colunas.push("Data Emissão")
-    filterColumns.includes("Gerador") && colunas.push("Gerador")
+    if(filterColumns.includes("Número MTR")) colunas.push("Número MTR")
+    if(filterColumns.includes("Data Emissão")) colunas.push("Data Emissão")
+    if(filterColumns.includes("Gerador")) colunas.push("Gerador")
     filterColumns.includes("Destinador") && colunas.push("Destinador")
     filterColumns.includes("Armazenador Temporário") && colunas.push("Armazenador Temporário")
     filterColumns.includes("Data Recebimento AT") && colunas.push("Data Recebimento AT")
