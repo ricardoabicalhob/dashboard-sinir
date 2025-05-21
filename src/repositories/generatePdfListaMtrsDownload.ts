@@ -59,7 +59,7 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
     doc.text(`Período: ${period}`, periodoTitleX, startY + 5)
     startY += 15
 
-    const colunas = []
+    const colunas :string[] = []
     filterColumns.includes("Número MTR") && colunas.push("Número MTR")
     filterColumns.includes("Data Emissão") && colunas.push("Data Emissão")
     filterColumns.includes("Gerador") && colunas.push("Gerador")
@@ -74,7 +74,7 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
     filterColumns.includes("Situação") && colunas.push("Situação")
 
     const linhas = listMtrs.map(mtr => {
-        const linha = []
+        const linha :(string | number)[]= []
         filterColumns.includes("Número MTR") && linha.push(mtr.manNumero)
         filterColumns.includes("Data Emissão") && linha.push(new Date(mtr.manData).toLocaleDateString("pt-BR"))
         filterColumns.includes("Gerador") && linha.push(`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao}`)
@@ -82,7 +82,7 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
         filterColumns.includes("Armazenador Temporário") && linha.push(`${mtr.parceiroArmazenadorTemporario.parCodigo} - ${mtr.parceiroArmazenadorTemporario.parDescricao}`)
         filterColumns.includes("Data Recebimento AT") && linha.push(mtr.dataRecebimentoAT)
         filterColumns.includes("Transportador") && linha.push(`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao}`)
-        filterColumns.includes("Resíduo") && linha.push(`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`),
+        filterColumns.includes("Resíduo") && linha.push(`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`)
         filterColumns.includes("Quantidade Indicada no MTR") && linha.push(mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
         filterColumns.includes("Quantidade Recebida") && linha.push(mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
         filterColumns.includes("Data Recebimento") && linha.push(new Date(mtr.situacaoManifesto.simDataRecebimento).toLocaleDateString("pt-BR"))

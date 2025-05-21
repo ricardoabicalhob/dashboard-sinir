@@ -37,7 +37,7 @@ export default function generatePdfListaMtrsPorDestinadorDownload(unidade :strin
             const destinadorNome = `${primeiroMtr.parceiroDestinador.parCodigo} - ${primeiroMtr.parceiroDestinador.parDescricao}`
 
             doc.setFontSize(12)
-            const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`)
+            // const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`)
             const destinadorTitleX = 40
             doc.text(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`, destinadorTitleX, startY + 5)
             startY += 20
