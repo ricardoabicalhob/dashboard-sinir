@@ -243,7 +243,7 @@ export default function MovimentacaoParaDFPage() {
                 !hideChartManifestsPending &&
                     <GraficoSimples
                         title="Resíduos pendentes"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
                     />
@@ -279,7 +279,7 @@ export default function MovimentacaoParaDFPage() {
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MOVIMENTAÇÃO PENDENTE PARA DESTINADOR", 
-                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
+                                `Todos até: ${dateTo.toLocaleDateString()}`, 
                                 filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"],
                             )}

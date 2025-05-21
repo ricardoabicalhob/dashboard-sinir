@@ -85,7 +85,7 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
         if(filterColumns.includes("Resíduo")) linha.push(`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`)
         if(filterColumns.includes("Quantidade Indicada no MTR")) linha.push(mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
         if(filterColumns.includes("Quantidade Recebida")) linha.push(mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
-        if(filterColumns.includes("Data Recebimento")) linha.push(new Date(mtr.situacaoManifesto.simDataRecebimento).toLocaleDateString("pt-BR"))
+        if(filterColumns.includes("Data Recebimento")) linha.push(mtr.situacaoManifesto.simDataRecebimento)
         if(filterColumns.includes("Situação")) linha.push(mtr.situacaoManifesto.simDescricao)
         return linha
     })

@@ -264,7 +264,7 @@ export default function MovimentacaoParaATPage() {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
                         title="Resíduos pendentes de recebimento no armazenamento temporário"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                     />
@@ -302,7 +302,7 @@ export default function MovimentacaoParaATPage() {
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MANIFESTOS NÃO RECEBIDOS NO ARMAZENADOR TEMPORÁRIO",
-                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                `Todos até: ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || [])),
                                 ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"],
                             )}
