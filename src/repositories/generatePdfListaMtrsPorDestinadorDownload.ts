@@ -2,15 +2,28 @@ import { jsPDF } from "jspdf"
 import autoTable from "jspdf-autotable"
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 
-export default function generatePdfListaMtrsPorDestinadorDownload(titulo :string, periodo :string, listMtrs :MTRResponseI[][]) {
+export default function generatePdfListaMtrsPorDestinadorDownload(unidade :string, title :string, periodo :string, listMtrs :MTRResponseI[][]) {
     
     const doc = new jsPDF('landscape', 'pt', 'a4')
     let startY = 25
     const pageWidth = doc.internal.pageSize.getWidth()
     doc.setFontSize(16)
-    const mainTitleWidth = doc.getTextWidth(titulo)
+
+    const unidadeTitleWidth = doc.getTextWidth(unidade)
+    const unidadeTitleX = (pageWidth - unidadeTitleWidth) / 2
+    doc.text(unidade, unidadeTitleX, startY)
+    startY += 25
+
+    doc.setFontSize(14)
+    const mainTitleWidth = doc.getTextWidth(title)
     const mainTitleX = (pageWidth - mainTitleWidth) / 2
-    doc.text(titulo, mainTitleX, startY)
+    doc.text(title, mainTitleX, startY)
+    startY += 15
+
+    doc.setFontSize(12)
+    const periodoTitleWidth = doc.getTextWidth(`Período: ${periodo}`)
+    const periodoTitleX = (pageWidth - periodoTitleWidth) / 2
+    doc.text(`Período: ${periodo}`, periodoTitleX, startY + 5)
     startY += 25
 
     listMtrs.forEach((destinador, index) => {
@@ -25,24 +38,19 @@ export default function generatePdfListaMtrsPorDestinadorDownload(titulo :string
 
             doc.setFontSize(12)
             const destinadorTitleWidth = doc.getTextWidth(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`)
-            const destinadorTitleX = (pageWidth - destinadorTitleWidth) / 2
+            const destinadorTitleX = 40
             doc.text(`Destinador: ${destinadorNome}     (${destinador.length} manifestos)`, destinadorTitleX, startY + 5)
             startY += 20
 
-            doc.setFontSize(12)
-            const periodoTitleWidth = doc.getTextWidth(`Período: ${periodo}`)
-            const periodoTitleX = (pageWidth - periodoTitleWidth) / 2
-            doc.text(`Período: ${periodo}`, periodoTitleX, startY + 5)
-            startY += 15
-
-            const colunas = ["Número MTR", "Data Emissão", "Gerador", "Data Recebimento", "Quantidade Indicada no MTR", "Quantidade Recebida"]
+            const colunas = ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]
             const linhas = destinador.map(mtr => [
                 mtr.manNumero,
                 new Date(mtr.manData).toLocaleDateString("pt-BR"),
                 mtr.parceiroGerador.parDescricao,
-                mtr.situacaoManifesto.simDataRecebimento,
+                `${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`,
                 mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
                 mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+                mtr.situacaoManifesto.simDataRecebimento
             ])
 
             autoTable(doc, {
@@ -54,9 +62,8 @@ export default function generatePdfListaMtrsPorDestinadorDownload(titulo :string
                 startY: startY,
             })
 
-            // startY = (doc as any).lastAutoTable.finalY + 10
         }
     })
 
-    doc.save("lista-mtrs-por-destinador.pdf");
+    doc.save(`${unidade} - ${title}.pdf`);
 }

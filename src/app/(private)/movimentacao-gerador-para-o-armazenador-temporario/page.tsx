@@ -10,12 +10,13 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
+import generatePdfListaMtrsDownload from "@/repositories/generatePdfListaMtrsDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTodosQuePossuemArmazenamentoTemporario, filtrarTudoComDataDeEmissaoDentroDoPeriodo, agruparPorTipoDeResiduo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, List } from "lucide-react"
+import { ChartColumnBig, Download, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -240,6 +241,23 @@ export default function MovimentacaoParaATPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsReceived &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsReceived}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS RECEBIDOS NO ARMAZENADOR TEMPORÁRIO",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Data Recebimento AT", "Quantidade Indicada no MTR"],
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
             {
@@ -275,6 +293,23 @@ export default function MovimentacaoParaATPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsPending &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsPending}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS NÃO RECEBIDOS NO ARMAZENADOR TEMPORÁRIO",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || [])),
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"],
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
         </div>

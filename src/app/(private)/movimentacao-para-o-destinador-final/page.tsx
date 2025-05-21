@@ -495,12 +495,12 @@ export default function VisaoGeralPage() {
                     !showListManifestsReceivedSentFromTheGeneratorAndAT &&
                         <SwitchButton
                             className="bg-yellow-400 hover:bg-yellow-400/50"
-                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload("Manifestos Enviados para o Destinador Final", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(`${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`, "MANIFESTOS ENVIADOS PARA O DESTINADOR", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                             ]))}
                             disableButton={showListManifestsReceivedSentFromTheGeneratorAndAT}
-                            setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
+                            setDisableButton={()=> {}}
                         >
                             <Download /> Baixar PDF
                         </SwitchButton>

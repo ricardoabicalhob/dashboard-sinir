@@ -219,7 +219,12 @@ export default function MovimentacaoParaDFPage() {
                     !showListManifestsReceived &&
                         <SwitchButton
                             className="bg-yellow-400 hover:bg-yellow-400/50"
-                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload("MOVIMENTAÇÃO PARA DESTINADOR FINAL", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MOVIMENTAÇÃO PARA DESTINADOR", 
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
+                                agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))
+                            )}
                             disableButton={showListManifestsReceived}
                             setDisableButton={()=> handleShowListManifestsReceived()}
                         >
@@ -271,9 +276,15 @@ export default function MovimentacaoParaDFPage() {
                     hideChartManifestsPending &&
                         <SwitchButton
                             className="bg-yellow-400 hover:bg-yellow-400/50"
-                            onClick={()=> generatePdfListaMtrsDownload("MOVIMENTAÇÃO PENDENTE PARA DESTINADOR FINAL", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MOVIMENTAÇÃO PENDENTE PARA DESTINADOR", 
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
+                                filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
+                                ["Número MTR", "Data Emissão", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"],
+                            )}
                             disableButton={!hideChartManifestsPending}
-                            setDisableButton={()=> handleShowListManifestsPending()}
+                            setDisableButton={()=> {}}
                         >
                             <Download /> Baixar PDF
                         </SwitchButton>
