@@ -141,7 +141,7 @@ export function filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(listaDe
 export function filtrarEstoqueDeArmazenamentoTemporario(listMtrs :MTRResponseI[]) {
     return listMtrs
         .filter(mtr => {
-            return mtr.situacaoManifesto.simDescricao === "Armaz Temporário"
+            return mtr.situacaoManifesto.simDescricao === "Armaz Temporário - Recebido"
         })
 }
 

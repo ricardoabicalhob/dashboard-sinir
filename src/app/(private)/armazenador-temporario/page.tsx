@@ -12,7 +12,7 @@ import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { ChartColumnBig, Info, List } from "lucide-react"
@@ -37,6 +37,7 @@ export default function ArmazenadorTemporarioPage() {
     const [ hideChartManifestsReceived, setHideChartManifestsReceived ] = useState(false)
     const [ hideChartManifestsSending, setHideChartManifestsSending ] = useState(false)
     const [ hideChartManifestsStock, setHideChartManifestsStock ] = useState(false)
+    const [ hideChartManifestsPending, setHideChartManifestsPending ] = useState(false)
 
     const {
         dateRange
@@ -72,6 +73,14 @@ export default function ArmazenadorTemporarioPage() {
 
     function handleShowListManifestsStock() {
         setHideChartManifestsStock(true)
+    }
+
+    function handleShowChartManifestsPending() {
+        setHideChartManifestsPending(false)
+    }
+
+    function handleShowListManifestsPending() {
+        setHideChartManifestsPending(true)
     }
 
     useEffect(()=> {
@@ -184,7 +193,7 @@ export default function ArmazenadorTemporarioPage() {
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos destinados a partir do AT</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
@@ -192,6 +201,12 @@ export default function ArmazenadorTemporarioPage() {
                     <ScoreboardTitle>Resíduos armazenados no AT</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
+                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                </ScoreboardItem>
+                <ScoreboardItem>
+                    <ScoreboardTitle>Resíduos pendentes de recebimento no AT</ScoreboardTitle>
+                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
             </Scoreboard>
@@ -213,7 +228,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento AT"]}
+                        options={["Gerador"]}
                     />
             }
 
@@ -249,7 +264,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento AT"]}
+                        options={["Gerador", "Data Recebimento AT"]}
                     />
             }
 
@@ -336,6 +351,42 @@ export default function ArmazenadorTemporarioPage() {
                     disableButton={hideChartManifestsStock}
                     setDisableButton={()=> handleShowListManifestsStock()}
                 >
+                    <List className="w-4 h-4 text-white"/> Manifestos
+                </SwitchButton>
+            </Switch>
+
+            {
+                !hideChartManifestsPending &&
+                    <GraficoSimples 
+                        title="Resíduos pendentes de recebimento pelo AT"
+                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])))}
+                        dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))}
+                    />
+            }
+            
+            {
+                hideChartManifestsPending &&
+                    <ListaDeMtrs 
+                        title="Manifestos pendentes de recebimento pelo AT"
+                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
+                        authorization={profile?.objetoResposta.token || ""} 
+                        options={["Gerador", "Situação"]}         
+                    />
+            }
+
+            <Switch>
+                <SwitchButton
+                    disableButton={!hideChartManifestsPending}
+                    setDisableButton={()=> handleShowChartManifestsPending()}
+                >
+                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico
+                </SwitchButton>
+                <SwitchButton
+                    disableButton={hideChartManifestsPending}
+                    setDisableButton={()=> handleShowListManifestsPending()}
+                >   
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
             </Switch>
