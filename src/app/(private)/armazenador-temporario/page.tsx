@@ -10,12 +10,13 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
+import generatePdfListaMtrsDownload from "@/repositories/generatePdfListaMtrsDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Info, List } from "lucide-react"
+import { ChartColumnBig, Download, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -245,6 +246,23 @@ export default function ArmazenadorTemporarioPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsGenerated &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsGenerated}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS EMITIDOS PARA O ARMAZENAMENTO TEMPORÁRIO",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
             {
@@ -264,7 +282,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Data Recebimento AT", "Quantidade Indicada no MTR"]}
+                        options={["Gerador", "Data Recebimento AT"]}
                     />
             }
 
@@ -281,6 +299,23 @@ export default function ArmazenadorTemporarioPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsReceived &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsReceived}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS RECEBIDOS NO ARMAZENAMENTO TEMPORÁRIO",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
             {
@@ -317,6 +352,24 @@ export default function ArmazenadorTemporarioPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsSending &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsSending}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS ENVIADOS PARA O DESTINADOR",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Gerador", "Destinador", "Resíduo", "Quantidade Recebida", "Data Recebimento"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
+                
             </Switch>
 
             {
@@ -333,7 +386,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsStock &&
                     <ListaDeMtrs
                         title="Manifestos em armazenamento temporário aguardando envio"
-                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento AT"]}
@@ -353,13 +406,30 @@ export default function ArmazenadorTemporarioPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsStock &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsStock}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS EM ARMAZENAMENTO TEMPORÁRIO AGUARDANDO ENVIO",
+                                `Tudo até: ${dateTo.toLocaleDateString()}`,
+                                filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []),
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
                         title="Resíduos pendentes de recebimento pelo AT"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))}
                     />
@@ -369,7 +439,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
                         title="Manifestos pendentes de recebimento pelo AT"
-                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
                         authorization={profile?.objetoResposta.token || ""} 
                         options={["Gerador", "Situação"]}         
@@ -389,6 +459,23 @@ export default function ArmazenadorTemporarioPage() {
                 >   
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsPending &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsPending}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS PENDENTES DE RECEBIMENTO NO ARMAZENAMENTO TEMPORÁRIO",
+                                `Até: ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []),
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
             </Switch>
 
         </div>
