@@ -199,6 +199,7 @@ export default function GeradorPage() {
                 hideChartManifestsIssued &&
                     <ListaDeMtrs 
                         title="Manifestos emitidos"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}
@@ -233,7 +234,8 @@ export default function GeradorPage() {
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos enviados"
+                        title="Manifestos recebidos pelo destinador"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento","Situação"]}
@@ -269,6 +271,7 @@ export default function GeradorPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
                         title="Manifestos pendentes"
+                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}

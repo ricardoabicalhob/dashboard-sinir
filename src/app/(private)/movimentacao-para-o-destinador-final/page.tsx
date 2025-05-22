@@ -321,7 +321,8 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromTheGenerator &&
                 <ListaDeMtrs
-                    title="Manifestos enviados"
+                    title="Manifestos recebidos pelo destinador"
+                    subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
                     options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
@@ -365,7 +366,8 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromAT &&
                 <ListaDeMtrs
-                    title="Manifestos enviados"
+                    title="Manifestos recebidos pelo destinador"
+                    subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
                     options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
@@ -431,7 +433,8 @@ export default function VisaoGeralPage() {
                 (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length ||
                 !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length) &&
                     <ListaDeMtrs
-                        title="Manifestos enviados"
+                        title="Manifestos recebidos pelo destinador"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={[
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)

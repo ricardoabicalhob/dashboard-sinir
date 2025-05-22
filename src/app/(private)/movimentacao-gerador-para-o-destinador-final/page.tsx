@@ -176,7 +176,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !showChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Resíduos recebidos no destinador final"
+                        title="Resíduos recebidos pelo destinador final"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -186,7 +186,8 @@ export default function MovimentacaoParaDFPage() {
             {
                 !showListManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos enviados"
+                        title="Manifestos recebidos pelo destinador final"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento", "Situação"]}
@@ -253,6 +254,7 @@ export default function MovimentacaoParaDFPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
                         title="Manifestos pendentes"
+                        subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Destinador", "Data Recebimento", "Situação"]}

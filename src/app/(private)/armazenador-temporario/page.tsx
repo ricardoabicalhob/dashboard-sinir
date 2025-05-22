@@ -210,6 +210,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsGenerated &&
                     <ListaDeMtrs
                         title="Manifestos emitidos para armazenamento temporário"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento AT"]}
@@ -245,6 +246,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs
                         title="Manifestos recebidos no armazenamento temporário"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento AT"]}
@@ -279,7 +281,8 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsSending &&
                     <ListaDeMtrs
-                        title="Manifestos enviados"
+                        title="Manifestos recebidos pelo destinador"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
@@ -315,6 +318,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsStock &&
                     <ListaDeMtrs
                         title="Manifestos em armazenamento temporário aguardando envio"
+                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento AT"]}

@@ -196,6 +196,7 @@ export default function DestinadorPage() {
                 hideChartManifestsGenerated &&
                     <ListaDeMtrs
                         title="Manifestos emitidos para recebimento como destinador"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento"]}
@@ -247,7 +248,8 @@ export default function DestinadorPage() {
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs
-                        title="Manifestos recebidos"
+                        title="Manifestos recebidos como destinador"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento"]}
@@ -290,7 +292,7 @@ export default function DestinadorPage() {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
                         title="Resíduos pendentes"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
                     />
@@ -300,6 +302,7 @@ export default function DestinadorPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
                         title="Manifestos pendentes"
+                        subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Situação", "Data Recebimento"]}

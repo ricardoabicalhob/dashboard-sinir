@@ -187,6 +187,7 @@ export default function MovimentacaoParaATPage() {
                 hideChartManifestsIssued &&
                     <ListaDeMtrs 
                         title="Manifestos emitidos para o armazenamento temporário"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
@@ -211,7 +212,7 @@ export default function MovimentacaoParaATPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Resíduos recebidos no armazenador temporário"
+                        title="Resíduos recebidos pelo armazenador temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo))}
@@ -221,7 +222,8 @@ export default function MovimentacaoParaATPage() {
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos recebidos no armazenador temporário"
+                        title="Manifestos recebidos pelo armazenador temporário"
+                        subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
@@ -274,6 +276,7 @@ export default function MovimentacaoParaATPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
                         title="Manifestos pendentes de recebimento no armazenamento temporário"
+                        subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}

@@ -11,11 +11,12 @@ type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Tra
 interface ListaDeMtrsProps {
     listMtrs :MTRResponseI[]
     title :string
+    subtitle :string
     authorization :string
     options :FilterColumns[]
 }
 
-export default function ListaDeMtrs({ listMtrs, title, authorization, options } :ListaDeMtrsProps) {
+export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, options } :ListaDeMtrsProps) {
 
     const cardListRef = useRef<HTMLDivElement>(null)
 
@@ -40,6 +41,7 @@ export default function ListaDeMtrs({ listMtrs, title, authorization, options } 
         <Card ref={cardListRef} className="opacity-0 transition-opacity duration-700">
             <CardHeader>
                 <CardTitle className="text-xl text-black/50 text-center font-semibold">{title}</CardTitle>
+                <CardTitle className="font-light text-center">{subtitle}</CardTitle>
             </CardHeader>
             <div className="flex flex-col justify-between h-[373px] p-2 rounded-md shadow-sm">
                 <Table>

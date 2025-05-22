@@ -52,9 +52,9 @@ export function middleware(request: NextRequest) {
         const firstAllowedRoute = protectedRoutesConfig.find(route => newObjetoResposta[route.permissionKey] === true)?.path;
 
         if (firstAllowedRoute) {
-        const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = firstAllowedRoute;
-        return NextResponse.redirect(redirectUrl);
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = firstAllowedRoute;
+            return NextResponse.redirect(redirectUrl);
         }
         return NextResponse.next();
     }
