@@ -184,13 +184,13 @@ export default function ArmazenadorTemporarioPage() {
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos destinados a partir do AT</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos armazenados no AT</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
                 </ScoreboardItem>
