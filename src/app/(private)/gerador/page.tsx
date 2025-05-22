@@ -175,7 +175,7 @@ export default function GeradorPage() {
                     <ScoreboardTitle>Resíduos destinados</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ totalizarQuantidadeRecebida((agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
-                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>

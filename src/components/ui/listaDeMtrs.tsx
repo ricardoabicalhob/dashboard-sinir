@@ -6,7 +6,7 @@ import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
 import { downloadCdf } from "@/repositories/downloadCDF";
 
-type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento"
+type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento" | "Quantidade Indicada no MTR" | "Quantidade Recebida"
 
 interface ListaDeMtrsProps {
     listMtrs :MTRResponseI[]
@@ -54,6 +54,8 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                             {options.includes("Transportador") && <TableHead>Transportador</TableHead>}
                             {options.includes("Destinador") && <TableHead>Destinador</TableHead>}
                             {options.includes("Situação") && <TableHead>Situação</TableHead>}
+                            {options.includes("Quantidade Indicada no MTR") && <TableHead>Quantidade Indicada no MTR</TableHead>}
+                            {options.includes("Quantidade Recebida") && <TableHead>Quantidade Recebida</TableHead>}
                             {options.includes("Data Recebimento AT") && <TableHead>Data Recebimento AT</TableHead>}
                             {options.includes("Data Recebimento") && <TableHead>Data Recebimento</TableHead>}
                             <TableHead>Ações</TableHead>
@@ -70,6 +72,8 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                     {options.includes("Transportador") && <TableCell>{mtr.parceiroTransportador.parDescricao}</TableCell>}
                                     {options.includes("Destinador") && <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>}
                                     {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
+                                    {options.includes("Quantidade Indicada no MTR") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
+                                    {options.includes("Quantidade Recebida") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
                                     {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
                                     {options.includes("Data Recebimento") &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
                                     <TableCell className="flex justify-start">

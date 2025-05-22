@@ -292,13 +292,13 @@ export default function VisaoGeralPage() {
                     <ScoreboardTitle>Movimentação de gerador para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
-                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Movimentação de armazenamento temporário para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
-                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Movimentação total para destinador final</ScoreboardTitle>
@@ -307,7 +307,7 @@ export default function VisaoGeralPage() {
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                     ])).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
-                    <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
                 </ScoreboardItem>
             </Scoreboard>
 
