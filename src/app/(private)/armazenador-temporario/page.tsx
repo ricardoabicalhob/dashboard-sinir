@@ -468,7 +468,7 @@ export default function ArmazenadorTemporarioPage() {
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MANIFESTOS PENDENTES DE RECEBIMENTO NO ARMAZENAMENTO TEMPORÁRIO",
-                                `Até: ${dateTo.toLocaleDateString()}`,
+                                `Tudo até: ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                             )}

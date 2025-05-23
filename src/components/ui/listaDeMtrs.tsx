@@ -1,12 +1,14 @@
-import { FileText, Printer } from "lucide-react";
+import { Dock, FileCheck2, FileText, Printer } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "./card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { downloadMtr } from "@/repositories/downloadMtr";
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { useEffect, useRef } from "react";
 import { downloadCdf } from "@/repositories/downloadCDF";
+import { downloadMtrComplementar } from "@/repositories/downloadMtrComplementar";
+import { downloadRecebimentoMtr } from "@/repositories/downloadRecebimento";
 
-type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento" | "Quantidade Indicada no MTR" | "Quantidade Recebida"
+type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento" | "Resíduo" | "Quantidade Indicada no MTR" | "Quantidade Recebida"
 
 interface ListaDeMtrsProps {
     listMtrs :MTRResponseI[]
@@ -26,6 +28,16 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
 
     const handleDownloadCdf = async (numeroCdf :number, authorization :string) => {
         await downloadCdf(numeroCdf, authorization)
+    }
+
+    const handleDownloadMtrComplementar = async (manCodigoMtrComplementar :string | null, authorization :string) => {
+        if(manCodigoMtrComplementar) {
+            await downloadMtrComplementar(manCodigoMtrComplementar, authorization)
+        }
+    }
+
+    const handleDownloadRecebimentoMtr = async (manHashCode :string, manNumero :string, authorization :string) => {
+        await downloadRecebimentoMtr(manHashCode, manNumero, authorization)
     }
 
     useEffect(()=> {
@@ -54,6 +66,7 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                             {options.includes("Transportador") && <TableHead>Transportador</TableHead>}
                             {options.includes("Destinador") && <TableHead>Destinador</TableHead>}
                             {options.includes("Situação") && <TableHead>Situação</TableHead>}
+                            {options.includes("Resíduo") && <TableHead>Resíduo</TableHead>}
                             {options.includes("Quantidade Indicada no MTR") && <TableHead>Quantidade Indicada no MTR</TableHead>}
                             {options.includes("Quantidade Recebida") && <TableHead>Quantidade Recebida</TableHead>}
                             {options.includes("Data Recebimento AT") && <TableHead>Data Recebimento AT</TableHead>}
@@ -72,25 +85,56 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                     {options.includes("Transportador") && <TableCell>{mtr.parceiroTransportador.parDescricao}</TableCell>}
                                     {options.includes("Destinador") && <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>}
                                     {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
+                                    {options.includes("Resíduo") && <TableCell>{`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`}</TableCell>}
                                     {options.includes("Quantidade Indicada no MTR") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
                                     {options.includes("Quantidade Recebida") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
                                     {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
                                     {options.includes("Data Recebimento") &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
                                     <TableCell className="flex justify-start">
                                         <div
-                                            className="w-fit mx-1 cursor-pointer"
+                                            className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
                                             onClick={async ()=> handleDownloadMtr(mtr.manNumero, authorization)}     
                                         >
                                             <Printer fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
                                         </div>
                                         {
                                             mtr.cdfNumero && 
-                                            <div
-                                                className="w-fit px-2 cursor-pointer"
-                                                onClick={()=> handleDownloadCdf(mtr.cdfNumero, authorization)}
-                                            >
-                                                <FileText fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
-                                            </div>
+                                                <div
+                                                    className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                    onClick={()=> handleDownloadCdf(mtr.cdfNumero, authorization)}
+                                                >
+                                                    <FileText fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                </div>
+                                        }
+                                        {
+                                            !mtr.cdfNumero &&
+                                                <div className="w-fit px-2">
+                                                    <div className="w-5 h-5" />
+                                                </div>
+                                        }
+                                        {
+                                            mtr.situacaoManifesto.simDataRecebimento &&
+                                                <div
+                                                    className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                    onClick={()=> handleDownloadRecebimentoMtr(mtr.manHashCode, mtr.manNumero, authorization)}
+                                                >
+                                                    <FileCheck2 fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                </div>
+                                        }
+                                        {
+                                            !mtr.situacaoManifesto.simDataRecebimento &&
+                                                <div className="w-fit px-2">
+                                                    <div className="w-5 h-5" />
+                                                </div>
+                                        }
+                                        {
+                                            mtr.temMtrComplementar &&
+                                                <div
+                                                    className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                    onClick={()=> handleDownloadMtrComplementar(mtr.manCodigoMtrComplementar, authorization)}
+                                                >
+                                                    <Dock fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                </div>
                                         }
                                     </TableCell>
                                 </TableRow>

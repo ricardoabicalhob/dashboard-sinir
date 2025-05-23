@@ -77,7 +77,7 @@ export default function GraficoBarraDupla({ dataChart, title, subTitle, acumulat
                 <CartesianGrid vertical={false}/>
 
                 <Bar
-                    dataKey="quantidadeEstimada"
+                    dataKey="quantidadeIndicadaNoMTR"
                     fill="var(--color-estimated)"
                     radius={[4, 4, 0, 0]}
                     barSize={100}

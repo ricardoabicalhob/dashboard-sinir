@@ -71,8 +71,8 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                                                                 {agruparPorTipoDeResiduo(manifestosGerador).map(wasteType => (
                                                                     <TableRow key={`DETAILS-${wasteType.resDescricao}`}>
                                                                         <TableCell style={{ width: residuoColumnWidth }}>{wasteType.resDescricao}</TableCell>
-                                                                        <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                                        <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                        <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType."quantidadeEstimada".toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                        <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType."quantidadeRecebida".toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                     </TableRow>
                                                                 ))}
                                                             </TableBody>

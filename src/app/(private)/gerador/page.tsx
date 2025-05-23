@@ -202,7 +202,7 @@ export default function GeradorPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}
+                        options={["Destinador", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -274,7 +274,7 @@ export default function GeradorPage() {
                         subtitle={`Até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT", "Data Recebimento","Situação"]}
+                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT","Situação"]}
                     />
             }
 

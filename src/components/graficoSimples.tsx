@@ -73,7 +73,7 @@ export default function GraficoSimples({ dataChart, title, subTitle, acumulated 
                   <CartesianGrid vertical={false}/>
 
                   <Bar
-                      dataKey="quantidadeEstimada"
+                      dataKey="quantidadeIndicadaNoMTR"
                       fill="var(--color-desktop)"
                       radius={[4, 4, 0, 0]}
                       barSize={100}

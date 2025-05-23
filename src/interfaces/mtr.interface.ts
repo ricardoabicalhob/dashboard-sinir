@@ -194,6 +194,9 @@ export interface MTRResponseI {
     manPlacaVeiculo: string;
     manObservacao: string | null; // Pode ser null
     manJustificativaCancelamento: string;
+    manHashCode :string
+    temMtrComplementar :boolean
+    manCodigoMtrComplementar :string | null
     estado: {
         estCodigo: number;
         estAbreviacao: string;

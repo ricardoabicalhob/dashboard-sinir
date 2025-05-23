@@ -46,7 +46,12 @@ export function totalizarQuantidadeRecebida(dataToTotalize :GroupByWasteTypeOutp
 
 export function totalizarQuantidadeIndicadaNoManifesto(dataToTotalize :GroupByWasteTypeOutput[]) {
     const totalEstimated = dataToTotalize.reduce((acumulador, item) => {
-        return acumulador += item.quantidadeEstimada
+        return acumulador += item.quantidadeIndicadaNoMTR
     }, 0)
     return totalEstimated
+}
+
+export function separarPorMaiusculas(str: string): string {
+  const spacedStr = str.replace(/(?!^)([A-Z])/g, ' $&');
+  return spacedStr.split(' ').toString()
 }

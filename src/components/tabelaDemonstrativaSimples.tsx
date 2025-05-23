@@ -65,7 +65,7 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                                             {agruparPorTipoDeResiduo(destinador).map(wasteType => (
                                                                 <TableRow key={`DETAILS-${wasteType.resDescricao}`}>
                                                                     <TableCell style={{ width: residuoColumnWidth }}>{wasteType.resDescricao}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                     <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                 </TableRow>
                                                             ))}
@@ -109,7 +109,7 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                                             {agruparPorTipoDeResiduo(gerador).map(wasteType => (
                                                                 <TableRow key={`DETAILS-${wasteType.resDescricao}`}>
                                                                     <TableCell style={{ width: residuoColumnWidth }}>{wasteType.resDescricao}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeEstimada.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                     <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                                 </TableRow>
                                                             ))}

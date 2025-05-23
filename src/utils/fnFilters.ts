@@ -2,7 +2,7 @@ import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { verificarDataEstaDentroDoPeriodo, formatarDataDDMMYYYYParaMMDDYYYY } from "./fnUtils";
 
 interface WasteQuantities {
-    quantidadeEstimada: number
+    quantidadeIndicadaNoMTR: number
     quantidadeRecebida: number
 }
 
@@ -12,7 +12,7 @@ interface GroupByWasteType {
 
 export interface GroupByWasteTypeOutput {
     resDescricao :string
-    quantidadeEstimada :number
+    quantidadeIndicadaNoMTR :number
     quantidadeRecebida :number
 }
 
@@ -20,14 +20,14 @@ export function agruparPorTipoDeResiduo(listMtrs :MTRResponseI[]) :GroupByWasteT
     const quantidadesPorCodigoIbama = listMtrs.reduce((acumulador :GroupByWasteType, mtr) => {
             mtr.listaManifestoResiduo.forEach(residuo => {
                 const resDescricao = residuo.residuo.resCodigoIbama + " - " + residuo.residuo.resDescricao
-                const quantidadeEstimada = residuo.marQuantidade
+                const quantidadeIndicadaNoMTR = residuo.marQuantidade
                 const quantidadeRecebida = residuo.marQuantidadeRecebida
 
                 if (!acumulador[resDescricao]) {
-                    acumulador[resDescricao] = { quantidadeEstimada: 0, quantidadeRecebida: 0 };
+                    acumulador[resDescricao] = { quantidadeIndicadaNoMTR: 0, quantidadeRecebida: 0 };
                 }
 
-                acumulador[resDescricao].quantidadeEstimada += quantidadeEstimada;
+                acumulador[resDescricao].quantidadeIndicadaNoMTR += quantidadeIndicadaNoMTR;
                 acumulador[resDescricao].quantidadeRecebida += quantidadeRecebida;
             })
             return acumulador
@@ -35,7 +35,7 @@ export function agruparPorTipoDeResiduo(listMtrs :MTRResponseI[]) :GroupByWasteT
 
     return Object.entries(quantidadesPorCodigoIbama).map(([resDescricao, quantidades ]) => ({
         resDescricao: resDescricao,
-        quantidadeEstimada: quantidades.quantidadeEstimada,
+        quantidadeIndicadaNoMTR: quantidades.quantidadeIndicadaNoMTR,
         quantidadeRecebida: quantidades.quantidadeRecebida
     }))
 }
