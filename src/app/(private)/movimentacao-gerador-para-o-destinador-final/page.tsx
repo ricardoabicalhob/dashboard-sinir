@@ -18,7 +18,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Download, List, Sheet } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -157,22 +157,28 @@ export default function MovimentacaoParaDFPage() {
 
     return (
         <div className="flex flex-col gap-6 p-6">
-
             <Scoreboard>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos movimentados para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#enviadosParaDestinador">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
             </Scoreboard>
 
+            <div id="enviadosParaDestinador"/>
             {
                 !showChartManifestsReceived &&
                     <GraficoBarraDupla
@@ -238,8 +244,19 @@ export default function MovimentacaoParaDFPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
+            <div id="pendentes"/>
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples
@@ -291,7 +308,16 @@ export default function MovimentacaoParaDFPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
         </div>

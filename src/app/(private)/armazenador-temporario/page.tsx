@@ -16,7 +16,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Download, Info, List } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -185,33 +185,49 @@ export default function ArmazenadorTemporarioPage() {
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#geradosParaMim">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos recebidos no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#recebidosPorMim">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos destinados a partir do Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#destinadosApartirDeMim">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos armazenados no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#armazenadosComigo">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes de recebimento no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
             </Scoreboard>
 
+            <div id="geradosParaMim"/>
             {
                 !hideChartManifestsGenerated &&
                     <GraficoSimples
@@ -263,8 +279,19 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
+            <div id="recebidosPorMim"/>
             {
                 !hideChartManifestsReceived &&
                     <GraficoSimples
@@ -316,8 +343,19 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
+            <div id="destinadosApartirDeMim"/>
             {
                 !hideChartManifestsSending &&
                     <GraficoBarraDupla
@@ -369,9 +407,19 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
+            <div id="armazenadosComigo"/>
             {
                 !hideChartManifestsStock &&
                     <GraficoSimples
@@ -423,8 +471,19 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+
             </Switch>
 
+            <div id="pendentes"/>
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
@@ -476,6 +535,16 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
+                
             </Switch>
 
         </div>

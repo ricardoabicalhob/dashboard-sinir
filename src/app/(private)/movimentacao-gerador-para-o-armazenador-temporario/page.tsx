@@ -16,7 +16,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTodosQuePossuemArmazenamentoTemporario, filtrarTudoComDataDeEmissaoDentroDoPeriodo, agruparPorTipoDeResiduo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Download, List } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -154,25 +154,35 @@ export default function MovimentacaoParaATPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos gerados para o AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos gerados para o Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#geradosParaAT">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos movimentados para o AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos movimentados para o Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#enviadosParaAT">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
             </Scoreboard>
 
+            <div id="geradosParaAT"/>
             {
                 !hideChartManifestsIssued &&
                     <GraficoSimples
@@ -207,8 +217,18 @@ export default function MovimentacaoParaATPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="enviadosParaAT"/>
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
@@ -260,8 +280,18 @@ export default function MovimentacaoParaATPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="pendentes"/>
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
@@ -313,6 +343,15 @@ export default function MovimentacaoParaATPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
         </div>

@@ -15,7 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Info, List } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -170,21 +170,31 @@ export default function GeradorPage() {
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{ totalizarQuantidadeIndicadaNoManifesto((agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#geradosPorMim">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos destinados</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ totalizarQuantidadeRecebida((agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#meusResiduosDestinados">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
             </Scoreboard>
 
+            <div id="geradosPorMim"/>
             {
                 !hideChartManifestsIssued &&
                     <GraficoSimples
@@ -219,8 +229,18 @@ export default function GeradorPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="meusResiduosDestinados"/>
             {
                 !hideChartManifestsReceived &&
                     <GraficoBarraDupla
@@ -255,8 +275,18 @@ export default function GeradorPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="pendentes"/>
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
@@ -290,6 +320,15 @@ export default function GeradorPage() {
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
+                </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
                 </SwitchButton>
             </Switch>
 

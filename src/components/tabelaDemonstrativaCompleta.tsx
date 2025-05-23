@@ -63,8 +63,8 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                                                             <TableHeader>
                                                                 <TableRow>
                                                                     <TableHead className="w-fit" style={{ width: residuoColumnWidth }}>Tipo de resíduo</TableHead>
-                                                                    <TableHead style={{ width: quantidadeColumnWidth }}>Estimado</TableHead>
-                                                                    <TableHead style={{ width: quantidadeColumnWidth }}>Recebido</TableHead>
+                                                                    <TableHead style={{ width: quantidadeColumnWidth }}>Quantidade indicada no MTR</TableHead>
+                                                                    <TableHead style={{ width: quantidadeColumnWidth }}>Quantidade recebida</TableHead>
                                                                 </TableRow>
                                                             </TableHeader>
                                                             <TableBody>

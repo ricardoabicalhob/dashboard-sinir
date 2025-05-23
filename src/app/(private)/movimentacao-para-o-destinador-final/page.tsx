@@ -16,7 +16,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ChartColumnBig, Download, List, Sheet } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -293,12 +293,18 @@ export default function VisaoGeralPage() {
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#movimentacaoGeradorParaDestinador">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Movimentação de armazenamento temporário para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#movimentacaoATParaDestinador">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Movimentação total para destinador final</ScoreboardTitle>
@@ -308,9 +314,13 @@ export default function VisaoGeralPage() {
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                     ])).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
+                    <a className="flex gap-2 hover:text-[#00BCD4]" href="#movimentacaoTotal">
+                        Ver detalhes
+                    </a>
                 </ScoreboardItem>
             </Scoreboard>
 
+            <div id="movimentacaoGeradorParaDestinador"/>
             {!showChartManifestsReceivedSentFromTheGenerator &&
                 <GraficoBarraDupla
                     title="Movimentação de gerador para destinador final"
@@ -354,8 +364,18 @@ export default function VisaoGeralPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="movimentacaoATParaDestinador"/>
             {!showChartManifestsReceivedSentFromAT &&
                 <GraficoBarraDupla
                     title="Movimentação de armazenamento temporário para destinador final"
@@ -412,8 +432,18 @@ export default function VisaoGeralPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
                 </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
+                </SwitchButton>
             </Switch>
 
+            <div id="movimentacaoTotal"/>
             {!showChartManifestsReceivedSentFromTheGeneratorAndAT &&
                 <GraficoBarraDupla 
                     title="Movimentação total para destinador final"
@@ -519,6 +549,15 @@ export default function VisaoGeralPage() {
                     setDisableButton={()=> handleShowTableManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                </SwitchButton>
+                <SwitchButton
+                    className="bg-gray-400 hover:bg-gray-400/50"
+                    disableButton={false}
+                    setDisableButton={()=> {}}
+
+                >
+                    <ArrowUp />
+                    <a href="#topo">Ir para o topo</a>
                 </SwitchButton>
             </Switch>
 
