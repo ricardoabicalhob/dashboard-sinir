@@ -181,31 +181,31 @@ export default function ArmazenadorTemporarioPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos gerados para o AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos gerados para o Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos recebidos no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos destinados a partir do AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos destinados a partir do Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos armazenados no AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos armazenados no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos pendentes de recebimento no AT</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos pendentes de recebimento no Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
