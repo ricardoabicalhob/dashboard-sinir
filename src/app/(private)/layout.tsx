@@ -135,7 +135,7 @@ export default function PrivateLayout({
     <SystemProvider>
         <QueryClientProvider client={queryClient}>
             <html lang="pt-BR">
-              <body
+              <body 
                   className={`antialiased`}
               >
                 <MenuBar loginResponse={loginResponse} />

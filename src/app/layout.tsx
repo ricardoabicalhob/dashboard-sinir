@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
       <AuthProvider>
-        <html id="topo" lang="pt-BR">
+        <html lang="pt-BR">
           <body
             className={`antialiased`}
           >

@@ -156,7 +156,7 @@ export default function MovimentacaoParaDFPage() {
     if (isErrorDetails && errorDetails) return <p className="flex w-full justify-center text-center bg-red-400">Erro ao carregar detalhes dos MTRs: {errorDetails.message}</p>;
 
     return (
-        <div className="flex flex-col gap-6 p-6">
+        <div id="topo" className="flex flex-col gap-6 p-6">
             <Scoreboard>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos movimentados para o destinador final</ScoreboardTitle>
@@ -244,15 +244,17 @@ export default function MovimentacaoParaDFPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
                 </SwitchButton>
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 
@@ -308,15 +310,17 @@ export default function MovimentacaoParaDFPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 

@@ -177,7 +177,7 @@ export default function ArmazenadorTemporarioPage() {
     }
 
     return(
-        <div className="flex flex-col gap-6 p-6">
+        <div id="topo" className="flex flex-col gap-6 p-6">
 
             <Scoreboard>
                 <ScoreboardItem>
@@ -279,15 +279,17 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 
@@ -343,15 +345,17 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 
@@ -407,15 +411,17 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 
@@ -471,15 +477,17 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
 
             </Switch>
 
@@ -535,16 +543,18 @@ export default function ArmazenadorTemporarioPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
-                
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
+
             </Switch>
 
         </div>

@@ -159,7 +159,7 @@ export default function DestinadorPage() {
     }
 
     return(
-        <div className="flex flex-col gap-6 p-6">
+        <div id="topo" className="flex flex-col gap-6 p-6">
 
             <Scoreboard>
                 <ScoreboardItem>
@@ -243,15 +243,17 @@ export default function DestinadorPage() {
                         <Download /> Baixar PDF
                     </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
             </Switch>
     
             <div id="recebidosPorMim"/>
@@ -306,15 +308,17 @@ export default function DestinadorPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
             </Switch>
 
             <div id="pendentes"/>
@@ -369,15 +373,17 @@ export default function DestinadorPage() {
                             <Download /> Baixar PDF
                         </SwitchButton>
                 }
-                <SwitchButton
-                    className="bg-gray-400 hover:bg-gray-400/50"
-                    disableButton={false}
-                    setDisableButton={()=> {}}
+                <a href="#topo">
+                    <SwitchButton
+                        className="bg-gray-400 hover:bg-gray-400/50"
+                        disableButton={false}
+                        setDisableButton={()=> {}}
 
-                >
-                    <ArrowUp />
-                    <a href="#topo">Ir para o topo</a>
-                </SwitchButton>
+                    >
+                        <ArrowUp />
+                        Ir para o topo
+                    </SwitchButton>
+                </a>
                 
             </Switch>
 
