@@ -2,7 +2,7 @@
 
 import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
-import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
+import { Scoreboard, ScoreboardInfoText, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
 import { Switch, SwitchButton } from "@/components/switch"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
@@ -505,13 +505,6 @@ export default function VisaoGeralPage() {
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                             ])}
                         />
-                        {/* <TabelaDemonstrativaCompleta 
-                            title="Detalhes da destinação de resíduos do gerador + armazenador temporário"
-                            listaAgrupadaPorDestinadorEGerador={agruparPorGeradorEDestinador([
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
-                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
-                            ])}
-                        /> */}
                     </>
             }
 

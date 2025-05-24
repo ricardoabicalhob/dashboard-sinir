@@ -509,7 +509,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
                         authorization={profile?.objetoResposta.token || ""} 
-                        options={["Gerador", "Situação"]}         
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR"]}         
                     />
             }
 

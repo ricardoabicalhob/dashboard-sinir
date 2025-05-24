@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { Info } from "lucide-react"
 import * as React from "react"
 
 const Scoreboard = React.forwardRef<
@@ -69,10 +70,26 @@ const ScoreboardMainText = React.forwardRef<
 ))
 ScoreboardMainText.displayName = "ScoreboardMainText"
 
+const ScoreboardInfoText = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => (
+    <div
+        ref={ref}
+        className={ cn("flex w-full gap-2 items-center justify-start text-[10px] font-light", className) }
+        { ...props }
+    >
+        <Info className="w-4 h-4"/>
+        { children }
+    </div>
+))
+ScoreboardInfoText.displayName = "ScoreboardInfoText"
+
 export {
     Scoreboard,
     ScoreboardItem,
     ScoreboardTitle,
     ScoreboardSubtitle,
-    ScoreboardMainText
+    ScoreboardMainText,
+    ScoreboardInfoText
 }
