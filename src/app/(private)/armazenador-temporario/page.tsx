@@ -11,9 +11,10 @@ import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import generatePdfListaMtrsDownload from "@/repositories/generatePdfListaMtrsDownload"
+import generatePdfListaMtrsPorDestinadorDownload from "@/repositories/generatePdfListaMtrsPorDestinadorDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
+import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarEstoqueDeArmazenamentoTemporario, agruparPorTipoDeResiduo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { ArrowUp, ChartColumnBig, Download, Info, List } from "lucide-react"
@@ -245,7 +246,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -311,7 +312,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Data Recebimento AT"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]}
                     />
             }
 
@@ -377,7 +378,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                        options={["Gerador", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                     />
             }
 
@@ -400,12 +401,11 @@ export default function ArmazenadorTemporarioPage() {
                             className="bg-yellow-400 hover:bg-yellow-400/50"
                             disableButton={!hideChartManifestsSending}
                             setDisableButton={()=> {}}
-                            onClick={()=> generatePdfListaMtrsDownload(
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MANIFESTOS ENVIADOS PARA O DESTINADOR",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
-                                filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
-                                ["Número MTR", "Data Emissão", "Gerador", "Destinador", "Resíduo", "Quantidade Recebida", "Data Recebimento"]
+                                agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)),
                             )}
                         >
                             <Download /> Baixar PDF
@@ -443,7 +443,7 @@ export default function ArmazenadorTemporarioPage() {
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento AT"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]}
                     />
             }
 

@@ -196,7 +196,7 @@ export default function MovimentacaoParaDFPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Destinador", "Data Recebimento", "Situação"]}
+                        options={["Destinador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                     />
             }
 
@@ -276,7 +276,7 @@ export default function MovimentacaoParaDFPage() {
                         subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Destinador", "Data Recebimento", "Situação"]}
+                        options={["Destinador", "Data Recebimento", "Data Recebimento AT", "Situação"]}
                     />
             }
 

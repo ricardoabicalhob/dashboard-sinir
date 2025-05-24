@@ -13,7 +13,11 @@ export async function getMtrDetails(mtrsList :MTRResponseI[], authorization :str
         })
         // console.log("mtr: ", mtr)
         // console.log("mtr: ", {...data.objetoResposta, manHashCode: mtr.manHashCode})
-        return {...data.objetoResposta, manHashCode: mtr.manHashCode, temMtrComplementar: mtr.temMtrComplementar, manCodigoMtrComplementar: mtr.manCodigoMtrComplementar}
+        return {...data.objetoResposta, 
+          possuiArmazenamentoTemporario: mtr.possuiArmazenamentoTemporario, 
+          manHashCode: mtr.manHashCode, 
+          temMtrComplementar: mtr.temMtrComplementar, 
+          manCodigoMtrComplementar: mtr.manCodigoMtrComplementar}
       })
       const mtrDetails = await Promise.all(detailsPromises)
       

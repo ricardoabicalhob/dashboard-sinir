@@ -197,6 +197,7 @@ export interface MTRResponseI {
     manHashCode :string
     temMtrComplementar :boolean
     manCodigoMtrComplementar :string | null
+    possuiArmazenamentoTemporario :boolean
     estado: {
         estCodigo: number;
         estAbreviacao: string;

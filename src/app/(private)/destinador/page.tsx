@@ -209,7 +209,7 @@ export default function DestinadorPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -237,7 +237,7 @@ export default function DestinadorPage() {
                             "MANIFESTOS EMITIDOS PARA RECEBIMENTO COMO DESTINADOR",
                             `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                             filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
-                            ["Número MTR", "Data Emissão", "Gerador", "Quantidade Indicada no MTR"]
+                            ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                         )}
                     >
                         <Download /> Baixar PDF
@@ -274,7 +274,7 @@ export default function DestinadorPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                     />
             }
 
@@ -302,7 +302,7 @@ export default function DestinadorPage() {
                                 "MANIFESTOS RECEBIDOS PARA DESTINAÇÃO",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
-                                ["Número MTR", "Data Emissão", "Gerador", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]
                             )}
                         >
                             <Download /> Baixar PDF
@@ -339,7 +339,7 @@ export default function DestinadorPage() {
                         subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Gerador", "Situação", "Data Recebimento"]}
+                        options={["Gerador", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -367,7 +367,7 @@ export default function DestinadorPage() {
                                 "MANIFESTOS PENDENTES DE DESTINAÇÃO",
                                 `Até: ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
-                                ["Número MTR", "Data Emissão", "Gerador", "Quantidade Indicada no MTR", "Situação"]
+                                ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                             )}
                         >
                             <Download /> Baixar PDF

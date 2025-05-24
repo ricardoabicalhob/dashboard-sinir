@@ -14,6 +14,7 @@ import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
 import logoGestao from "../../public/new-logo-2-com-texto.png"
 import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function PrivateLayout({
   children,
@@ -134,20 +135,22 @@ export default function PrivateLayout({
   return (
     <SystemProvider>
         <QueryClientProvider client={queryClient}>
-            <html lang="pt-BR">
-              <body 
-                  className={`antialiased`}
-              >
-                <MenuBar loginResponse={loginResponse} />
-                <SubMenuBar perfil={{
-                  gerador: loginResponse?.objetoResposta.isGerador || false, 
-                  armazenadorTemporario: loginResponse?.objetoResposta.isArmazenadorTemporario || false, 
-                  destinador: loginResponse?.objetoResposta.isDestinador || false
-                }}/>
-                {children}
-                <Toaster />
-              </body>
-            </html>
+            <TooltipProvider>
+              <html lang="pt-BR">
+                <body 
+                    className={`antialiased`}
+                >
+                  <MenuBar loginResponse={loginResponse} />
+                  <SubMenuBar perfil={{
+                    gerador: loginResponse?.objetoResposta.isGerador || false, 
+                    armazenadorTemporario: loginResponse?.objetoResposta.isArmazenadorTemporario || false, 
+                    destinador: loginResponse?.objetoResposta.isDestinador || false
+                  }}/>
+                  {children}
+                  <Toaster />
+                </body>
+              </html>
+            </TooltipProvider>
         </QueryClientProvider>
     </SystemProvider>
   )

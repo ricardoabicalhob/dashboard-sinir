@@ -10,12 +10,14 @@ import { AuthContext } from "@/contexts/auth.context"
 import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
+import generatePdfListaMtrsDownload from "@/repositories/generatePdfListaMtrsDownload"
+import generatePdfListaMtrsPorDestinadorDownload from "@/repositories/generatePdfListaMtrsPorDestinadorDownload"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
+import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Info, List } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, Info, List } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -212,7 +214,7 @@ export default function GeradorPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Destinador", "Resíduo", "Quantidade Indicada no MTR"]}
+                        options={["Armazenador Temporário", "Destinador", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -229,6 +231,23 @@ export default function GeradorPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsIssued &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsIssued}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS EMITIDOS",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <a href="#topo">
                     <SwitchButton
                         className="bg-gray-400 hover:bg-gray-400/50"
@@ -278,6 +297,22 @@ export default function GeradorPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsReceived &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsReceived}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS ENVIADOS PARA O DESTINADOR",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <a href="#topo">
                     <SwitchButton
                         className="bg-gray-400 hover:bg-gray-400/50"
@@ -306,7 +341,7 @@ export default function GeradorPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
                         title="Manifestos pendentes"
-                        subtitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Armazenador Temporário", "Destinador", "Data Recebimento AT","Situação"]}
@@ -326,6 +361,23 @@ export default function GeradorPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsPending &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsPending}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS PENDENTES DE RECEBIMENTO PELO DESTINADOR",
+                                `Tudo até: ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
+                                ["Número MTR", "Data Emissão", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"]
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <a href="#topo">
                     <SwitchButton
                         className="bg-gray-400 hover:bg-gray-400/50"

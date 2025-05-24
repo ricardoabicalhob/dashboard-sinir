@@ -200,7 +200,7 @@ export default function MovimentacaoParaATPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
+                        options={["Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 
@@ -217,6 +217,23 @@ export default function MovimentacaoParaATPage() {
                 >
                     <List className="w-4 h-4 text-white"/> Manifestos
                 </SwitchButton>
+                {
+                    hideChartManifestsIssued &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={!hideChartManifestsIssued}
+                            setDisableButton={()=> {}}
+                            onClick={()=> generatePdfListaMtrsDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
+                                "MANIFESTOS GERADOS PARA O ARMAZENAMENTO TEMPORÁRIO",
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
+                                filtrarTudoComDataDeEmissaoDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo),
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"],
+                            )}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <a href="#topo">
                     <SwitchButton
                         className="bg-gray-400 hover:bg-gray-400/50"
@@ -248,7 +265,7 @@ export default function MovimentacaoParaATPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
+                        options={["Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]}
                     />
             }
 
@@ -276,7 +293,7 @@ export default function MovimentacaoParaATPage() {
                                 "MANIFESTOS RECEBIDOS NO ARMAZENADOR TEMPORÁRIO",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []), dateFrom, dateTo),
-                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Data Recebimento AT", "Quantidade Indicada no MTR"],
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"],
                             )}
                         >
                             <Download /> Baixar PDF
@@ -313,7 +330,7 @@ export default function MovimentacaoParaATPage() {
                         subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(filtrarTodosQuePossuemArmazenamentoTemporario(detailedReferencePeriodList || []))}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Data Recebimento AT", "Situação"]}
+                        options={["Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"]}
                     />
             }
 

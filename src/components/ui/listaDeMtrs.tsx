@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { downloadCdf } from "@/repositories/downloadCDF";
 import { downloadMtrComplementar } from "@/repositories/downloadMtrComplementar";
 import { downloadRecebimentoMtr } from "@/repositories/downloadRecebimento";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 type FilterColumns = "Gerador" | "Destinador" | "Armazenador Temporário" | "Transportador" | "Situação" | "Data Recebimento AT" | "Data Recebimento" | "Resíduo" | "Quantidade Indicada no MTR" | "Quantidade Recebida"
 
@@ -65,10 +66,10 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                             {options.includes("Gerador") && <TableHead>Gerador</TableHead>}
                             {options.includes("Transportador") && <TableHead>Transportador</TableHead>}
                             {options.includes("Destinador") && <TableHead>Destinador</TableHead>}
-                            {options.includes("Situação") && <TableHead>Situação</TableHead>}
                             {options.includes("Resíduo") && <TableHead>Resíduo</TableHead>}
                             {options.includes("Quantidade Indicada no MTR") && <TableHead>Quantidade Indicada no MTR</TableHead>}
                             {options.includes("Quantidade Recebida") && <TableHead>Quantidade Recebida</TableHead>}
+                            {options.includes("Situação") && <TableHead>Situação</TableHead>}
                             {options.includes("Data Recebimento AT") && <TableHead>Data Recebimento AT</TableHead>}
                             {options.includes("Data Recebimento") && <TableHead>Data Recebimento</TableHead>}
                             <TableHead>Ações</TableHead>
@@ -80,31 +81,45 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                 <TableRow className="hover:bg-[#00695C20]" key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
-                                    {options.includes("Armazenador Temporário") && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao}</TableCell>}
-                                    {options.includes("Gerador") && <TableCell>{mtr.parceiroGerador.parDescricao}</TableCell>}
-                                    {options.includes("Transportador") && <TableCell>{mtr.parceiroTransportador.parDescricao}</TableCell>}
-                                    {options.includes("Destinador") && <TableCell>{mtr.parceiroDestinador.parDescricao}</TableCell>}
-                                    {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
+                                    {options.includes("Armazenador Temporário") && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao || "Não possui"}</TableCell>}
+                                    {options.includes("Gerador") && <TableCell>{`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao}`}</TableCell>}
+                                    {options.includes("Transportador") && <TableCell>{`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao}`}</TableCell>}
+                                    {options.includes("Destinador") && <TableCell>{`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao}`}</TableCell>}
                                     {options.includes("Resíduo") && <TableCell>{`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`}</TableCell>}
                                     {options.includes("Quantidade Indicada no MTR") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
-                                    {options.includes("Quantidade Recebida") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
-                                    {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT}</TableCell>}
+                                    {options.includes("Quantidade Recebida") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidadeRecebida?.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "-"}</TableCell>}
+                                    {options.includes("Situação") && <TableCell>{mtr.situacaoManifesto.simDescricao}</TableCell>}
+                                    {options.includes("Data Recebimento AT") && <TableCell>{mtr.dataRecebimentoAT || "-"}</TableCell>}
                                     {options.includes("Data Recebimento") &&<TableCell>{mtr.situacaoManifesto.simDataRecebimento}</TableCell>}
                                     <TableCell className="flex justify-start">
-                                        <div
-                                            className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
-                                            onClick={async ()=> handleDownloadMtr(mtr.manNumero, authorization)}     
-                                        >
-                                            <Printer fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
-                                        </div>
-                                        {
-                                            mtr.cdfNumero && 
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
                                                 <div
                                                     className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
-                                                    onClick={()=> handleDownloadCdf(mtr.cdfNumero, authorization)}
+                                                    onClick={async ()=> handleDownloadMtr(mtr.manNumero, authorization)}     
                                                 >
-                                                    <FileText fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                    <Printer fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
                                                 </div>
+                                            </TooltipTrigger>
+                                            <TooltipContent className="bg-[#00695C]">
+                                                <span>Download MTR</span>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                        {
+                                            mtr.cdfNumero && 
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <div
+                                                            className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                            onClick={()=> handleDownloadCdf(mtr.cdfNumero, authorization)}
+                                                        >
+                                                            <FileText fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                        </div>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent className="bg-[#00695C]">
+                                                        <span>Download Certificado de Destinação Final</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
                                         }
                                         {
                                             !mtr.cdfNumero &&
@@ -114,12 +129,19 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                         }
                                         {
                                             mtr.situacaoManifesto.simDataRecebimento &&
-                                                <div
-                                                    className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
-                                                    onClick={()=> handleDownloadRecebimentoMtr(mtr.manHashCode, mtr.manNumero, authorization)}
-                                                >
-                                                    <FileCheck2 fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
-                                                </div>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <div
+                                                            className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                            onClick={()=> handleDownloadRecebimentoMtr(mtr.manHashCode, mtr.manNumero, authorization)}
+                                                        >
+                                                            <FileCheck2 fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                        </div>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent className="bg-[#00695C]">
+                                                        <span>Download Recebimento</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
                                         }
                                         {
                                             !mtr.situacaoManifesto.simDataRecebimento &&
@@ -129,12 +151,19 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                         }
                                         {
                                             mtr.temMtrComplementar &&
-                                                <div
-                                                    className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
-                                                    onClick={()=> handleDownloadMtrComplementar(mtr.manCodigoMtrComplementar, authorization)}
-                                                >
-                                                    <Dock fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
-                                                </div>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <div
+                                                            className="w-fit px-2 py-2 cursor-pointer rounded-full hover:bg-[#00BCD430]"
+                                                            onClick={()=> handleDownloadMtrComplementar(mtr.manCodigoMtrComplementar, authorization)}
+                                                        >
+                                                            <Dock fill="#00695C" fillOpacity={.1} className="w-5 h-5 text-[#00695C]" />
+                                                        </div>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent className="bg-[#00695C]">
+                                                        <span>Download MTR Complementar</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
                                         }
                                     </TableCell>
                                 </TableRow>

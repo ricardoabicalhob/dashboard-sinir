@@ -335,7 +335,7 @@ export default function VisaoGeralPage() {
                     subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
-                    options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                    options={["Destinador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                 />}
 
             {!showTableManifestsReceivedSentFromTheGenerator &&
@@ -392,7 +392,7 @@ export default function VisaoGeralPage() {
                     subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
-                    options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                    options={["Gerador", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                 />}
 
             {!showTableATOriginDetails &&
@@ -474,7 +474,7 @@ export default function VisaoGeralPage() {
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                         ]}
                         authorization={token || ""} 
-                        options={["Gerador", "Destinador", "Situação", "Data Recebimento"]}
+                        options={["Gerador", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]}
                     />
             }
 
@@ -532,7 +532,11 @@ export default function VisaoGeralPage() {
                     !showListManifestsReceivedSentFromTheGeneratorAndAT &&
                         <SwitchButton
                             className="bg-yellow-400 hover:bg-yellow-400/50"
-                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(`${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`, "MANIFESTOS ENVIADOS PARA O DESTINADOR", `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, agruparPorDestinador([
+                            onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
+                                `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`, 
+                                "MANIFESTOS ENVIADOS PARA O DESTINADOR", 
+                                `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
+                                agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
                             ]))}

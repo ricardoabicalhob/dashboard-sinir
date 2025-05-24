@@ -79,7 +79,7 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
         if(filterColumns.includes("Data Emissão")) linha.push(new Date(mtr.manData).toLocaleDateString("pt-BR"))
         if(filterColumns.includes("Gerador")) linha.push(`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao}`)
         if(filterColumns.includes("Destinador")) linha.push(`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao}`)
-        if(filterColumns.includes("Armazenador Temporário")) linha.push(`${mtr.parceiroArmazenadorTemporario.parCodigo} - ${mtr.parceiroArmazenadorTemporario.parDescricao}`)
+        if(filterColumns.includes("Armazenador Temporário")) linha.push(mtr.possuiArmazenamentoTemporario ? `${mtr.parceiroArmazenadorTemporario.parCodigo} - ${mtr.parceiroArmazenadorTemporario.parDescricao}` : "Não possui")
         if(filterColumns.includes("Data Recebimento AT")) linha.push(mtr.dataRecebimentoAT)
         if(filterColumns.includes("Transportador")) linha.push(`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao}`)
         if(filterColumns.includes("Resíduo")) linha.push(`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`)
