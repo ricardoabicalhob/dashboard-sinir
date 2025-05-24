@@ -495,7 +495,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Resíduos pendentes de recebimento pelo AT"
+                        title="Resíduos pendentes de recebimento pelo Armazenador Temporário"
                         subTitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))}
@@ -505,7 +505,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
-                        title="Manifestos pendentes de recebimento pelo AT"
+                        title="Manifestos pendentes de recebimento pelo Armazenador Temporário"
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
                         authorization={profile?.objetoResposta.token || ""} 
