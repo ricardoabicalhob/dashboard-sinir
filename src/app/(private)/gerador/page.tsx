@@ -280,7 +280,7 @@ export default function GeradorPage() {
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Destinador", "Data Recebimento","Situação"]}
+                        options={["Destinador", "Data Recebimento"]}
                     />
             }
 
@@ -344,7 +344,7 @@ export default function GeradorPage() {
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT","Situação"]}
+                        options={["Armazenador Temporário", "Destinador", "Data Recebimento AT"]}
                     />
             }
 
@@ -372,7 +372,7 @@ export default function GeradorPage() {
                                 "MANIFESTOS PENDENTES DE RECEBIMENTO PELO DESTINADOR",
                                 `Tudo até: ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
-                                ["Número MTR", "Data Emissão", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"]
+                                ["Número MTR", "Data Emissão", "Armazenador Temporário", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
                             )}
                         >
                             <Download /> Baixar PDF

@@ -43,7 +43,6 @@ export default function DialogParceiros({ listaDeParceiros, setUnidadeSelecionad
                         placeholder="Filtar unidades..."
                         value={valorDigitado}
                         onChange={e => setValorDigitado(e.target.value)}
-                        // onInput={() => setListaFiltrada(filtrarArray(valorDigitado, listaDeParceiros))}
                     />
                 </DialogHeader>
                 <div className="flex max-h-[50vh] min-h-[50vh]">
