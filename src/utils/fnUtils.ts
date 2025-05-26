@@ -55,3 +55,7 @@ export function separarPorMaiusculas(str: string): string {
   const spacedStr = str.replace(/(?!^)([A-Z])/g, ' $&');
   return spacedStr.split(' ').toString()
 }
+
+export function removerCaracteresNaoNumericos (value: string) {
+    return value.replace(/\D/g, '')
+}

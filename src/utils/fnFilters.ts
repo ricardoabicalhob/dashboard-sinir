@@ -1,5 +1,6 @@
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { verificarDataEstaDentroDoPeriodo, formatarDataDDMMYYYYParaMMDDYYYY } from "./fnUtils";
+import { ParceiroResponseI } from "@/interfaces/login.interface";
 
 interface WasteQuantities {
     quantidadeIndicadaNoMTR: number
@@ -107,7 +108,7 @@ export function filtrarTudoComDataDeRecebimentoDentroDoPeriodo(listMtrs :MTRResp
     return listMtrsFiltered
 }
 
-export function filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) {
+export function filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(listMtrs :MTRResponseI[], dateFrom :Date, dateTo :Date) :MTRResponseI[]{
     const listMtrsFiltered :MTRResponseI[] = []
 
     listMtrs
@@ -173,4 +174,20 @@ export function filtrarTodosQuePossuemArmazenamentoTemporario(listMtrs :MTRRespo
         listMtrsFiltered.push(mtr)
     })
     return listMtrsFiltered
+}
+
+export function filtrarArray(str :string, arr :ParceiroResponseI[]) :ParceiroResponseI[]{
+    if(!str) {
+        return arr
+    }
+
+    const termoBusca = str.toLowerCase()
+
+    const arrFiltrado = arr.filter(item => {
+        const codigoParceiro = item.parCodigo.toString()
+        const descricaoParceiro = item.parDescricao.toLocaleLowerCase()
+
+        return descricaoParceiro.includes(termoBusca) || codigoParceiro.includes(termoBusca)
+    })
+    return arrFiltrado
 }

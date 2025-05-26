@@ -57,3 +57,19 @@ export interface LoginResponseI {
     totalRecords :number
     erro :boolean
 }
+
+export interface ParceiroResponseI {
+    parCodigo :number
+    parDescricao :string
+    jurCnpj :string
+    fisCpf :string
+    paeEndereco :string
+    cnp :string | null
+}
+
+export interface ParceiroResponseCompleteI {
+    mensagem :string | null
+    objetoResposta :ParceiroResponseI[]
+    totalRecords :number
+    erro :boolean
+}

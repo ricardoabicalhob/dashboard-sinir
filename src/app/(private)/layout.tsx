@@ -66,7 +66,7 @@ export default function PrivateLayout({
               
             </li>
               <div 
-                className="bg-[#00BCD4] flex justify-end rounded-full shadow-md shadow-black/40 p-2 text-white font-semibold select-none cursor-pointer"
+                className="bg-[#00BCD4] hover:filter hover:brightness-110 flex justify-end rounded-full shadow-md shadow-black/40 p-2 text-white font-semibold select-none cursor-pointer"
                 onClick={()=> handleDisconnect()}  
               >
                 <LogOut />
