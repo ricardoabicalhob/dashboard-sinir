@@ -1,4 +1,4 @@
-import { ParceiroResponseCompleteI, ParceiroResponseI } from "@/interfaces/login.interface"
+import { ParceiroResponseI } from "@/interfaces/login.interface"
 import api from "@/services/api"
 
 export async function consultaParceiro(cnpj :string) {

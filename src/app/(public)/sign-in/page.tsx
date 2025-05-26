@@ -94,7 +94,6 @@ export default function SignIn() {
     handleSubmit: handleSubmitUnidade,
     formState: { errors: errorsUnidade },
     watch: watchUnidade,
-    setError: setErrorUnidade,
     clearErrors: clearErrorsUnidade
   } = useForm<unidadeSchema>({
     resolver: zodResolver(unidadeSchema)
