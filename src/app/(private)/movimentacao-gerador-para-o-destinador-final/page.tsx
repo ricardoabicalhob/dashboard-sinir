@@ -159,7 +159,7 @@ export default function MovimentacaoParaDFPage() {
         <div id="topo" className="flex flex-col gap-6 p-6">
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos movimentados para o destinador final</ScoreboardTitle>
+                    <ScoreboardTitle>Meus resíduos movimentados para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida</ScoreboardSubtitle>
@@ -168,7 +168,7 @@ export default function MovimentacaoParaDFPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos pendentes</ScoreboardTitle>
+                    <ScoreboardTitle>Meus resíduos ainda não movimentados para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
@@ -182,7 +182,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !showChartManifestsReceived &&
                     <GraficoBarraDupla
-                        title="Resíduos recebidos pelo destinador final"
+                        title="Meus resíduos movimentados para o destinador final"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -192,7 +192,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !showListManifestsReceived &&
                     <ListaDeMtrs 
-                        title="Manifestos recebidos pelo destinador final"
+                        title="Meus manifestos recebidos pelo destinador final"
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
@@ -228,7 +228,7 @@ export default function MovimentacaoParaDFPage() {
                             className="bg-yellow-400 hover:bg-yellow-400/50"
                             onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MOVIMENTAÇÃO PARA DESTINADOR", 
+                                "MEUS MANIFESTOS RECEBIDOS PELO DESTINADOR FINAL", 
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
                                 agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))
                             )}
@@ -262,7 +262,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples
-                        title="Resíduos pendentes"
+                        title="Meus resíduos ainda não movimentados para o destinador final"
                         subTitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
@@ -272,7 +272,7 @@ export default function MovimentacaoParaDFPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
-                        title="Manifestos pendentes"
+                        title="Meus manifestos ainda não recebidos pelo destinador final"
                         subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}

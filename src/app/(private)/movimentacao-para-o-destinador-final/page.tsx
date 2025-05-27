@@ -289,7 +289,7 @@ export default function VisaoGeralPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Movimentação de gerador para destinador final</ScoreboardTitle>
+                    <ScoreboardTitle>Minha movimentação como gerador para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
@@ -298,7 +298,7 @@ export default function VisaoGeralPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Movimentação de armazenamento temporário para destinador final</ScoreboardTitle>
+                    <ScoreboardTitle>Minha movimentação como Armazenador Temporário para o destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
@@ -307,7 +307,7 @@ export default function VisaoGeralPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Movimentação total para destinador final</ScoreboardTitle>
+                    <ScoreboardTitle>Minha movimentação total para destinador final</ScoreboardTitle>
                     <ScoreboardSubtitle>{`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}</ScoreboardSubtitle>
                     <ScoreboardMainText>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
@@ -323,7 +323,7 @@ export default function VisaoGeralPage() {
             <div id="movimentacaoGeradorParaDestinador"/>
             {!showChartManifestsReceivedSentFromTheGenerator &&
                 <GraficoBarraDupla
-                    title="Movimentação de gerador para destinador final"
+                    title="Minha movimentação como gerador para o destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)))}
                     dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
@@ -331,7 +331,7 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromTheGenerator &&
                 <ListaDeMtrs
-                    title="Manifestos recebidos pelo destinador"
+                    title="Meus manifestos como gerador recebidos pelo destinador final"
                     subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
@@ -341,7 +341,7 @@ export default function VisaoGeralPage() {
             {!showTableManifestsReceivedSentFromTheGenerator &&
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
-                    title="Detalhes da destinação - Saída do gerador"
+                    title="Detalhes da destinação - Meus resíduos como gerador"
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                 />}
 
@@ -380,7 +380,7 @@ export default function VisaoGeralPage() {
             <div id="movimentacaoATParaDestinador"/>
             {!showChartManifestsReceivedSentFromAT &&
                 <GraficoBarraDupla
-                    title="Movimentação de armazenamento temporário para destinador final"
+                    title="Minha movimentação como armazenador temporário para o destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)))}
                     dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
@@ -388,7 +388,7 @@ export default function VisaoGeralPage() {
 
             {!showListManifestsReceivedSentFromAT &&
                 <ListaDeMtrs
-                    title="Manifestos recebidos pelo destinador"
+                    title="Manifestos como armazenador temporário recebidos pelo destinador"
                     subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)}
                     authorization={profile?.objetoResposta.token || ""}
@@ -405,7 +405,7 @@ export default function VisaoGeralPage() {
             {!showTableManifestsReceivedSentFromAT &&
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
-                    title="Detalhes da destinação - Saída do armazenamento temporário"
+                    title="Detalhes da destinação - Meus resíduos como armazenador temporário"
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />}
 
@@ -450,7 +450,7 @@ export default function VisaoGeralPage() {
             <div id="movimentacaoTotal"/>
             {!showChartManifestsReceivedSentFromTheGeneratorAndAT &&
                 <GraficoBarraDupla 
-                    title="Movimentação total para destinador final"
+                    title="Minha movimentação total para o destinador final"
                     subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo([
                         ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
@@ -467,7 +467,7 @@ export default function VisaoGeralPage() {
                 (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length ||
                 !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length) &&
                     <ListaDeMtrs
-                        title="Manifestos recebidos pelo destinador"
+                        title="Manifestos recebidos pelo destinador final"
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={[
                             ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),
@@ -484,7 +484,7 @@ export default function VisaoGeralPage() {
                     <>
                         <TabelaDemonstrativaSimples
                             tipo="Gerador"
-                            title="Detalhes de origem dos resíduos enviados"
+                            title="Detalhes de origem dos resíduos enviados para o destinador final"
                             listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
                         />
@@ -499,7 +499,7 @@ export default function VisaoGeralPage() {
                     <>
                         <TabelaDemonstrativaSimples 
                             tipo="Destinador"
-                            title="Detalhes de destinação dos resíduos enviados"
+                            title="Detalhes de destinação dos resíduos enviados para o destinador final"
                             listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
@@ -527,7 +527,7 @@ export default function VisaoGeralPage() {
                             className="bg-yellow-400 hover:bg-yellow-400/50"
                             onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`, 
-                                "MANIFESTOS ENVIADOS PARA O DESTINADOR", 
+                                "MANIFESTOS RECEBIDOS PELO DESTINADOR FINAL", 
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
                                 agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo),

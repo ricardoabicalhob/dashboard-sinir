@@ -119,14 +119,14 @@ export default function PrivateLayout({
 
         { !perfil.destinador && !perfil.armazenadorTemporario &&
           (pathname === "/movimentacao-gerador-para-o-armazenador-temporario" ?
-          <span className="text-[#00BCD4] font-normal leading-relaxed select-none px-2">Movimentação para o armazenamento temporário</span> :
-          <a href="/movimentacao-gerador-para-o-armazenador-temporario" className="font-light px-2">Movimentação para o armazenamento temporario</a>  
+          <span className="text-[#00BCD4] font-normal leading-relaxed select-none px-2">Minhas movimentações para o armazenamento temporário</span> :
+          <a href="/movimentacao-gerador-para-o-armazenador-temporario" className="font-light px-2">Minhas movimentações para o armazenamento temporario</a>  
           ) }
 
         { !perfil.destinador && !perfil.armazenadorTemporario &&
           (pathname === "/movimentacao-gerador-para-o-destinador-final" ?
-          <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Movimentação para o destinador final</span> :
-          <a href="/movimentacao-gerador-para-o-destinador-final" className="font-light pl-2">Movimentação para o destinador final</a>  
+          <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Minhas movimentações para o destinador final</span> :
+          <a href="/movimentacao-gerador-para-o-destinador-final" className="font-light pl-2">Minhas movimentações para o destinador final</a>  
           ) }      
       </div>
     )

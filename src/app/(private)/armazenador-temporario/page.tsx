@@ -182,7 +182,7 @@ export default function ArmazenadorTemporarioPage() {
 
             <Scoreboard>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos gerados para o Armazenador Temporário</ScoreboardTitle>
+                    <ScoreboardTitle>Meus resíduos como Armazenador Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-gray-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
@@ -191,7 +191,7 @@ export default function ArmazenadorTemporarioPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos recebidos no Armazenador Temporário</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos recebidos em meu Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
@@ -200,7 +200,7 @@ export default function ArmazenadorTemporarioPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos destinados a partir do Armazenador Temporário</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos destinados a partir do meu Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText>{ (totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo destinador</ScoreboardSubtitle>
@@ -209,7 +209,7 @@ export default function ArmazenadorTemporarioPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos armazenados no Armazenador Temporário</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos armazenados em meu Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
@@ -218,7 +218,7 @@ export default function ArmazenadorTemporarioPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos pendentes de recebimento no Armazenador Temporário</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos ainda não recebidos em meu Armazenamento Temporário</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
@@ -232,7 +232,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsGenerated &&
                     <GraficoSimples
-                        title="Resíduos gerados para armazenamento temporário"
+                        title="Meus resíduos como Armazenador Temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -242,7 +242,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsGenerated &&
                     <ListaDeMtrs
-                        title="Manifestos emitidos para armazenamento temporário"
+                        title="Meus manifestos como Armazenador Temporário"
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
@@ -271,7 +271,7 @@ export default function ArmazenadorTemporarioPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS EMITIDOS PARA O ARMAZENAMENTO TEMPORÁRIO",
+                                "MEUS MANIFESTOS COMO ARMAZENADOR TEMPORÁRIO",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoComDataDeEmissaoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
@@ -298,7 +298,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsReceived &&
                     <GraficoSimples
-                        title="Resíduos recebidos no armazenamento temporário"
+                        title="Resíduos recebidos em meu Armazenamento Temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -308,7 +308,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsReceived &&
                     <ListaDeMtrs
-                        title="Manifestos recebidos no armazenamento temporário"
+                        title="Manifestos recebidos em meu Armazenamento Temporário"
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
@@ -337,7 +337,7 @@ export default function ArmazenadorTemporarioPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS RECEBIDOS NO ARMAZENAMENTO TEMPORÁRIO",
+                                "MANIFESTOS RECEBIDOS EM MEU ARMAZENAMENTO TEMPORÁRIO",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
@@ -364,7 +364,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsSending &&
                     <GraficoBarraDupla
-                        title="Saída de resíduos do armazenamento temporário"
+                        title="Resíduos destinados a partir do meu Armazenamento Temporário"
                         subTitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
@@ -374,7 +374,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsSending &&
                     <ListaDeMtrs
-                        title="Manifestos recebidos pelo destinador"
+                        title="Meus manifestos como Armazenador Temporário recebidos pelo destinador final"
                         subtitle={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)}
                         authorization={profile?.objetoResposta.token || ""}
@@ -403,7 +403,7 @@ export default function ArmazenadorTemporarioPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsPorDestinadorDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS ENVIADOS PARA O DESTINADOR",
+                                "MEUS MANIFESTOS COMO ARMAZENADOR TEMPORÁRIO RECEBIDOS PELO DESTINADOR FINAL",
                                 `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo)),
                             )}
@@ -429,7 +429,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsStock &&
                     <GraficoSimples
-                        title="Resíduos em armazenamento temporário aguardando destinação"
+                        title="Resíduos armazenados em meu Armazenamento Temporário"
                         subTitle={`Até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))}
@@ -439,7 +439,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsStock &&
                     <ListaDeMtrs
-                        title="Manifestos em armazenamento temporário aguardando envio"
+                        title="Manifestos ainda não enviados para o destinador final"
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
@@ -468,7 +468,7 @@ export default function ArmazenadorTemporarioPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS EM ARMAZENAMENTO TEMPORÁRIO AGUARDANDO ENVIO",
+                                "MANIFESTOS AINDA NÃO ENVIADOS PARA O DESTINADOR FINAL",
                                 `Tudo até: ${dateTo.toLocaleDateString()}`,
                                 filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
@@ -495,7 +495,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Resíduos pendentes de recebimento pelo Armazenador Temporário"
+                        title="Resíduos ainda não recebidos em meu Armazenamento Temporário"
                         subTitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))}
@@ -505,7 +505,7 @@ export default function ArmazenadorTemporarioPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
-                        title="Manifestos pendentes de recebimento pelo Armazenador Temporário"
+                        title="Manifestos ainda não recebidos em meu Armazenamento Temporário"
                         subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
                         authorization={profile?.objetoResposta.token || ""} 
@@ -534,7 +534,7 @@ export default function ArmazenadorTemporarioPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS PENDENTES DE RECEBIMENTO NO ARMAZENAMENTO TEMPORÁRIO",
+                                "MANIFESTOS AINDA NÃO RECEBIDOS EM MEU ARMAZENAMENTO TEMPORÁRIO",
                                 `Tudo até: ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
