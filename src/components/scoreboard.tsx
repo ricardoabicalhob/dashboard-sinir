@@ -38,7 +38,7 @@ const ScoreboardTitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <p
     ref={ref}
-    className={ cn("font-normal text-center px-4", className) }
+    className={ cn("text-lg font-normal text-center px-4", className) }
     {...props}
   >
     {children}
@@ -52,7 +52,7 @@ const ScoreboardSubtitle = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
     <p
         ref={ref}
-        className={ cn("text-xs font-light", className) }
+        className={ cn("text-sm font-light text-center", className) }
         { ...props }
     >{ children }</p>
 ))
