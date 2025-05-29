@@ -78,9 +78,9 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :
             }
         }
 
-        doc.setFontSize(14);
+        doc.setFontSize(12);
         doc.text(`${tipo}: ${item.nomePrincipal}`, 14, yOffset);
-        yOffset += 8;
+        yOffset += 2;
 
         autoTable(doc, {
             startY: yOffset,
@@ -96,16 +96,16 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :
                 cellPadding: 2,
             },
             headStyles: {
-                fillColor: [41, 128, 185], // Cor de fundo do cabeçalho (azul escuro)
-                textColor: 255, // Texto branco
-                halign: 'center' // Alinhamento horizontal centralizado
+                fillColor: [0, 105, 92],
+                textColor: 255,
+                halign: 'center'
             },
             bodyStyles: {
-                halign: 'center' // Alinhamento horizontal centralizado para o corpo
+                halign: 'center'
             },
             columnStyles: {
-                0: { halign: 'left', cellWidth: 120 }, // Tipo de Resíduo alinhado à esquerda
-                1: { halign: 'right', cellWidth: 70 }, // Quantidades alinhadas à direita
+                0: { halign: 'left', cellWidth: 120 },
+                1: { halign: 'right', cellWidth: 70 },
                 2: { halign: 'right', cellWidth: 70 }
             },
             willDrawCell: (data) => {
@@ -129,5 +129,5 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :
         yOffset += 15;
     });
 
-    doc.save(`${subtitle.replace(/[^a-zA-Z0-9]/g, '_')}_Relatorio_${formattedDate.replace(/[: ]/g, '-')}.pdf`);
+    doc.save(`${subtitle.replace(/[^a-zA-Z0-9]/g, '_')}_Relatorio_${periodo.replace(/[: ]/g, '-')}.pdf`);
 }
