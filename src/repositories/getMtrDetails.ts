@@ -12,6 +12,7 @@ export async function getMtrDetails(mtrsList :MTRResponseI[], authorization :str
           }
         })
         // console.log("mtr: ", mtr)
+        // console.log(data.objetoResposta)
         // console.log("mtr: ", {...data.objetoResposta, manHashCode: mtr.manHashCode})
         return {...data.objetoResposta, 
           possuiArmazenamentoTemporario: mtr.possuiArmazenamentoTemporario, 

@@ -104,7 +104,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorList,
         error: errorList
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), token || "", "Todos", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -115,7 +115,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorListExtented,
         error: errorListExtented
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), token || "", "Todos", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -126,7 +126,7 @@ export default function ArmazenadorTemporarioPage() {
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateToBeforeBefore], 
-        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
+        async ()=> await getMtrList("Armazenador Temporário", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), token || "", "Todos", profile?.objetoResposta.parCodigo, ["Armaz Temporário", "Armaz Temporário - Recebido", "Recebido", "Salvo"]), {
         refetchOnWindowFocus: false,
         enabled: !!token && !!profile
     })
@@ -210,7 +210,7 @@ export default function ArmazenadorTemporarioPage() {
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos armazenados em meu Armazenamento Temporário</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-yellow-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade recebida pelo Armazenador Temporário</ScoreboardSubtitle>
                     <a className="flex gap-2 hover:text-[#00BCD4]" href="#armazenadosComigo">
@@ -219,7 +219,7 @@ export default function ArmazenadorTemporarioPage() {
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Resíduos ainda não recebidos em meu Armazenamento Temporário</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
                     <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
@@ -430,7 +430,7 @@ export default function ArmazenadorTemporarioPage() {
                 !hideChartManifestsStock &&
                     <GraficoSimples
                         title="Resíduos armazenados em meu Armazenamento Temporário"
-                        subTitle={`Até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []))}
                     />
@@ -440,7 +440,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsStock &&
                     <ListaDeMtrs
                         title="Manifestos ainda não enviados para o destinador final"
-                        subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={`Manifestos emitidos dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
                         options={["Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]}
@@ -469,7 +469,7 @@ export default function ArmazenadorTemporarioPage() {
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MANIFESTOS AINDA NÃO ENVIADOS PARA O DESTINADOR FINAL",
-                                `Tudo até: ${dateTo.toLocaleDateString()}`,
+                                `Manifestos emitidos de ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarEstoqueDeArmazenamentoTemporario(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"]
                             )}
@@ -496,7 +496,7 @@ export default function ArmazenadorTemporarioPage() {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
                         title="Resíduos ainda não recebidos em meu Armazenamento Temporário"
-                        subTitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={`Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []))}
                     />
@@ -506,7 +506,7 @@ export default function ArmazenadorTemporarioPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
                         title="Manifestos ainda não recebidos em meu Armazenamento Temporário"
-                        subtitle={`Tudo até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={`Manifestos emitidos dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || [])}     
                         authorization={profile?.objetoResposta.token || ""} 
                         options={["Gerador", "Resíduo", "Quantidade Indicada no MTR"]}         
@@ -535,7 +535,7 @@ export default function ArmazenadorTemporarioPage() {
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                 "MANIFESTOS AINDA NÃO RECEBIDOS EM MEU ARMAZENAMENTO TEMPORÁRIO",
-                                `Tudo até: ${dateTo.toLocaleDateString()}`,
+                                `Manifestos emitidos de ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                             )}

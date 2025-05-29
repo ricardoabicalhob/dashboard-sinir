@@ -18,7 +18,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Download, List, Sheet } from "lucide-react"
+import { ArrowUp, ChartColumnBig, Download, Info, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -89,7 +89,7 @@ export default function MovimentacaoParaDFPage() {
         isError: isErrorList,
         error: errorList
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 1, dateFrom, dateTo], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFrom), formatarDataParaAPI(dateTo), profile?.objetoResposta.token || "", "Todos", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile, 
     })
@@ -100,7 +100,7 @@ export default function MovimentacaoParaDFPage() {
         isError: isErrorListExtented,
         error: errorListExtented
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 2, dateFromBefore, dateToBefore], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBefore), formatarDataParaAPI(dateToBefore), profile?.objetoResposta.token || "", "Todos", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }
@@ -112,7 +112,7 @@ export default function MovimentacaoParaDFPage() {
         isError: isErrorListExtentedMore,
         error: errorListExtentedMore
     } = useQuery<MTRResponseI[], Error>(['referencePeriodListMtrs', 3, dateFromBeforeBefore, dateToBeforeBefore], 
-        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
+        async ()=> await getMtrList("Gerador", formatarDataParaAPI(dateFromBeforeBefore), formatarDataParaAPI(dateToBeforeBefore), profile?.objetoResposta.token || "", "Todos", profile?.objetoResposta.parCodigo, ["Salvo", "Recebido", "Armaz Temporário", "Armaz Temporário - Recebido"]), {
         refetchOnWindowFocus: false,
         enabled: !!profile?.objetoResposta.token && !!profile,
         }
@@ -155,6 +155,15 @@ export default function MovimentacaoParaDFPage() {
     if (isLoadingDetails) return <CustomMessage message="Carregando detalhes dos MTRs..."/>
     if (isErrorDetails && errorDetails) return <p className="flex w-full justify-center text-center bg-red-400">Erro ao carregar detalhes dos MTRs: {errorDetails.message}</p>;
 
+    if(!allMtrs.length) {
+        return(
+            <div className="flex gap-2 w-full h-[calc(100vh-117px)] items-center justify-center text-black/80">
+                <Info />
+                <p>Nenhuma movimentação feita para o destinador final dentro do período especificado</p>
+            </div>
+        )
+    }
+
     return (
         <div id="topo" className="flex flex-col gap-6 p-6">
             <Scoreboard>
@@ -169,7 +178,7 @@ export default function MovimentacaoParaDFPage() {
                 </ScoreboardItem>
                 <ScoreboardItem>
                     <ScoreboardTitle>Meus resíduos ainda não movimentados para o destinador final</ScoreboardTitle>
-                    <ScoreboardSubtitle>{ `Todos até: ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
+                    <ScoreboardSubtitle>{ `Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
                     <a className="flex gap-2 hover:text-[#00BCD4]" href="#pendentes">
@@ -263,7 +272,7 @@ export default function MovimentacaoParaDFPage() {
                 !hideChartManifestsPending &&
                     <GraficoSimples
                         title="Meus resíduos ainda não movimentados para o destinador final"
-                        subTitle={`Todos até: ${dateTo.toLocaleDateString()}`}
+                        subTitle={ `Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
                     />
@@ -273,10 +282,10 @@ export default function MovimentacaoParaDFPage() {
                 hideChartManifestsPending &&
                     <ListaDeMtrs 
                         title="Meus manifestos ainda não recebidos pelo destinador final"
-                        subtitle={`Todos até: ${dateTo.toLocaleDateString()}`}
+                        subtitle={ `Manifestos emitidos dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
-                        options={["Destinador", "Data Recebimento", "Data Recebimento AT", "Situação"]}
+                        options={["Armazenador Temporário", "Destinador", "Data Recebimento", "Data Recebimento AT", "Situação"]}
                     />
             }
 
@@ -299,8 +308,8 @@ export default function MovimentacaoParaDFPage() {
                             className="bg-yellow-400 hover:bg-yellow-400/50"
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MOVIMENTAÇÃO PENDENTE PARA DESTINADOR", 
-                                `Todos até: ${dateTo.toLocaleDateString()}`, 
+                                "MEUS MANIFESTOS AINDA NÃO RECEBIDOS PELO DESTINADOR FINAL", 
+                                `Manifestos emitidos de ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`, 
                                 filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Destinador", "Resíduo", "Quantidade Indicada no MTR", "Situação"],
                             )}

@@ -66,7 +66,9 @@ const ScoreboardMainText = React.forwardRef<
         ref={ref}
         className={ cn("text-3xl font-semibold text-[#00BCD4]", className) }
         { ...props }
-    >{ children }</p>
+    >
+        { children } <span className="text-2xl">T</span>
+    </p>
 ))
 ScoreboardMainText.displayName = "ScoreboardMainText"
 

@@ -65,16 +65,16 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                                             {agruparPorTipoDeResiduo(destinador).map(wasteType => (
                                                                 <TableRow key={`DETAILS-${wasteType.resDescricao}`}>
                                                                     <TableCell style={{ width: residuoColumnWidth }}>{wasteType.resDescricao}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
                                                                 </TableRow>
                                                             ))}
                                                         </TableBody>
                                                         <TableFooter className="bg-gray-100">
                                                             <TableRow>
                                                                 <TableCell style={{ width: residuoColumnWidth }}>Total</TableCell>
-                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
+                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(destinador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
                                                             </TableRow>
                                                         </TableFooter>
                                                     </Table>
@@ -109,16 +109,16 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                                             {agruparPorTipoDeResiduo(gerador).map(wasteType => (
                                                                 <TableRow key={`DETAILS-${wasteType.resDescricao}`}>
                                                                     <TableCell style={{ width: residuoColumnWidth }}>{wasteType.resDescricao}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeIndicadaNoMTR.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
+                                                                    <TableCell style={{ width: quantidadeColumnWidth }}>{wasteType.quantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
                                                                 </TableRow>
                                                             ))}
                                                         </TableBody>
                                                         <TableFooter className="bg-gray-100">
                                                             <TableRow>
                                                                 <TableCell style={{ width: residuoColumnWidth }}>Total</TableCell>
-                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(gerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
-                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(gerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(gerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
+                                                                <TableCell style={{ width: quantidadeColumnWidth }}>{totalizarQuantidadeRecebida(agruparPorTipoDeResiduo(gerador)).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).concat(" T")}</TableCell>
                                                             </TableRow>
                                                         </TableFooter>
                                                     </Table>
