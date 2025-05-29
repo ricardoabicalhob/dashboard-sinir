@@ -102,16 +102,17 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title: 
                 1: { halign: 'right', cellWidth: 70 }, // Quantidades alinhadas à direita
                 2: { halign: 'right', cellWidth: 70 }
             },
-            // willDrawCell: (data) => {
-            //     // Se a célula é do cabeçalho da tabela interna, podemos mudar o estilo
-            //     if (data.section === 'head' && data.row.index === 0) {
-            //         // Por exemplo, tornar o texto mais forte ou mudar a cor
-            //         // data.cell.styles.fontStyle = 'bold';
-            //         // data.cell.styles.textColor = [0, 0, 0]; // Preto
-            //     }
-            // }
+            willDrawCell: (data) => {
+                // Se a célula é do cabeçalho da tabela interna, podemos mudar o estilo
+                if (data.section === 'head' && data.row.index === 0) {
+                    // Por exemplo, tornar o texto mais forte ou mudar a cor
+                    // data.cell.styles.fontStyle = 'bold';
+                    // data.cell.styles.textColor = [0, 0, 0]; // Preto
+                }
+            }
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         yOffset = (doc as any).lastAutoTable.finalY + 5;
 
         doc.setFontSize(10);
