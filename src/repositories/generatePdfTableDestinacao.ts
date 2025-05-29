@@ -1,15 +1,12 @@
 import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable'; // Importe a extensão autoTable
+import autoTable from 'jspdf-autotable';
 
-// Assumindo que MTRResponseI está definido em "@/interfaces/mtr.interface"
-// E as funções utilitárias em "@/utils/fnFilters" e "@/utils/fnUtils"
 import { MTRResponseI } from "@/interfaces/mtr.interface";
 import { agruparPorTipoDeResiduo } from "@/utils/fnFilters";
 import { totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils";
 
-// Definindo a estrutura para os dados que iremos passar para a função de exportação
 interface DestinadorDataForPdf {
-    nomePrincipal: string; // Nome do Destinador ou Gerador
+    nomePrincipal: string; 
     tipo: "Destinador" | "Gerador";
     residuosDetalhe: Array<{
         resDescricao: string;
@@ -20,10 +17,6 @@ interface DestinadorDataForPdf {
     totalRecebido: number;
 }
 
-/**
- * Mapeia os dados brutos de MTRResponseI[][] para um formato mais adequado para o PDF.
- * Esta função deve ser chamada antes de gerar o PDF.
- */
 export function prepareDataForPdf(
     listaAgrupadaPorDestinadorOuGerador: MTRResponseI[][],
     tipo: "Destinador" | "Gerador"
@@ -109,24 +102,14 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title: 
                 1: { halign: 'right', cellWidth: 70 }, // Quantidades alinhadas à direita
                 2: { halign: 'right', cellWidth: 70 }
             },
-            // didDrawPage: (data) => {
-            //     // Adiciona rodapé com número da página
-            //     // let pageNumber = doc.internal.getNumberOfPages();
-            //     // doc.setFontSize(8);
-            //     // doc.text(`Página ${pageNumber}`, data.settings.margin.left, doc.internal.pageSize.getHeight() - 10);
-            // },
-            // // Hook para obter a posição Y final da tabela
-            // didParseCell: (data) => {
-            //     // Não precisamos fazer nada aqui, didDrawPage já nos dá o que precisamos
-            // },
-            willDrawCell: (data) => {
-                // Se a célula é do cabeçalho da tabela interna, podemos mudar o estilo
-                if (data.section === 'head' && data.row.index === 0) {
-                    // Por exemplo, tornar o texto mais forte ou mudar a cor
-                    // data.cell.styles.fontStyle = 'bold';
-                    // data.cell.styles.textColor = [0, 0, 0]; // Preto
-                }
-            }
+            // willDrawCell: (data) => {
+            //     // Se a célula é do cabeçalho da tabela interna, podemos mudar o estilo
+            //     if (data.section === 'head' && data.row.index === 0) {
+            //         // Por exemplo, tornar o texto mais forte ou mudar a cor
+            //         // data.cell.styles.fontStyle = 'bold';
+            //         // data.cell.styles.textColor = [0, 0, 0]; // Preto
+            //     }
+            // }
         });
 
         yOffset = (doc as any).lastAutoTable.finalY + 5;
