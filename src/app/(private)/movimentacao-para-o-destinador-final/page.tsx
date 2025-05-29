@@ -11,6 +11,7 @@ import { SystemContext } from "@/contexts/system.context"
 import { LoginResponseI } from "@/interfaces/login.interface"
 import { MTRResponseI } from "@/interfaces/mtr.interface"
 import generatePdfListaMtrsPorDestinadorDownload from "@/repositories/generatePdfListaMtrsPorDestinadorDownload"
+import { generatePdfTableDestinacao, prepareDataForPdf } from "@/repositories/generatePdfTableDestinacao"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
@@ -551,6 +552,27 @@ export default function VisaoGeralPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
                 </SwitchButton>
+                {
+                    !showTableManifestsReceivedSentFromTheGeneratorAndAT &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={showTableManifestsReceivedSentFromTheGeneratorAndAT}
+                            setDisableButton={()=> {}}
+                            onClick={()=> {
+                                const preparedData = prepareDataForPdf(agruparPorDestinador([
+                                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                                ]), "Destinador")
+                                generatePdfTableDestinacao(
+                                    preparedData, 
+                                    "Detalhes de destinação dos resíduos enviados para o destinador final",
+                                    "Destinador"
+                                )
+                            }}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <a href="#topo">
                     <SwitchButton
                         className="bg-gray-400 hover:bg-gray-400/50"
