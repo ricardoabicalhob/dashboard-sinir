@@ -48,7 +48,7 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                 {listaAgrupadaPorDestinadorOuGerador.map(destinador => (
                                     <Fragment key={`DESTINADOR-DETAILS-${destinador[0].parceiroDestinador.parCodigo}`}>
                                         <TableRow>
-                                            <TableCell className="font-semibold">{`${destinador[0].parceiroDestinador.parCodigo} - ${destinador[0].parceiroDestinador.parDescricao}`}</TableCell>
+                                            <TableCell className="font-semibold">{`${destinador[0].parceiroDestinador.parCodigo} - ${destinador[0].parceiroDestinador.parDescricao.toUpperCase()}`}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={1}>
@@ -92,7 +92,7 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
                                 {listaAgrupadaPorDestinadorOuGerador.map(gerador => (
                                     <Fragment key={`GERADOR-DETAILS-${gerador[0].parceiroGerador.parCodigo}`}>
                                         <TableRow>
-                                            <TableCell className="font-semibold">{`${gerador[0].parceiroGerador.parCodigo} - ${gerador[0].parceiroGerador.parDescricao}`}</TableCell>
+                                            <TableCell className="font-semibold">{`${gerador[0].parceiroGerador.parCodigo} - ${gerador[0].parceiroGerador.parDescricao.toUpperCase()}`}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={1}>

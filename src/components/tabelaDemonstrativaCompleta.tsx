@@ -41,7 +41,7 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
                                     <TableRow>
                                         <TableHead className="text-normal font-semibold" colSpan={1}>
                                             <p className="text-gray-500 py-2">Destinador</p>
-                                            <p>{`${destinador[0][0].parceiroDestinador.parCodigo} - ${destinador[0][0].parceiroDestinador.parDescricao}`}</p>
+                                            <p>{`${destinador[0][0].parceiroDestinador.parCodigo} - ${destinador[0][0].parceiroDestinador.parDescricao.toUpperCase()}`}</p>
                                         </TableHead>
                                     </TableRow>
                                     <TableRow>
