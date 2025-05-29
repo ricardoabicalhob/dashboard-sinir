@@ -267,7 +267,7 @@ export default function MovimentacaoParaDFPage() {
                                     `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                     "Detalhes de destinacao dos residuos enviados para o destinador final",
                                     `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
-                                    "Destinador"
+                                    "DESTINADOR"
                                 )
                             }}
                         >

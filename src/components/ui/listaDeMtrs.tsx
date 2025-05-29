@@ -81,10 +81,10 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                                 <TableRow className="hover:bg-[#00695C20]" key={mtr.manNumero}>
                                     <TableCell><span>{mtr.manNumero}</span></TableCell>
                                     <TableCell>{new Date(mtr.manData).toLocaleDateString()}</TableCell>
-                                    {options.includes("Armazenador Temporário") && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao || "Não possui"}</TableCell>}
-                                    {options.includes("Gerador") && <TableCell>{`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao}`}</TableCell>}
-                                    {options.includes("Transportador") && <TableCell>{`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao}`}</TableCell>}
-                                    {options.includes("Destinador") && <TableCell>{`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao}`}</TableCell>}
+                                    {options.includes("Armazenador Temporário") && <TableCell>{mtr.parceiroArmazenadorTemporario.parDescricao.toUpperCase() || "Não possui"}</TableCell>}
+                                    {options.includes("Gerador") && <TableCell>{`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao.toUpperCase()}`}</TableCell>}
+                                    {options.includes("Transportador") && <TableCell>{`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao.toUpperCase()}`}</TableCell>}
+                                    {options.includes("Destinador") && <TableCell>{`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao.toUpperCase()}`}</TableCell>}
                                     {options.includes("Resíduo") && <TableCell>{`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`}</TableCell>}
                                     {options.includes("Quantidade Indicada no MTR") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>}
                                     {options.includes("Quantidade Recebida") && <TableCell>{mtr.listaManifestoResiduo[0].marQuantidadeRecebida?.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "-"}</TableCell>}

@@ -14,14 +14,14 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
 
     const unidadeTitleWidth = doc.getTextWidth(unidade)
     const unidadeTitleX = (pageWidth - unidadeTitleWidth) / 2
-    doc.text(unidade, unidadeTitleX, startY)
+    doc.text(unidade.toUpperCase(), unidadeTitleX, startY)
     startY += 25
 
-    doc.setFontSize(14)
+    doc.setFontSize(12)
 
     const mainTitleWidth = doc.getTextWidth(`${title} (${listMtrs.length} manifestos)`)
     const mainTitleX = (pageWidth - mainTitleWidth) / 2
-    doc.text(`${title} (${listMtrs.length} manifestos)`, mainTitleX, startY)
+    doc.text(`${title.toUpperCase()} (${listMtrs.length} manifestos)`, mainTitleX, startY)
     startY += 25
 
     // const primeiroMtr = listMtrs[0]
@@ -77,11 +77,11 @@ export default function generatePdfListaMtrsDownload(unidade :string, title :str
         const linha :(string | number)[]= []
         if(filterColumns.includes("Número MTR")) linha.push(mtr.manNumero)
         if(filterColumns.includes("Data Emissão")) linha.push(new Date(mtr.manData).toLocaleDateString("pt-BR"))
-        if(filterColumns.includes("Gerador")) linha.push(`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao}`)
-        if(filterColumns.includes("Destinador")) linha.push(`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao}`)
-        if(filterColumns.includes("Armazenador Temporário")) linha.push(mtr.possuiArmazenamentoTemporario ? `${mtr.parceiroArmazenadorTemporario.parCodigo} - ${mtr.parceiroArmazenadorTemporario.parDescricao}` : "Não possui")
+        if(filterColumns.includes("Gerador")) linha.push(`${mtr.parceiroGerador.parCodigo} - ${mtr.parceiroGerador.parDescricao.toUpperCase()}`)
+        if(filterColumns.includes("Destinador")) linha.push(`${mtr.parceiroDestinador.parCodigo} - ${mtr.parceiroDestinador.parDescricao.toUpperCase()}`)
+        if(filterColumns.includes("Armazenador Temporário")) linha.push(mtr.possuiArmazenamentoTemporario ? `${mtr.parceiroArmazenadorTemporario.parCodigo} - ${mtr.parceiroArmazenadorTemporario.parDescricao.toUpperCase()}` : "Não possui")
         if(filterColumns.includes("Data Recebimento AT")) linha.push(mtr.dataRecebimentoAT || '-')
-        if(filterColumns.includes("Transportador")) linha.push(`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao}`)
+        if(filterColumns.includes("Transportador")) linha.push(`${mtr.parceiroTransportador.parCodigo} - ${mtr.parceiroTransportador.parDescricao.toUpperCase()}`)
         if(filterColumns.includes("Resíduo")) linha.push(`${mtr.listaManifestoResiduo[0].residuo.resCodigoIbama} - ${mtr.listaManifestoResiduo[0].residuo.resDescricao}`)
         if(filterColumns.includes("Quantidade Indicada no MTR")) linha.push(mtr.listaManifestoResiduo[0].marQuantidade.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
         if(filterColumns.includes("Quantidade Recebida")) linha.push(mtr.listaManifestoResiduo[0].marQuantidadeRecebida.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }))

@@ -562,7 +562,7 @@ export default function VisaoGeralPage() {
                                     `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                     "Detalhes de origem dos residuos enviados para o destinador final",
                                     `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
-                                    "Gerador"
+                                    "GERADOR"
                                 )
                             }}
                         >
@@ -591,7 +591,7 @@ export default function VisaoGeralPage() {
                                     `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                     "Detalhes de destinacao dos residuos enviados para o destinador final",
                                     `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
-                                    "Destinador"
+                                    "DESTINADOR"
                                 )
                             }}
                         >

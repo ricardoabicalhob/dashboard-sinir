@@ -46,12 +46,12 @@ export function prepareDataForPdf(
     });
 }
 
-export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :string, subtitle: string, periodo :string, tipo: "Destinador" | "Gerador"): void {
+export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :string, subtitle: string, periodo :string, tipo: "DESTINADOR" | "GERADOR"): void {
     const doc = new jsPDF({ orientation: "landscape" });
 
     doc.setFontSize(16);
     doc.setFont("", "", "bold")
-    doc.text(title, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+    doc.text(title.toUpperCase(), doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
 
     doc.setFont("", "", "normal")
     doc.setFontSize(14);
@@ -81,7 +81,7 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :
         }
 
         doc.setFontSize(12);
-        doc.text(`${tipo}: ${item.nomePrincipal}`, 14, yOffset);
+        doc.text(`${tipo}: ${item.nomePrincipal.toUpperCase()}`, 14, yOffset);
         yOffset += 2;
 
         autoTable(doc, {
