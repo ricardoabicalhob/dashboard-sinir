@@ -181,7 +181,7 @@ export default function DestinadorPage() {
                     </a>
                 </ScoreboardItem>
                 <ScoreboardItem>
-                    <ScoreboardTitle>Resíduos como destinador ainda não recebidos</ScoreboardTitle>
+                    <ScoreboardTitle>Resíduos ainda não recebidos como destinador</ScoreboardTitle>
                     <ScoreboardSubtitle>{ `Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}` }</ScoreboardSubtitle>
                     <ScoreboardMainText className="text-red-400">{ (totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))) || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }</ScoreboardMainText>
                     <ScoreboardSubtitle>Quantidade indicada no MTR</ScoreboardSubtitle>
@@ -325,7 +325,7 @@ export default function DestinadorPage() {
             {
                 !hideChartManifestsPending &&
                     <GraficoSimples 
-                        title="Resíduos como destinador ainda não recebidos"
+                        title="Resíduos ainda não recebidos como destinador"
                         subTitle={`Resíduos gerados dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         acumulated={totalizarQuantidadeIndicadaNoManifesto(agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])))}
                         dataChart={agruparPorTipoDeResiduo(filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []))}
@@ -335,7 +335,7 @@ export default function DestinadorPage() {
             {
                 hideChartManifestsPending &&
                     <ListaDeMtrs
-                        title="Manifestos como destinador ainda não recebidos"
+                        title="Manifestos ainda não recebidos como destinador"
                         subtitle={`Manifestos emitidos dentro do período: ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listMtrs={filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || [])}
                         authorization={profile?.objetoResposta.token || ""}
@@ -364,7 +364,7 @@ export default function DestinadorPage() {
                             setDisableButton={()=> {}}
                             onClick={()=> generatePdfListaMtrsDownload(
                                 `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
-                                "MANIFESTOS COMO DESTINADOR AINDA NÃO RECEBIDOS",
+                                "MANIFESTOS AINDA NÃO RECEBIDOS COMO DESTINADOR",
                                 `Manifestos emitidos de ${dateFromBeforeBefore.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                 filtrarTudoSemDataDeRecebimento(detailedReferencePeriodList || []),
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
