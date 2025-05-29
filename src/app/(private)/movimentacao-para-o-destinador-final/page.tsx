@@ -546,6 +546,27 @@ export default function VisaoGeralPage() {
                 >
                     <Sheet className="w-4 h-4 text-white"/> Detalhes da origem
                 </SwitchButton>
+                {
+                    !showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT &&
+                        <SwitchButton
+                            className="bg-yellow-400 hover:bg-yellow-400/50"
+                            disableButton={showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT}
+                            setDisableButton={()=> {}}
+                            onClick={()=> {
+                                const preparedData = prepareDataForPdf(agruparPorGerador([
+                                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
+                                    ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)
+                                ]), "Gerador")
+                                generatePdfTableDestinacao(
+                                    preparedData, 
+                                    "Detalhes de origem dos residuos enviados para o destinador final",
+                                    "Gerador"
+                                )
+                            }}
+                        >
+                            <Download /> Baixar PDF
+                        </SwitchButton>
+                }
                 <SwitchButton
                     disableButton={!showTableManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowTableManifestsReceivedSentFromTheGeneratorAndAT()}
@@ -565,7 +586,7 @@ export default function VisaoGeralPage() {
                                 ]), "Destinador")
                                 generatePdfTableDestinacao(
                                     preparedData, 
-                                    "Detalhes de destinação dos resíduos enviados para o destinador final",
+                                    "Detalhes de destinacao dos residuos enviados para o destinador final",
                                     "Destinador"
                                 )
                             }}
