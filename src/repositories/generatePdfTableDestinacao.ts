@@ -46,11 +46,14 @@ export function prepareDataForPdf(
     });
 }
 
-export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title: string, tipo: "Destinador" | "Gerador"): void {
+export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :string, subtitle: string, periodo :string, tipo: "Destinador" | "Gerador"): void {
     const doc = new jsPDF({ orientation: "landscape" });
 
-    doc.setFontSize(18);
+    doc.setFontSize(16);
     doc.text(title, doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+
+    doc.setFontSize(14);
+    doc.text(subtitle, doc.internal.pageSize.getWidth() / 2, 30, { align: 'center' });
 
     const now = new Date();
     const formattedDate = now.toLocaleDateString('pt-BR', {
@@ -58,10 +61,13 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title: 
         hour: '2-digit', minute: '2-digit', second: '2-digit'
     });
     doc.setFontSize(10);
-    doc.text(`Gerado em: ${formattedDate}`, doc.internal.pageSize.getWidth() - 10, 30, { align: 'right' });
+    doc.text(`Gerado em: ${formattedDate}`, doc.internal.pageSize.getWidth() - 10, 40, { align: 'right' });
+
+    doc.setFontSize(12)
+    doc.text(`Período: ${periodo}`, doc.internal.pageSize.getWidth() / 2, 40, { align: 'center' });
 
 
-    let yOffset = 40; 
+    let yOffset = 55; 
 
     data.forEach((item, index) => {
         if (index > 0) {
@@ -123,5 +129,5 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title: 
         yOffset += 15;
     });
 
-    doc.save(`${title.replace(/[^a-zA-Z0-9]/g, '_')}_Relatorio_${formattedDate.replace(/[: ]/g, '-')}.pdf`);
+    doc.save(`${subtitle.replace(/[^a-zA-Z0-9]/g, '_')}_Relatorio_${formattedDate.replace(/[: ]/g, '-')}.pdf`);
 }

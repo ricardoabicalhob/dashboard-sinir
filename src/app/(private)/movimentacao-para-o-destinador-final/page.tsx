@@ -559,7 +559,9 @@ export default function VisaoGeralPage() {
                                 ]), "Gerador")
                                 generatePdfTableDestinacao(
                                     preparedData, 
+                                    `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                     "Detalhes de origem dos residuos enviados para o destinador final",
+                                    `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                     "Gerador"
                                 )
                             }}
@@ -586,7 +588,9 @@ export default function VisaoGeralPage() {
                                 ]), "Destinador")
                                 generatePdfTableDestinacao(
                                     preparedData, 
+                                    `${profile?.objetoResposta.parCodigo} - ${profile?.objetoResposta.parDescricao}`,
                                     "Detalhes de destinacao dos residuos enviados para o destinador final",
+                                    `${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`,
                                     "Destinador"
                                 )
                             }}
