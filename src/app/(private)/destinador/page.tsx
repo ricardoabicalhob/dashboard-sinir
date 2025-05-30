@@ -16,7 +16,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeEmissaoDentroDoPeriodo, filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Download, Info, List } from "lucide-react"
+import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -218,13 +218,15 @@ export default function DestinadorPage() {
                     disableButton={!hideChartManifestsGenerated}
                     setDisableButton={()=> handleShowChartManifestsGenerated()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsGenerated}
                     setDisableButton={()=> handleShowListManifestsGenerated()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                 hideChartManifestsGenerated &&
@@ -240,7 +242,8 @@ export default function DestinadorPage() {
                             ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                         )}
                     >
-                        <Download /> Baixar PDF
+                        {/* <Download /> Baixar PDF */}
+                        Download <span className="material-icons">picture_as_pdf</span>
                     </SwitchButton>
                 }
                 <a href="#topo">
@@ -250,8 +253,9 @@ export default function DestinadorPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -283,13 +287,15 @@ export default function DestinadorPage() {
                     disableButton={!hideChartManifestsReceived}
                     setDisableButton={()=> handleShowChartManifestsReceived()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsReceived &&
@@ -305,7 +311,8 @@ export default function DestinadorPage() {
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR", "Quantidade Recebida", "Data Recebimento"]
                             )}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -315,8 +322,9 @@ export default function DestinadorPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -348,13 +356,15 @@ export default function DestinadorPage() {
                     disableButton={!hideChartManifestsPending}
                     setDisableButton={()=> handleShowChartManifestsPending()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsPending &&
@@ -370,7 +380,8 @@ export default function DestinadorPage() {
                                 ["Número MTR", "Data Emissão", "Gerador", "Resíduo", "Quantidade Indicada no MTR"]
                             )}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -380,8 +391,9 @@ export default function DestinadorPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
                 

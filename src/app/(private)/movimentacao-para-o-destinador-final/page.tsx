@@ -17,7 +17,6 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Download, List, Sheet } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -351,19 +350,22 @@ export default function VisaoGeralPage() {
                     disableButton={!showChartManifestsReceivedSentFromTheGenerator}
                     setDisableButton={()=> handleShowChartManifestsReceivedSentFromTheGenerator()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showListManifestsReceivedSentFromTheGenerator}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGenerator()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableManifestsReceivedSentFromTheGenerator}
                     setDisableButton={()=> handleShowTableManifestsReceivedSentFromTheGenerator()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
+                    Detalhes da destinação <span className="material-icons">feed</span>
                 </SwitchButton>
                 <a href="#topo">
                     <SwitchButton
@@ -372,8 +374,9 @@ export default function VisaoGeralPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -415,25 +418,29 @@ export default function VisaoGeralPage() {
                     disableButton={!showChartManifestsReceivedSentFromAT}
                     setDisableButton={()=> handleShowChartManifestsReceivedSentFromAT()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showListManifestsReceivedSentFromAT}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromAT()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableATOriginDetails}
                     setDisableButton={()=> handleShowTableATOriginDetails()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da origem
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da origem */}
+                    Detalhes da origem<span className="material-icons">feed</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showTableManifestsReceivedSentFromAT}
                     setDisableButton={()=> handleShowTableManifestsReceivedSentFromAT()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
+                    Detalhes da destinação<span className="material-icons">feed</span>
                 </SwitchButton>
                 <a href="#topo">
                     <SwitchButton
@@ -442,8 +449,9 @@ export default function VisaoGeralPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -514,13 +522,15 @@ export default function VisaoGeralPage() {
                     disableButton={!showChartManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowChartManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico   */}
+                    Gráfico <span className="material-icons">leaderboard</span>                   
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showListManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowListManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     !showListManifestsReceivedSentFromTheGeneratorAndAT &&
@@ -537,14 +547,16 @@ export default function VisaoGeralPage() {
                             disableButton={showListManifestsReceivedSentFromTheGeneratorAndAT}
                             setDisableButton={()=> {}}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <SwitchButton
                     disableButton={!showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowTableDetailsManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da origem
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da origem */}
+                    Detalhes da origem <span className="material-icons">feed</span>
                 </SwitchButton>
                 {
                     !showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT &&
@@ -566,14 +578,16 @@ export default function VisaoGeralPage() {
                                 )
                             }}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <SwitchButton
                     disableButton={!showTableManifestsReceivedSentFromTheGeneratorAndAT}
                     setDisableButton={()=> handleShowTableManifestsReceivedSentFromTheGeneratorAndAT()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
+                    Detalhes da destinação<span className="material-icons">feed</span>
                 </SwitchButton>
                 {
                     !showTableManifestsReceivedSentFromTheGeneratorAndAT &&
@@ -595,7 +609,8 @@ export default function VisaoGeralPage() {
                                 )
                             }}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -605,8 +620,9 @@ export default function VisaoGeralPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>

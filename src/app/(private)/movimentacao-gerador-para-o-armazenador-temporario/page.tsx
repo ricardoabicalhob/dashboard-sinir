@@ -15,7 +15,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTodosQuePossuemArmazenamentoTemporario, filtrarTudoComDataDeEmissaoDentroDoPeriodo, agruparPorTipoDeResiduo, filtrarTudoComDataDeRecebimentoEmArmazenamentoTemporarioDentroDoPeriodo, filtrarTudoSemDataDeRecebimentoEmArmazenamentoTemporario } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Download, Info, List } from "lucide-react"
+import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -217,13 +217,15 @@ export default function MovimentacaoParaATPage() {
                     disableButton={!hideChartManifestsIssued}
                     setDisableButton={()=> handleShowChartManifestsIssued()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsIssued}
                     setDisableButton={()=> handleShowListManifestsIssued()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsIssued &&
@@ -239,7 +241,8 @@ export default function MovimentacaoParaATPage() {
                                 ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"],
                             )}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -249,8 +252,9 @@ export default function MovimentacaoParaATPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -282,13 +286,15 @@ export default function MovimentacaoParaATPage() {
                     disableButton={!hideChartManifestsReceived}
                     setDisableButton={()=> handleShowChartManifestsReceived()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsReceived &&
@@ -304,7 +310,8 @@ export default function MovimentacaoParaATPage() {
                                 ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR", "Data Recebimento AT"],
                             )}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -314,8 +321,9 @@ export default function MovimentacaoParaATPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>
@@ -347,13 +355,15 @@ export default function MovimentacaoParaATPage() {
                     disableButton={!hideChartManifestsPending}
                     setDisableButton={()=> handleShowChartManifestsPending()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsPending &&
@@ -369,7 +379,8 @@ export default function MovimentacaoParaATPage() {
                                 ["Número MTR", "Data Emissão", "Armazenador Temporário", "Resíduo", "Quantidade Indicada no MTR"],
                             )}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }   
                 <a href="#topo">
@@ -379,8 +390,9 @@ export default function MovimentacaoParaATPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
             </Switch>

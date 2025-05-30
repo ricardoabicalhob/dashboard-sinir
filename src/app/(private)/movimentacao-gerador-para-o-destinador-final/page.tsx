@@ -19,7 +19,7 @@ import { getMtrList } from "@/repositories/getMtrList"
 import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, filtrarTudoSemDataDeRecebimento, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeIndicadaNoManifesto, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
-import { ArrowUp, ChartColumnBig, Download, Info, List, Sheet } from "lucide-react"
+import { Info } from "lucide-react"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { useQuery } from "react-query"
 
@@ -224,13 +224,15 @@ export default function MovimentacaoParaDFPage() {
                     disableButton={!showChartManifestsReceived}
                     setDisableButton={()=> handleShowChartManifestsReceived()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={!showListManifestsReceived}
                     setDisableButton={()=> handleShowListManifestsReceived()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     !showListManifestsReceived &&
@@ -245,14 +247,16 @@ export default function MovimentacaoParaDFPage() {
                             disableButton={showListManifestsReceived}
                             setDisableButton={()=> handleShowListManifestsReceived()}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <SwitchButton
                     disableButton={!showTableManifestsReceived}
                     setDisableButton={()=> handleShowTableManifestsReceived()}
                 >
-                    <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação
+                    {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
+                    Detalhes da destinação <span className="material-icons">feed</span>
                 </SwitchButton>
                 {
                     !showTableManifestsReceived &&
@@ -271,7 +275,8 @@ export default function MovimentacaoParaDFPage() {
                                 )
                             }}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -281,8 +286,9 @@ export default function MovimentacaoParaDFPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
 
@@ -315,13 +321,15 @@ export default function MovimentacaoParaDFPage() {
                     disableButton={!hideChartManifestsPending}
                     setDisableButton={()=> handleShowChartManifestsPending()}
                 >
-                    <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                     
+                    {/* <ChartColumnBig className="w-4 h-4 text-white"/> Gráfico                      */}
+                    Gráfico <span className="material-icons">leaderboard</span>
                 </SwitchButton>
                 <SwitchButton
                     disableButton={hideChartManifestsPending}
                     setDisableButton={()=> handleShowListManifestsPending()}
                 >
-                    <List className="w-4 h-4 text-white"/> Manifestos
+                    {/* <List className="w-4 h-4 text-white"/> Manifestos */}
+                    Manifestos <span className="material-icons">list_alt</span>
                 </SwitchButton>
                 {
                     hideChartManifestsPending &&
@@ -337,7 +345,8 @@ export default function MovimentacaoParaDFPage() {
                             disableButton={!hideChartManifestsPending}
                             setDisableButton={()=> {}}
                         >
-                            <Download /> Baixar PDF
+                            {/* <Download /> Baixar PDF */}
+                            Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
                 <a href="#topo">
@@ -347,8 +356,9 @@ export default function MovimentacaoParaDFPage() {
                         setDisableButton={()=> {}}
 
                     >
-                        <ArrowUp />
+                        {/* <ArrowUp /> */}
                         Ir para o topo
+                        <span className="material-icons">arrow_upward</span>
                     </SwitchButton>
                 </a>
 
