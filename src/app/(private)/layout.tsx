@@ -9,7 +9,6 @@ import DateRangePicker from "@/components/dateRangePicker";
 import { SystemContext, SystemProvider } from "@/contexts/system.context";
 import { deleteCookie } from "./_actions/actions";
 import { AuthContext } from "@/contexts/auth.context";
-import { LogOut } from "lucide-react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import Image from "next/image";
 import logoGestao from "../../public/new-logo-2-com-texto.png"
@@ -69,7 +68,8 @@ export default function PrivateLayout({
                 className="bg-[#00BCD4] hover:filter hover:brightness-110 flex justify-end rounded-full shadow-md shadow-black/40 p-2 text-white font-semibold select-none cursor-pointer"
                 onClick={()=> handleDisconnect()}  
               >
-                <LogOut />
+                <span className="material-symbols-outlined">exit_to_app</span>
+                {/* <LogOut /> */}
               </div>
           </ul>
 
