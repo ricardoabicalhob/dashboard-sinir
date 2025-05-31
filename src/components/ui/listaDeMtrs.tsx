@@ -55,7 +55,7 @@ export default function ListaDeMtrs({ listMtrs, title, subtitle, authorization, 
                 <CardTitle className="text-xl text-black/50 text-center font-semibold">{title}</CardTitle>
                 <CardTitle className="font-light text-center">{subtitle}</CardTitle>
             </CardHeader>
-            <div className="flex flex-col justify-between h-[373px] p-2 rounded-md shadow-sm">
+            <div className="flex flex-col justify-between h-[352px] p-2 rounded-md shadow-sm">
                 <Table>
                     <TableHeader>
                         <TableRow>
