@@ -50,10 +50,10 @@ export function generatePdfTableDestinacao(data: DestinadorDataForPdf[], title :
     const doc = new jsPDF({ orientation: "landscape" });
 
     doc.setFontSize(16);
-    doc.setFont("", "", "bold")
+    doc.setFont("helvetica", "", "bold")
     doc.text(title.toUpperCase(), doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
 
-    doc.setFont("", "", "normal")
+    doc.setFont("helvetica", "", "normal")
     doc.setFontSize(14);
     doc.text(subtitle, doc.internal.pageSize.getWidth() / 2, 30, { align: 'center' });
 

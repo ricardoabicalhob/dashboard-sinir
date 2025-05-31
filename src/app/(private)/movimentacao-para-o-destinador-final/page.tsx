@@ -342,6 +342,7 @@ export default function VisaoGeralPage() {
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
                     title="Detalhes da destinação - Meus resíduos como gerador"
+                    periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo))}
                 />}
 
@@ -403,6 +404,7 @@ export default function VisaoGeralPage() {
                 <TabelaDemonstrativaSimples
                     tipo="Gerador"
                     title="Detalhes de origem dos resíduos de saída do armazenamento temporário"
+                    periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listaAgrupadaPorDestinadorOuGerador={agruparPorGerador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />}
 
@@ -410,6 +412,7 @@ export default function VisaoGeralPage() {
                 <TabelaDemonstrativaSimples
                     tipo="Destinador"
                     title="Detalhes da destinação - Meus resíduos como armazenador temporário"
+                    periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                     listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo))}
                 />}
 
@@ -494,6 +497,7 @@ export default function VisaoGeralPage() {
                         <TabelaDemonstrativaSimples
                             tipo="Gerador"
                             title="Detalhes de origem dos resíduos enviados para o destinador final"
+                            periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                             listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
                         />
@@ -509,6 +513,7 @@ export default function VisaoGeralPage() {
                         <TabelaDemonstrativaSimples 
                             tipo="Destinador"
                             title="Detalhes de destinação dos resíduos enviados para o destinador final"
+                            periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                             listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador([
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo), 
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo)

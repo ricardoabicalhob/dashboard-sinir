@@ -215,6 +215,7 @@ export default function MovimentacaoParaDFPage() {
                     <TabelaDemonstrativaSimples 
                         tipo="Destinador"
                         title="Detalhes da destinação"
+                        periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                         listaAgrupadaPorDestinadorOuGerador={agruparPorDestinador(filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodList || [], dateFrom, dateTo))}
                     />
             }

@@ -9,11 +9,13 @@ export default function generatePdfListaMtrsPorDestinadorDownload(unidade :strin
     const pageWidth = doc.internal.pageSize.getWidth()
     doc.setFontSize(16)
 
+    doc.setFont("helvetica", "", "bold")
     const unidadeTitleWidth = doc.getTextWidth(unidade)
     const unidadeTitleX = (pageWidth - unidadeTitleWidth) / 2
     doc.text(unidade.toUpperCase(), unidadeTitleX, startY)
     startY += 25
 
+    doc.setFont("helvetica", "", "normal")
     doc.setFontSize(12)
     const mainTitleWidth = doc.getTextWidth(title)
     const mainTitleX = (pageWidth - mainTitleWidth) / 2

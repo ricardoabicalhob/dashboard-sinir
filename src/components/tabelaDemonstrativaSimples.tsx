@@ -8,10 +8,11 @@ import { Fragment, useEffect, useRef } from "react";
 interface TabelaDemonstrativaSimplesProps {
     listaAgrupadaPorDestinadorOuGerador :MTRResponseI[][]
     title :string
+    periodo :string
     tipo :"Destinador" | "Gerador"
 }
 
-export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorOuGerador, title, tipo } :TabelaDemonstrativaSimplesProps) {
+export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorOuGerador, title, periodo, tipo } :TabelaDemonstrativaSimplesProps) {
     const cardTableRef = useRef<HTMLDivElement>(null);
     const residuoColumnWidth = '400px'
     const quantidadeColumnWidth = '50px'
@@ -30,10 +31,11 @@ export default function TabelaDemonstrativaSimples({ listaAgrupadaPorDestinadorO
             <div className="flex h-[450px] p-2 rounded-md shadow-sm overflow-y-auto">
                 <Table>
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className="text-xl text-center font-semibold" colSpan={1}>
-                                {title}
-                            </TableHead>
+                        <TableRow className="">
+                                <TableHead className="flex flex-col h-fit bg-gray-100 rounded-t-md gap-1 text-xl text-center font-semibold" colSpan={1}>
+                                    <span>{title}</span>
+                                    <span className="text-base font-light text-black">{periodo}</span>
+                                </TableHead>
                         </TableRow>
                         <TableRow>
                             <TableHead>
