@@ -8,14 +8,15 @@ import { Fragment, useEffect, useRef } from "react";
 interface TabelaDemonstrativaSimplesProps {
     listaAgrupadaPorDestinadorEGerador :MTRResponseI[][][]
     title :string
+    periodo :string
 }
 
-export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinadorEGerador: listaAgrupadaPorDestinadorOuGerador, title } :TabelaDemonstrativaSimplesProps) {
+export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinadorEGerador, title, periodo } :TabelaDemonstrativaSimplesProps) {
     const cardTableRef = useRef<HTMLDivElement>(null);
     const residuoColumnWidth = '400px'
     const quantidadeColumnWidth = '50px'
 
-    useEffect(()=> {
+    useEffect(()=> { 
         setTimeout(() => {
             if(cardTableRef.current) {
                 cardTableRef.current.classList.remove("opacity-0");
@@ -25,19 +26,24 @@ export default function TabelaDemonstrativaCompleta({ listaAgrupadaPorDestinador
     }, []);
 
     useEffect(()=> {
-        console.log(listaAgrupadaPorDestinadorOuGerador)
+        console.log(listaAgrupadaPorDestinadorEGerador)
     }, [])
 
     return(
         <Card ref={cardTableRef} className="opacity-0 transition-opacity duration-700">
             <div className="flex flex-col h-[450px] p-2 rounded-md shadow-sm overflow-y-auto">
-                <p className="text-gray-500 text-xl text-center font-semibold">{title}</p>
                 {
-                    listaAgrupadaPorDestinadorOuGerador.map(destinador => (
+                    listaAgrupadaPorDestinadorEGerador.map(destinador => (
                         <div key={`DESTINADOR-${destinador[0][0].parceiroDestinador.parCodigo}`} className="w-full">
                             
                             <Table>
                                 <TableHeader>
+                                    <TableRow className="">
+                                        <TableHead className="flex flex-col h-fit bg-gray-100 rounded-t-md gap-1 text-xl text-center font-semibold" colSpan={1}>
+                                            <span>{title}</span>
+                                            <span className="text-base font-light text-black">{periodo}</span>
+                                        </TableHead>
+                                    </TableRow>
                                     <TableRow>
                                         <TableHead className="text-normal font-semibold" colSpan={1}>
                                             <p className="text-gray-500 py-2">Destinador</p>

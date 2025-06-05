@@ -4,6 +4,7 @@ import CustomMessage from "@/components/customMessage"
 import GraficoBarraDupla from "@/components/graficoBarraDupla"
 import { Scoreboard, ScoreboardItem, ScoreboardMainText, ScoreboardSubtitle, ScoreboardTitle } from "@/components/scoreboard"
 import { Switch, SwitchButton } from "@/components/switch"
+import TabelaDemonstrativaCompleta from "@/components/tabelaDemonstrativaCompleta"
 import TabelaDemonstrativaSimples from "@/components/tabelaDemonstrativaSimples"
 import ListaDeMtrs from "@/components/ui/listaDeMtrs"
 import { AuthContext } from "@/contexts/auth.context"
@@ -14,7 +15,7 @@ import generatePdfListaMtrsPorDestinadorDownload from "@/repositories/generatePd
 import { generatePdfTableDestinacao, prepareDataForPdf } from "@/repositories/generatePdfTableDestinacao"
 import { getMtrDetails } from "@/repositories/getMtrDetails"
 import { getMtrList } from "@/repositories/getMtrList"
-import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador } from "@/utils/fnFilters"
+import { filtrarTudoComDataDeRecebimentoDentroDoPeriodo, agruparPorGerador, agruparPorTipoDeResiduo, agruparPorDestinador, agruparPorGeradorEDestinador } from "@/utils/fnFilters"
 import { formatarDataDDMMYYYYParaMMDDYYYY, formatarDataParaAPI, totalizarQuantidadeRecebida } from "@/utils/fnUtils"
 import { subDays } from "date-fns"
 import { useContext, useEffect, useMemo, useState } from "react"
@@ -494,12 +495,22 @@ export default function VisaoGeralPage() {
                 (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length &&
                  !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length) &&
                     <>
-                        <TabelaDemonstrativaSimples
+                        {/* <TabelaDemonstrativaSimples
                             tipo="Gerador"
                             title="Detalhes de origem dos resíduos enviados para o destinador final"
                             periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
                             listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
                                 ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
+                        /> */}
+                        <TabelaDemonstrativaCompleta
+                            listaAgrupadaPorDestinadorEGerador={
+                                agruparPorGeradorEDestinador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
+                                ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)]
+                            )}
+                            title="Detalhes de origem dos resíduos enviados para o destinador final"
+                            periodo={`Período: ${dateFrom.toLocaleDateString()} à ${dateTo.toLocaleDateString()}`}
+                            // listaAgrupadaPorDestinadorOuGerador={agruparPorGerador([...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo),
+                            //     ...filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo)])}
                         />
 
                     </>
