@@ -24,8 +24,8 @@ function MenuBar({ loginResponse } :MenuBarProps) {
   const { logout, initialize } = useContext(AuthContext)
   const infoUnidadeRef = useRef<HTMLDivElement>(null)
 
-  function handleDisconnect() {
-    logout()
+  async function handleDisconnect() {
+    await logout()
     redirect('/sign-in')
   }
 
