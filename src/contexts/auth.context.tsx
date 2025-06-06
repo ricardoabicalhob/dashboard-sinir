@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useState } from "react";
 import { LoginResponseI } from "@/interfaces/login.interface";
 import { deleteCookie, getCookie } from "@/app/(private)/_actions/actions";
 
