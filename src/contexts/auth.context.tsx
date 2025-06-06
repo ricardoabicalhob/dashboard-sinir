@@ -1,8 +1,8 @@
 'use client'
 
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useEffect, useState } from "react";
 import { LoginResponseI } from "@/interfaces/login.interface";
-import { getCookie } from "@/app/(private)/_actions/actions";
+import { deleteCookie, getCookie } from "@/app/(private)/_actions/actions";
 
 interface AuthProviderProps {
     children :ReactNode
@@ -14,6 +14,7 @@ interface AuthContextProps {
     loginResponse :LoginResponseI | undefined
     setLoginResponse :Dispatch<SetStateAction<LoginResponseI | undefined>>
     initialize :()=> void
+    logout :()=> void
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -22,6 +23,12 @@ export function AuthProvider({ children } :AuthProviderProps) {
 
     const [ token, setToken ] = useState<string>()
     const [ loginResponse, setLoginResponse ] = useState<LoginResponseI>()
+
+    const logout = useCallback(async ()=> {
+        await deleteCookie()
+        setToken(undefined)
+        setLoginResponse(undefined)
+    }, [])
     
     function initialize() {
         getCookie()
@@ -38,7 +45,7 @@ export function AuthProvider({ children } :AuthProviderProps) {
 
     return(
         <AuthContext.Provider value={{
-            token, setToken, initialize,
+            token, setToken, initialize, logout,
             loginResponse, setLoginResponse
         }}>
             { children }

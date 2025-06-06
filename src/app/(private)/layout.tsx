@@ -14,6 +14,7 @@ import Image from "next/image";
 import logoGestao from "../../public/new-logo-2-com-texto.png"
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Link from "next/link";
 
 interface MenuBarProps {
   loginResponse :LoginResponseI | undefined
@@ -21,13 +22,11 @@ interface MenuBarProps {
 
 function MenuBar({ loginResponse } :MenuBarProps) {
 
-  const { setLoginResponse, initialize, setToken } = useContext(AuthContext)
+  const { logout, initialize } = useContext(AuthContext)
   const infoUnidadeRef = useRef<HTMLDivElement>(null)
 
-  async function handleDisconnect() {
-    await deleteCookie()
-    setToken(undefined)
-    setLoginResponse(undefined)
+  function handleDisconnect() {
+    logout()
     redirect('/sign-in')
   }
 
@@ -96,34 +95,34 @@ function SubMenuBar({ perfil } :SubMenuBarProps) {
       { perfil.gerador &&
         (pathname === "/gerador" ?
         <span className="text-[#00695C] font-normal leading-relaxed px-2 select-none">Gerador</span> :
-        <a href="/gerador" className="font-light px-2">Gerador</a>) }
+        <Link href="/gerador" className="font-light px-2">Gerador</Link>) }
       
       { perfil.armazenadorTemporario &&
         (pathname === "/armazenador-temporario" ?
         <span className="text-[#00695C] font-normal leading-relaxed px-2 select-none">Armazenador Temporário</span> :
-        <a href="/armazenador-temporario" className="font-light px-2">Armazenador Temporário</a>) }
+        <Link href="/armazenador-temporario" className="font-light px-2">Armazenador Temporário</Link>) }
       
       { perfil.destinador &&
         (pathname === "/destinador" ?
         <span className="text-[#00695C] font-normal leading-relaxed select-none px-2">Destinador</span> :
-        <a href="/destinador" className="font-light px-2">Destinador</a>) }
+        <Link href="/destinador" className="font-light px-2">Destinador</Link>) }
 
       { perfil.gerador && perfil.armazenadorTemporario &&
         (pathname === "/movimentacao-para-o-destinador-final" ?
         <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Movimentação para o destinador final</span> :
-        <a href="/movimentacao-para-o-destinador-final" className="font-light pl-2">Movimentação para o destinador final</a>  
+        <Link href="/movimentacao-para-o-destinador-final" className="font-light pl-2">Movimentação para o destinador final</Link>  
         ) }
 
       { !perfil.destinador && !perfil.armazenadorTemporario &&
         (pathname === "/movimentacao-gerador-para-o-armazenador-temporario" ?
         <span className="text-[#00BCD4] font-normal leading-relaxed select-none px-2">Minhas movimentações para o armazenamento temporário</span> :
-        <a href="/movimentacao-gerador-para-o-armazenador-temporario" className="font-light px-2">Minhas movimentações para o armazenamento temporario</a>  
+        <Link href="/movimentacao-gerador-para-o-armazenador-temporario" className="font-light px-2">Minhas movimentações para o armazenamento temporario</Link>  
         ) }
 
       { !perfil.destinador && !perfil.armazenadorTemporario &&
         (pathname === "/movimentacao-gerador-para-o-destinador-final" ?
         <span className="text-[#00BCD4] font-normal leading-relaxed select-none pl-2">Minhas movimentações para o destinador final</span> :
-        <a href="/movimentacao-gerador-para-o-destinador-final" className="font-light pl-2">Minhas movimentações para o destinador final</a>  
+        <Link href="/movimentacao-gerador-para-o-destinador-final" className="font-light pl-2">Minhas movimentações para o destinador final</Link>  
         ) }      
     </div>
   )
@@ -139,25 +138,25 @@ export default function PrivateLayout({
   const { loginResponse } = useContext(AuthContext)
 
   return (
-    <SystemProvider>
-        <QueryClientProvider client={queryClient}>
+    <html lang="pt-BR">
+      <body 
+          className={`antialiased`}
+      >
+        <SystemProvider>
+          <QueryClientProvider client={queryClient}>
             <TooltipProvider>
-              <html lang="pt-BR">
-                <body 
-                    className={`antialiased`}
-                >
-                  <MenuBar loginResponse={loginResponse} />
-                  <SubMenuBar perfil={{
-                    gerador: loginResponse?.objetoResposta.isGerador || false, 
-                    armazenadorTemporario: loginResponse?.objetoResposta.isArmazenadorTemporario || false, 
-                    destinador: loginResponse?.objetoResposta.isDestinador || false
-                  }}/>
-                  {children}
-                  <Toaster />
-                </body>
-              </html>
+              <MenuBar loginResponse={loginResponse} />
+              <SubMenuBar perfil={{
+                gerador: loginResponse?.objetoResposta.isGerador || false, 
+                armazenadorTemporario: loginResponse?.objetoResposta.isArmazenadorTemporario || false, 
+                destinador: loginResponse?.objetoResposta.isDestinador || false
+              }}/>
+              {children}
+              <Toaster />
             </TooltipProvider>
-        </QueryClientProvider>
-    </SystemProvider>
+          </QueryClientProvider>
+        </SystemProvider>
+      </body>
+    </html>
   )
 }
