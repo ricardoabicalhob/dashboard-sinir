@@ -27,8 +27,12 @@ export default function ArmazenadorTemporarioPage() {
         token,
         loginResponse
     } = useContext(AuthContext)
-    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(subDays(new Date(Date.now()), 30).toLocaleDateString()) || ""))
-    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY(new Date(Date.now()).toLocaleDateString()) || ""))
+    
+    const {
+        dateRange
+    } = useContext(SystemContext)
+    const [ dateFrom, setDateFrom ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY((dateRange.from || new Date()).toLocaleDateString()) || ""))
+    const [ dateTo, setDateTo ] = useState<Date>(new Date(formatarDataDDMMYYYYParaMMDDYYYY((dateRange.to || new Date()).toLocaleDateString()) || ""))
     const dateFromBefore = subDays(dateFrom, 90)
     const dateToBefore = subDays(dateFrom, 1)
     const dateFromBeforeBefore = subDays(dateFromBefore, 90)
@@ -40,10 +44,6 @@ export default function ArmazenadorTemporarioPage() {
     const [ hideChartManifestsSending, setHideChartManifestsSending ] = useState(false)
     const [ hideChartManifestsStock, setHideChartManifestsStock ] = useState(false)
     const [ hideChartManifestsPending, setHideChartManifestsPending ] = useState(false)
-
-    const {
-        dateRange
-    } = useContext(SystemContext)
 
     function handleShowChartManifestsGenerated() {
         setHideChartManifestsGenerated(false)

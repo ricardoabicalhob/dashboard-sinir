@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 import { subtrairDatasEmDias } from "@/utils/fnUtils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { subDays, format } from "date-fns"
+import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { CalendarIcon } from "lucide-react"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
@@ -24,15 +24,15 @@ const periodoSchema = z.object({
 type periodoSchema = z.infer<typeof periodoSchema>  
 
 interface DateRangePickerProps {
-    dateRange :DateRange | undefined
-    setDateRange :Dispatch<SetStateAction<DateRange | undefined>>
+    dateRange :DateRange
+    setDateRange :Dispatch<SetStateAction<DateRange>>
 }
 
 export default function DateRangePicker({ dateRange, setDateRange } :DateRangePickerProps) {
     const [ open, setOpen ] = useState(false)
     const [ defaultStartDate, setDefaultStartDate ] = useState<DateRange | undefined>({
-        from: dateRange? dateRange.from : subDays(new Date(Date.now()), 31),
-        to: dateRange? dateRange.to : new Date(Date.now())
+        from: dateRange.from,
+        to: dateRange.to
     })
 
     const { toast } = useToast()
@@ -51,7 +51,7 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
         if(dateRange) {
             setDefaultStartDate(dateRange)
         } else {
-            setDateRange(defaultStartDate)
+            setDateRange(defaultStartDate || {from: new Date(), to: new Date()})
         }
     }, [dateRange, setDateRange])
     
@@ -69,6 +69,10 @@ export default function DateRangePicker({ dateRange, setDateRange } :DateRangePi
         if(data.dateRange && data.dateRange.to && data.dateRange?.from) {
             if(subtrairDatasEmDias(data.dateRange?.from, data.dateRange?.to) > 90) {
                 handleErrorMessage("O intervalo entre as datas não pode ser maior do que 90 dias")
+                if(dateRange && dateRange.from && dateRange.to) {
+                    form.setValue("dateRange.from", dateRange.from)
+                    form.setValue("dateRange.to", dateRange.to)
+                }
                 throw new Error("O intervalo entre as datas não pode ser maior do que 90 dias")
             } 
             setDateRange(data.dateRange)
