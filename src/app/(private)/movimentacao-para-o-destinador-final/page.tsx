@@ -369,18 +369,7 @@ export default function VisaoGeralPage() {
                     {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
                     Detalhes da destinação <span className="material-icons">feed</span>
                 </SwitchButton>
-                <a href="#topo">
-                    <SwitchButton
-                        className="bg-gray-400 hover:bg-gray-400/50"
-                        disableButton={false}
-                        setDisableButton={()=> {}}
-
-                    >
-                        {/* <ArrowUp /> */}
-                        Ir para o topo
-                        <span className="material-icons">arrow_upward</span>
-                    </SwitchButton>
-                </a>
+                
             </Switch>
 
             <div id="movimentacaoATParaDestinador"/>
@@ -446,18 +435,7 @@ export default function VisaoGeralPage() {
                     {/* <Sheet className="w-4 h-4 text-white"/> Detalhes da destinação */}
                     Detalhes da destinação<span className="material-icons">feed</span>
                 </SwitchButton>
-                <a href="#topo">
-                    <SwitchButton
-                        className="bg-gray-400 hover:bg-gray-400/50"
-                        disableButton={false}
-                        setDisableButton={()=> {}}
-
-                    >
-                        {/* <ArrowUp /> */}
-                        Ir para o topo
-                        <span className="material-icons">arrow_upward</span>
-                    </SwitchButton>
-                </a>
+                
             </Switch>
 
             <div id="movimentacaoTotal"/>
@@ -629,18 +607,7 @@ export default function VisaoGeralPage() {
                             Download <span className="material-icons">picture_as_pdf</span>
                         </SwitchButton>
                 }
-                <a href="#topo">
-                    <SwitchButton
-                        className="bg-gray-400 hover:bg-gray-400/50"
-                        disableButton={false}
-                        setDisableButton={()=> {}}
-
-                    >
-                        {/* <ArrowUp /> */}
-                        Ir para o topo
-                        <span className="material-icons">arrow_upward</span>
-                    </SwitchButton>
-                </a>
+                
             </Switch>
 
         </div>

@@ -14,6 +14,7 @@ import logoGestao from "../../public/new-logo-2-com-texto.png"
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Link from "next/link";
+import ScrollToTopButton from "@/components/scrollToTopButton";
 
 interface MenuBarProps {
   loginResponse :LoginResponseI | undefined
@@ -155,6 +156,7 @@ export default function PrivateLayout({
             </TooltipProvider>
           </QueryClientProvider>
         </SystemProvider>
+        <ScrollToTopButton />
       </body>
     </html>
   )
