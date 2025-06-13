@@ -34,7 +34,7 @@ const ScrollToTopButton :React.FC = () => {
     return(
         <Button
             onClick={scrollToTop}
-            className="fixed top-4 right-4 rounded-full h-fit w-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD4] hover:brightness-110 shadow-black/40"
+            className="fixed top-4 right-4 rounded-full h-fit w-fit p-2 bg-[#00BCD4] hover:bg-[#00BCD4] hover:brightness-110 shadow-md shadow-black/40"
         >
             <span className="material-symbols-outlined">
                 vertical_align_top
