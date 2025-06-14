@@ -470,7 +470,7 @@ export default function VisaoGeralPage() {
             }
 
             {!showTableDetailsManifestsReceivedSentFromTheGeneratorAndAT &&
-                (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length &&
+                (!!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListAT || [], dateFrom, dateTo).length ||
                  !!filtrarTudoComDataDeRecebimentoDentroDoPeriodo(detailedReferencePeriodListGerador || [], dateFrom, dateTo).length) &&
                     <>
                         {/* <TabelaDemonstrativaSimples
